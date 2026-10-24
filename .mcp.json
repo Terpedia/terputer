@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "terpedia": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["terpedia-mcp-server.mjs"],
+      "env": {
+        "TERPUTER_API_URL": "${TERPUTER_API_URL:-http://127.0.0.1:4173}"
+      }
+    }
+  }
+}
