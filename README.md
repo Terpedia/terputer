@@ -61,6 +61,8 @@ The [executed notebook](notebooks/terputer-transcriptomics.ipynb), [white paper]
 
 The public [paclitaxel single-cell example](https://github.com/Terpedia/terpedia-paclitaxel-single-cell) and its [executed notebook](https://github.com/Terpedia/terpedia-paclitaxel-single-cell/blob/main/notebooks/terputer-paclitaxel-single-cell.ipynb) demonstrate a time-matched chemical exposure analysis and claim-linked report. A copy of its script, result artifacts, and generated brief also lives in this workspace. It has one library per condition, so the response patterns are descriptive rather than biologically replicated.
 
+The separate [A2780 paclitaxel report project](https://github.com/Terpedia/terpedia-a2780-paclitaxel-single-cell) contains an executed notebook, checksum-pinned GEO input, result tables, a generated white paper, claim ledger, and execution and generation receipts. It is a concrete `terpedia-*` repository that can be attached as `projects/a2780-paclitaxel-single-cell` in a user's `terpedia-report` fork. Its single cells are not independent biological replicates; the cross-cell-line comparison remains descriptive.
+
 ## Report generation pipeline
 
 The local `generate_research_report` tool turns a structured report specification and an executed Jupyter notebook into `white-paper.md`, `claim-ledger.tsv`, and `generation-receipt.json` under `research/<slug>/generated/`. It checks source URL syntax, claim evidence classes, referenced local artifacts, complete notebook execution counts, absence of error outputs, and input hashes. Observed claims require a result artifact; proposed claims are labeled in the report. It does not check live URL reachability or judge whether a scientific claim is true, so the generated paper still needs expert review.
