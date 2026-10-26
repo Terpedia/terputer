@@ -1,0 +1,11 @@
+{
+  "name": "Terputer Raw RNA-seq",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13-trixie",
+  "features": { "ghcr.io/devcontainers/features/node:1": { "version": "22" } },
+  "hostRequirements": { "cpus": 8, "memory": "32gb", "storage": "128gb" },
+  "forwardPorts": [4173],
+  "portsAttributes": { "4173": { "label": "Terputer", "onAutoForward": "openBrowser", "visibility": "private" } },
+  "postCreateCommand": "bash .devcontainer/raw-rnaseq/setup.sh",
+  "postStartCommand": "bash .devcontainer/start.sh",
+  "customizations": { "vscode": { "extensions": ["ms-python.python", "ms-toolsai.jupyter"] } }
+}
