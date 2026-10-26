@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/mrsa-terpinen4ol-fpkm/report-spec.json",
+  "manifest_sha256": "aa8cce2923304cbda0dc3debe43bcaa4d8cc70642133afe138077592e187be7f",
+  "notebook": "notebooks/terputer-mrsa-terpinen4ol-fpkm.ipynb",
+  "notebook_sha256": "2547c772e605495a6ad4c01127d0c2e3c13d72d17d8ada8a808ca15d9f004618",
+  "executed_code_cells": 1,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-mrsa-terpinen4ol-fpkm.json",
+  "notebook_execution_receipt_sha256": "9a3576fee3c72c2f66be44a2016e749bf0f1f48a729851160bc9c3f3f2c653f2",
+  "artifact_sha256": {
+    "research/mrsa-terpinen4ol-fpkm/results/analysis_summary.json": "5d4349cc0b7f689b1d2d75d3bb84df234c53e215ffcb3b75942a16852f02f3f4",
+    "research/mrsa-terpinen4ol-fpkm/results/descriptive_effects.tsv": "7dc74d0f7319f6fba6d149f05772811693668588acf9eaec5d66457ed2834ba7",
+    "research/mrsa-terpinen4ol-fpkm/results/sample_correlations.tsv": "e43259447fa494e126a5e087744dd3e82eb8bd500f845e472598c12be0063acf",
+    "research/mrsa-terpinen4ol-fpkm/results/sample_qc.tsv": "8f4d0960064e6aa3ce85e22d28e1c3f5024b4fffde1930bdf94617f10c1fb957"
+  },
+  "input_sha256": {
+    "research/mrsa-terpinen4ol-fpkm/analysis.py": "08b0e6466ae27256f9cf63c6979270885c0aa206a71554d715a5b3ec32e6b70f",
+    "research/mrsa-terpinen4ol-fpkm/data/GSE157638_fpkm.txt.gz": "e5a14d372c14398cf10d6831f6b8145157375c19cae1864004f39634e7d589fa",
+    "research/mrsa-terpinen4ol-fpkm/data/GSE157638_series_matrix.txt.gz": "b711a75f71d429452c2f1bc7afd5b22eaaffacf2ac077b92f81f620c40275473"
+  },
+  "external_data_inputs": [
+    {
+      "path": "research/mrsa-terpinen4ol-fpkm/data/GSE157638_fpkm.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/suppl/GSE157638_fpkm.txt.gz",
+      "sha256": "e5a14d372c14398cf10d6831f6b8145157375c19cae1864004f39634e7d589fa"
+    },
+    {
+      "path": "research/mrsa-terpinen4ol-fpkm/data/GSE157638_series_matrix.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/matrix/GSE157638_series_matrix.txt.gz",
+      "sha256": "b711a75f71d429452c2f1bc7afd5b22eaaffacf2ac077b92f81f620c40275473"
+    }
+  ],
+  "claim_count": 7,
+  "observed_claim_count": 3,
+  "report_sha256": "b5995e38687530987078b44e5320f61afdc9a0d3ce7ae43dc2d0131cd03e4ef6",
+  "ledger_sha256": "956b5e7799f9c73e6555a8665cb508185c815fd862566d7d917a736054bd80dc",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth."
+}

@@ -1,0 +1,33 @@
+{
+  "study_accession": "GSE157638",
+  "assay": "author-provided processed FPKM",
+  "matrix_sha256": "e5a14d372c14398cf10d6831f6b8145157375c19cae1864004f39634e7d589fa",
+  "geo_series_matrix_sha256": "b711a75f71d429452c2f1bc7afd5b22eaaffacf2ac077b92f81f620c40275473",
+  "sample_count": 6,
+  "control_count": 3,
+  "treated_count": 3,
+  "matrix_feature_count": 2925,
+  "filtered_feature_rule": "mean control FPKM >= 1",
+  "filtered_feature_count": 2456,
+  "median_pairwise_log1p_fpkm_correlations": {
+    "within_control": 0.9631002789702753,
+    "within_treated": 0.9529608662224749,
+    "between_arms": 0.9362888749072678
+  },
+  "descriptive_twofold_counts": {
+    "0_1": {
+      "at_least_twofold_higher": 248,
+      "at_least_twofold_lower": 518
+    },
+    "1": {
+      "at_least_twofold_higher": 243,
+      "at_least_twofold_lower": 480
+    }
+  },
+  "limitations": [
+    "FPKM is not an integer-count differential-expression input; no new p values or false-discovery estimates are calculated.",
+    "The gene identifiers are not independently mapped to orthologs or pathways.",
+    "Global FPKM distributions and pairwise correlations may reflect technical as well as biological differences.",
+    "This is one study; cross-species replication and direct target dependence are not tested."
+  ]
+}
