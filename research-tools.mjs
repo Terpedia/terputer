@@ -24,7 +24,6 @@ export const toolDefinitions = [
   { name: 'search_terpedia_bigquery', description: 'Search Terpedia provenance records through its BigQuery-backed Knowledge API. Returns source rows, not inferred conclusions.', parameters: { type: 'object', properties: { query: { type: 'string' }, source: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 20 } }, required: ['query'] } },
   { name: 'search_transcriptomic_studies', description: 'Search curated transcriptomic study records in Terpedia BigQuery. Returns provenance and evidence class.', parameters: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['query'] } },
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
-  { name: 'get_transcriptomic_contrasts', description: 'List curated treatment/control contrast definitions and evidence limits for a study accession.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
@@ -33,7 +32,7 @@ export const toolDefinitions = [
 ];
 
 export async function callResearchTool(name, args = {}) {
-  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_contrasts'].includes(name)
+  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.TERPUTER_WORKER_TOKEN}` },
@@ -43,7 +42,7 @@ export async function callResearchTool(name, args = {}) {
     if (!response.ok) throw new Error(payload.error || `Research Worker returned HTTP ${response.status}`);
     return payload.result;
   }
-  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_contrasts') {
+  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples') {
     const base = (process.env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     const key = process.env.TERPUTER_BIGQUERY_TOOL_KEY;
     if (!base || !key) throw new Error('Terputer BigQuery adapter is not configured');
@@ -57,7 +56,7 @@ export async function callResearchTool(name, args = {}) {
     } else {
       const accession = String(args.accession || '').trim().toUpperCase();
       if (!/^[A-Z0-9_-]{4,30}$/.test(accession)) throw new Error('Invalid accession');
-      url = `${base}/v1/studies/${encodeURIComponent(accession)}/${name === 'get_transcriptomic_contrasts' ? 'contrasts' : 'samples'}`;
+      url = `${base}/v1/studies/${encodeURIComponent(accession)}/samples`;
     }
     const response = await fetch(url, options);
     if (!response.ok) throw new Error(`BigQuery adapter returned HTTP ${response.status}`);
