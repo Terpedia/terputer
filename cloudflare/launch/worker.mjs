@@ -1,5 +1,6 @@
 import researchWorker from '../worker.mjs';
 import { allTools, handleMcp } from './mcp.mjs';
+import { projectsPage } from './projects.mjs';
 
 const codespace = 'https://codespaces.new/Terpedia/terpedia-transcriptomics-demo?quickstart=1';
 const repository = 'https://github.com/Terpedia/terpedia-transcriptomics-demo';
@@ -19,6 +20,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === '/mcp') return handleMcp(request, env);
     if (url.pathname === '/v1/tools/call') return researchWorker.fetch(request, env);
+    if ((url.pathname === '/projects' || url.pathname === '/projects/') && request.method === 'GET') return projectsPage();
     if (url.pathname === '/api' && request.method === 'GET') {
       return Response.json({ service: 'Terputer Research MCP', mcp: 'https://terputer.terpedia.com/mcp', protocol: 'Streamable HTTP', tools: allTools.map(({ name, description }) => ({ name, description })), authentication: 'Supply your personal Terpedia API key in X-API-Key to list or call MCP and direct research tools.' }, { headers: { 'Cache-Control': 'no-store' } });
     }
