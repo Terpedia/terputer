@@ -40,7 +40,10 @@ export async function generateResearchReport(manifestPath) {
   const notebookBytes = await readFile(notebookFile.path);
   const notebook = JSON.parse(notebookBytes.toString('utf8'));
   if (notebook.nbformat !== 4 || !Array.isArray(notebook.cells)) throw new Error('Notebook is not nbformat 4');
-  const executedCells = notebook.cells.filter((cell) => cell.cell_type === 'code' && Number.isInteger(cell.execution_count) && cell.execution_count > 0).length;
+  const codeCells = notebook.cells.filter((cell) => cell.cell_type === 'code');
+  const executedCells = codeCells.filter((cell) => Number.isInteger(cell.execution_count) && cell.execution_count > 0).length;
+  if (codeCells.some((cell) => cell.outputs?.some((output) => output.output_type === 'error'))) throw new Error('Notebook contains an error output');
+  if (codeCells.length && executedCells !== codeCells.length) throw new Error('Every notebook code cell must have an execution count');
 
   if (!Array.isArray(spec.sources) || !spec.sources.length) throw new Error('At least one source is required');
   const sources = new Map();
@@ -123,7 +126,7 @@ export async function generateResearchReport(manifestPath) {
     artifact_sha256: Object.fromEntries([...artifacts].sort(([a], [b]) => a.localeCompare(b))),
     claim_count: claims.size, observed_claim_count: [...claims.values()].filter((claim) => claim.class === 'observed').length,
     report_sha256: sha256(report), ledger_sha256: sha256(ledgerText),
-    limits: 'Checks source links, local artifact presence, notebook execution metadata, and provenance; does not establish biological replication or validate claim truth.'
+    limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; does not verify live URL reachability, biological replication, or claim truth.'
   };
   await writeFile(join(outputDir, 'white-paper.md'), report);
   await writeFile(join(outputDir, 'claim-ledger.tsv'), ledgerText);

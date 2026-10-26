@@ -4,7 +4,7 @@
   "manifest": "research/transcriptomics/gse266934/report-spec.json",
   "manifest_sha256": "a5e7451acebdf1ba31142cfcf3dd717e8603494d85a30c1c5a2bd024817e59e2",
   "notebook": "notebooks/terputer-paclitaxel-single-cell.ipynb",
-  "notebook_sha256": "7a7c9b14c8fac745faa669845510232d3bef204115cb0be3fc8a6141959aef8d",
+  "notebook_sha256": "022873fa0dccb9d5a98c66775813fef1879425e44cad97b026d1dec27b82101c",
   "executed_code_cells": 4,
   "artifact_sha256": {
     "research/transcriptomics/gse266934/results/library_qc.tsv": "eb3e04bde2ef54dc489bc64631acb05b4e11b26c48b34f6117a32f1ad4b72edd",
@@ -13,7 +13,7 @@
   },
   "claim_count": 6,
   "observed_claim_count": 3,
-  "report_sha256": "8c5d71e3a653f0f9ff40fa3a88220001cc4411b571e778982a34d61fc9ee0c70",
+  "report_sha256": "290c9924272f587a1c7deffc85e0e0b2a777239c4b24d89af21416b98bc2155e",
   "ledger_sha256": "c520e239dbd19f66cc1da735c1050355cc7ec1278fc0853a6de99708b83a2a23",
-  "limits": "Checks source links, local artifact presence, notebook execution metadata, and provenance; does not establish biological replication or validate claim truth."
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; does not verify live URL reachability, biological replication, or claim truth."
 }

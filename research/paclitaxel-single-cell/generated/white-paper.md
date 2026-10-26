@@ -4,7 +4,7 @@
 
 **Research question:** Which cellular responses to a terpene-derived compound appear at 24 and 72 hours in one public single-cell experiment?
 
-**Notebook:** `notebooks/terputer-paclitaxel-single-cell.ipynb` · SHA-256 `7a7c9b14c8fac745faa669845510232d3bef204115cb0be3fc8a6141959aef8d` · 4 executed code cells
+**Notebook:** `notebooks/terputer-paclitaxel-single-cell.ipynb` · SHA-256 `022873fa0dccb9d5a98c66775813fef1879425e44cad97b026d1dec27b82101c` · 4 executed code cells
 
 ## Abstract
 

@@ -1,10 +1,13 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const allowedRoots = ['notebooks', 'research'];
+const execFileAsync = promisify(execFile);
 
 function workspacePath(value) {
   const relative = String(value || '').replace(/^\/+/, '');
@@ -27,6 +30,7 @@ export const toolDefinitions = [
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
+  { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh workspace Python kernel and save its outputs. An error leaves the saved notebook unchanged.', parameters: { type: 'object', properties: { path: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 } }, required: ['path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
   { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/. Cite sources and mark unexecuted analysis.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' } }, required: ['path', 'content'] } },
@@ -113,6 +117,19 @@ export async function callResearchTool(name, args = {}) {
   }
   if (name === 'generate_research_report') {
     return generateResearchReport(args.manifest_path);
+  }
+  if (name === 'execute_notebook') {
+    const path = workspacePath(args.path);
+    if (!path.startsWith(join(workspaceRoot, 'notebooks') + sep) || !path.endsWith('.ipynb')) throw new Error('Expected a notebook under notebooks/');
+    const timeout = Math.min(600, Math.max(1, Number(args.cell_timeout_seconds) || 120));
+    try {
+      const { stdout } = await execFileAsync(process.env.TERPUTER_PYTHON || 'python3',
+        [join(workspaceRoot, 'notebook-runner.py'), path, workspaceRoot, String(timeout)],
+        { cwd: workspaceRoot, timeout: 30 * 60 * 1000, maxBuffer: 1024 * 1024 });
+      return JSON.parse(stdout.trim());
+    } catch (error) {
+      throw new Error(`Notebook execution failed: ${String(error.stderr || error.message || error).slice(0, 2000)}`);
+    }
   }
   if (name === 'list_notebooks') {
     const files = await readdir(join(workspaceRoot, 'notebooks')).catch(() => []);

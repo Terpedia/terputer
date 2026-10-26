@@ -55,7 +55,9 @@ The public [paclitaxel single-cell example](https://github.com/Terpedia/terpedia
 
 ## Report generation pipeline
 
-The local `generate_research_report` tool turns a structured report specification and an executed Jupyter notebook into `white-paper.md`, `claim-ledger.tsv`, and `generation-receipt.json` under `research/<slug>/generated/`. It checks source URLs, claim evidence classes, referenced local artifacts, notebook execution metadata, and input hashes. Observed claims require a result artifact and at least one executed code cell; proposed claims are labeled in the report. It does not judge whether a scientific claim is true, so the generated paper still needs expert review.
+The local `generate_research_report` tool turns a structured report specification and an executed Jupyter notebook into `white-paper.md`, `claim-ledger.tsv`, and `generation-receipt.json` under `research/<slug>/generated/`. It checks source URL syntax, claim evidence classes, referenced local artifacts, complete notebook execution counts, absence of error outputs, and input hashes. Observed claims require a result artifact; proposed claims are labeled in the report. It does not check live URL reachability or judge whether a scientific claim is true, so the generated paper still needs expert review.
+
+The local `execute_notebook` MCP tool runs a saved `notebooks/*.ipynb` in a fresh Python kernel, writes cell outputs only after the full run succeeds, and returns a SHA-256 digest plus bounded text output summaries. This gives the research agent a direct route from an editable notebook to an executed artifact for the report pipeline. Execution happens with the Codespace user's permissions; review generated code and its data sources before running it.
 
 The checked-in [transcriptomics report specification](research/transcriptomics/report-spec.json) illustrates the format. Regenerate its report locally with:
 
