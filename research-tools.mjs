@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile, realpath, stat } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
@@ -154,13 +154,20 @@ export async function callResearchTool(name, args = {}, context = {}) {
     if (paths.length > 49) throw new Error('Report bundle has too many files.');
     const files = [];
     let bytesTotal = 0;
+    const realWorkspaceRoot = await realpath(workspaceRoot);
+    const realActiveRoot = await realpath(activeRoot);
     for (const path of paths) {
       if (typeof path !== 'string' || path.includes('..') || path.split('/').some((part) => part.startsWith('.'))
           || !(/^(?:research|notebooks)\/[A-Za-z0-9._/-]+$/.test(path) || runtimeFiles.has(path))) {
         throw new Error(`Invalid report publication path: ${path}`);
       }
       // The reproducibility tools belong to Terputer, not the attached user project.
-      const absolute = runtimeFiles.has(path) ? join(workspaceRoot, path) : workspacePath(path, activeRoot);
+      const runtime = runtimeFiles.has(path);
+      const absolute = runtime ? join(workspaceRoot, path) : workspacePath(path, activeRoot);
+      const expected = join(runtime ? realWorkspaceRoot : realActiveRoot, path);
+      if (await realpath(absolute) !== expected || !(await stat(absolute)).isFile()) {
+        throw new Error(`Report publication requires a regular file inside the selected workspace: ${path}`);
+      }
       const bytes = await readFile(absolute);
       if (bytes.length > 2_000_000) throw new Error(`Report file exceeds 2 MB: ${path}`);
       bytesTotal += bytes.length;
