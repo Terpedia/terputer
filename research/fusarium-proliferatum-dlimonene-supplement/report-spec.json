@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "slug": "fusarium-proliferatum-dlimonene-supplement",
+  "title": "D-limonene response in Fusarium proliferatum: a published-table audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-fusarium-proliferatum-dlimonene-supplement.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-fusarium-proliferatum-dlimonene-supplement.json",
+  "data_inputs": [
+    {
+      "path": "research/fusarium-proliferatum-dlimonene-supplement/data/12864_2025_12389_MOESM2_ESM.xlsx",
+      "url": "https://static-content.springer.com/esm/art%3A10.1186%2Fs12864-025-12389-w/MediaObjects/12864_2025_12389_MOESM2_ESM.xlsx",
+      "sha256": "bfedef70fb595d62d0c8080b3dfe67f9d8b8291fcb43af2b5642ce6d89489212"
+    }
+  ],
+  "sources": [
+    {
+      "id": "paper",
+      "title": "Zhou et al., D-limonene and histone acetylation in Fusarium proliferatum (2025)",
+      "url": "https://link.springer.com/article/10.1186/s12864-025-12389-w"
+    },
+    {
+      "id": "supplement",
+      "title": "Publisher Supplementary Material 2, Tables S3\u2013S5",
+      "url": "https://static-content.springer.com/esm/art%3A10.1186%2Fs12864-025-12389-w/MediaObjects/12864_2025_12389_MOESM2_ESM.xlsx"
+    },
+    {
+      "id": "reads",
+      "title": "SRA BioProject PRJNA1234870 RNA-seq reads",
+      "url": "https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1234870"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "class": "source-reported",
+      "text": "The source study compares three Fusarium proliferatum hyphal cultures exposed to 200 mM D-limonene for 24 hours with three untreated controls. The article reports substantial growth inhibition at this dose.",
+      "sources": [
+        "paper",
+        "reads"
+      ],
+      "limitation": "Growth inhibition can cause secondary transcriptional and chromatin effects; the exposure differs greatly from the Penicillium biotransformation study."
+    },
+    {
+      "id": "C02",
+      "class": "observed",
+      "text": "Publisher Table S3 lists three untreated and three D-limonene RNA-seq libraries; its reported mapped fractions range from 0.9013 to 0.9422.",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/fusarium-proliferatum-dlimonene-supplement/results/analysis_summary.json",
+        "research/fusarium-proliferatum-dlimonene-supplement/results/sample_qc.tsv"
+      ],
+      "limitation": "This checks the published QC summary, not reads, alignments, contamination, or batch structure."
+    },
+    {
+      "id": "C03",
+      "class": "observed",
+      "text": "Publisher Table S4 contains 2,375 unique feature rows: 1,240 down and 1,135 up. All printed rows have adjusted p < 0.05 and absolute log2 fold change at least 1.",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/fusarium-proliferatum-dlimonene-supplement/results/analysis_summary.json",
+        "research/fusarium-proliferatum-dlimonene-supplement/results/published_degs.tsv"
+      ],
+      "limitation": "These are author-computed statistics; the notebook does not re-estimate a count model or verify the stated feature universe."
+    },
+    {
+      "id": "C04",
+      "class": "observed",
+      "text": "The article reports 1,134 upregulated genes, while Table S4 has 1,135 upregulated features. The extra up entry is rrna13; 1,134 up entries have FPRO_ identifiers, but four down entries also have rrna identifiers, so a uniform exclusion rule is not documented.",
+      "sources": [
+        "paper",
+        "supplement"
+      ],
+      "artifacts": [
+        "research/fusarium-proliferatum-dlimonene-supplement/results/analysis_summary.json",
+        "research/fusarium-proliferatum-dlimonene-supplement/results/published_degs.tsv"
+      ],
+      "limitation": "The reason for the one-row mismatch remains unresolved; it should not be silently corrected."
+    },
+    {
+      "id": "C05",
+      "class": "observed",
+      "text": "At adjusted p < 0.05, Table S5 has one H3K9ac-associated KEGG term, ribosome (ko03010), and no H3K27ac-associated KEGG terms.",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/fusarium-proliferatum-dlimonene-supplement/results/analysis_summary.json",
+        "research/fusarium-proliferatum-dlimonene-supplement/results/acetylation_pathways.tsv"
+      ],
+      "limitation": "This is a within-study pathway-list audit, not a mediation analysis or proof that histone acetylation causes the RNA response."
+    },
+    {
+      "id": "C06",
+      "class": "source-reported",
+      "text": "The article reports reduced H3K9ac and H3K27ac after D-limonene exposure and interprets transcriptome and ChIP-seq results as affecting translation and metabolism.",
+      "sources": [
+        "paper"
+      ],
+      "limitation": "Observed chromatin changes and expression associations do not establish direct limonene binding to a histone regulator."
+    },
+    {
+      "id": "C07",
+      "class": "proposed",
+      "text": "Reprocess the six PRJNA1234870 RNA-seq libraries against a pinned F. proliferatum reference, audit sample assignment and count-model assumptions, and check whether the one-row feature discrepancy persists.",
+      "sources": [
+        "reads",
+        "paper"
+      ],
+      "limitation": "Raw-read reanalysis has not been run in this project."
+    },
+    {
+      "id": "C08",
+      "class": "proposed",
+      "text": "Compare D-limonene responses with the independent R-(+)-limonene Penicillium cohort only after confirming chemical stereochemistry, viability, dose, time, growth medium, and orthology mappings; test any nominated target with direct biochemical or chemical-genetic evidence.",
+      "sources": [
+        "paper",
+        "reads"
+      ],
+      "limitation": "The present studies differ in organism, experimental goal, dose, and time and do not yet meet a replication criterion."
+    }
+  ],
+  "abstract": [
+    "C03",
+    "C04",
+    "C05"
+  ],
+  "sections": {
+    "background": [
+      "C01",
+      "C06"
+    ],
+    "methods": [
+      "C02",
+      "C03"
+    ],
+    "results": [
+      "C03",
+      "C04",
+      "C05"
+    ],
+    "interpretation": [
+      "C05",
+      "C06"
+    ],
+    "limitations": [
+      "C02",
+      "C04"
+    ],
+    "next_steps": [
+      "C07",
+      "C08"
+    ]
+  }
+}

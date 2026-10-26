@@ -1,0 +1,37 @@
+{
+  "source_sha256": "bfedef70fb595d62d0c8080b3dfe67f9d8b8291fcb43af2b5642ce6d89489212",
+  "sample_count": 6,
+  "untreated_samples": 3,
+  "treated_samples": 3,
+  "mapped_fraction_min": 0.9013,
+  "mapped_fraction_max": 0.9422,
+  "published_deg_feature_rows": 2375,
+  "published_down_rows": 1240,
+  "published_up_rows": 1135,
+  "published_up_fpro_gene_rows": 1134,
+  "non_fpro_feature_ids": [
+    "rrna13",
+    "rrna28",
+    "rrna38",
+    "rrna47",
+    "rrna54"
+  ],
+  "non_fpro_up_ids": [
+    "rrna13"
+  ],
+  "non_fpro_down_ids": [
+    "rrna28",
+    "rrna38",
+    "rrna47",
+    "rrna54"
+  ],
+  "rows_failing_reported_thresholds": 0,
+  "h3k9ac_pathway_rows": 268,
+  "h3k27ac_pathway_rows": 184,
+  "h3k9ac_adjusted_p_below_0_05": 1,
+  "h3k27ac_adjusted_p_below_0_05": 0,
+  "significant_h3k9ac_pathways": [
+    "ko03010"
+  ],
+  "effect_class": "author-processed differential-expression and pathway tables; audit only"
+}

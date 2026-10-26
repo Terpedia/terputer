@@ -1,0 +1,453 @@
+mark	kegg_id	description	p_value	adjusted_p_value
+H3K9ac	ko03010	Ribosome	1.17e-06	0.000313737
+H3K27ac	ko04120	Ubiquitin mediated proteolysis	0.000301312	0.055441326
+H3K9ac	ko00290	Valine, leucine and isoleucine biosynthesis	0.000591817	0.079303447
+H3K27ac	ko03010	Ribosome	0.003258726	0.299802779
+H3K9ac	ko00770	Pantothenate and CoA biosynthesis	0.001661098	0.120374212
+H3K27ac	ko04111	Cell cycle - yeast	0.010816227	0.663395245
+H3K9ac	ko03022	Basal transcription factors	0.00179663	0.120374212
+H3K27ac	ko04966	Collecting duct acid secretion	0.016710279	0.731885851
+H3K9ac	ko00760	Nicotinate and nicotinamide metabolism	0.007066174	0.37874692
+H3K27ac	ko04130	SNARE interactions in vesicular transport	0.02150008	0.731885851
+H3K9ac	ko04136	Autophagy - other	0.008864563	0.382064604
+H3K27ac	ko03040	Spliceosome	0.025388935	0.731885851
+H3K9ac	ko03050	Proteasome	0.009979299	0.382064604
+H3K27ac	ko05323	Rheumatoid arthritis	0.029354346	0.731885851
+H3K9ac	ko03430	Mismatch repair	0.013274578	0.444698348
+H3K27ac	ko03420	Nucleotide excision repair	0.031821124	0.731885851
+H3K9ac	ko00190	Oxidative phosphorylation	0.02455065	0.644409315
+H3K27ac	ko03013	Nucleocytoplasmic transport	0.040367381	0.825288668
+H3K9ac	ko00740	Riboflavin metabolism	0.025003806	0.644409315
+H3K27ac	ko04110	Cell cycle	0.049285056	0.906845035
+H3K9ac	ko01230	Biosynthesis of amino acids	0.026449636	0.644409315
+H3K27ac	ko05120	Epithelial cell signaling in Helicobacter pylori infection	0.067921391	0.999890531
+H3K9ac	ko04138	Autophagy - yeast	0.030382565	0.678543944
+H3K27ac	ko00730	Thiamine metabolism	0.09371198	0.999890531
+H3K9ac	ko04137	Mitophagy - animal	0.037630854	0.709547488
+H3K27ac	ko00790	Folate biosynthesis	0.095077725	0.999890531
+H3K9ac	ko04727	GABAergic synapse	0.037630854	0.709547488
+H3K27ac	ko01523	Antifolate resistance	0.100631679	0.999890531
+H3K9ac	ko04714	Thermogenesis	0.040072741	0.709547488
+H3K27ac	ko03008	Ribosome biogenesis in eukaryotes	0.105989785	0.999890531
+H3K9ac	ko05203	Viral carcinogenesis	0.050242988	0.709547488
+H3K27ac	ko04145	Phagosome	0.113397949	0.999890531
+H3K9ac	ko03040	Spliceosome	0.050582803	0.709547488
+H3K27ac	ko04136	Autophagy - other	0.123427885	0.999890531
+H3K9ac	ko04216	Ferroptosis	0.051262422	0.709547488
+H3K27ac	ko05110	Vibrio cholerae infection	0.156589456	0.999890531
+H3K9ac	ko05130	Pathogenic Escherichia coli infection	0.051859826	0.709547488
+H3K27ac	ko05132	Salmonella infection	0.156589456	0.999890531
+H3K9ac	ko04066	HIF-1 signaling pathway	0.052951305	0.709547488
+H3K27ac	ko04218	Cellular senescence	0.161449135	0.999890531
+H3K9ac	ko04151	PI3K-Akt signaling pathway	0.059676644	0.761587647
+H3K27ac	ko04140	Autophagy - animal	0.16150173	0.999890531
+H3K9ac	ko00240	Pyrimidine metabolism	0.064693223	0.788081077
+H3K27ac	ko00740	Riboflavin metabolism	0.162530981	0.999890531
+H3K9ac	ko04140	Autophagy - animal	0.072474499	0.813430026
+H3K27ac	ko04623	Cytosolic DNA-sensing pathway	0.162530981	0.999890531
+H3K9ac	ko04142	Lysosome	0.074624431	0.813430026
+H3K27ac	ko00362	Benzoate degradation	0.174289301	0.999890531
+H3K9ac	ko05211	Renal cell carcinoma	0.075879667	0.813430026
+H3K27ac	ko04721	Synaptic vesicle cycle	0.174289301	0.999890531
+H3K9ac	ko05012	Parkinson disease	0.081112677	0.82259063
+H3K27ac	ko00670	One carbon pool by folate	0.185227306	0.999890531
+H3K9ac	ko04144	Endocytosis	0.082872937	0.82259063
+H3K27ac	ko03022	Basal transcription factors	0.192138096	0.999890531
+H3K9ac	ko00730	Thiamine metabolism	0.095455361	0.888048132
+H3K27ac	ko04066	HIF-1 signaling pathway	0.208688489	0.999890531
+H3K9ac	ko05010	Alzheimer disease	0.100586427	0.888048132
+H3K27ac	ko04150	mTOR signaling pathway	0.216850243	0.999890531
+H3K9ac	ko04540	Gap junction	0.101035478	0.888048132
+H3K27ac	ko04666	Fc gamma R-mediated phagocytosis	0.230967523	0.999890531
+H3K9ac	ko00592	alpha-Linolenic acid metabolism	0.106035598	0.888048132
+H3K27ac	ko00190	Oxidative phosphorylation	0.235853101	0.999890531
+H3K9ac	ko04933	AGE-RAGE signaling pathway in diabetic complications	0.106035598	0.888048132
+H3K27ac	ko04113	Meiosis - yeast	0.236642176	0.999890531
+H3K9ac	ko04662	B cell receptor signaling pathway	0.10954307	0.889622504
+H3K27ac	ko00230	Purine metabolism	0.236973227	0.999890531
+H3K9ac	ko04722	Neurotrophin signaling pathway	0.122283383	0.939167315
+H3K27ac	ko05206	MicroRNAs in cancer	0.2507987	0.999890531
+H3K9ac	ko05169	Epstein-Barr virus infection	0.126069923	0.939167315
+H3K27ac	ko03060	Protein export	0.257299362	0.999890531
+H3K9ac	ko03013	Nucleocytoplasmic transport	0.126156804	0.939167315
+H3K27ac	ko04137	Mitophagy - animal	0.257299362	0.999890531
+H3K9ac	ko05210	Colorectal cancer	0.131634497	0.953460682
+H3K27ac	ko04211	Longevity regulating pathway	0.258746922	0.999890531
+H3K9ac	ko00250	Alanine, aspartate and glutamate metabolism	0.137676041	0.970978396
+H3K27ac	ko00760	Nicotinate and nicotinamide metabolism	0.270973144	0.999890531
+H3K9ac	ko04650	Natural killer cell mediated cytotoxicity	0.151172103	0.981492614
+H3K27ac	ko04139	Mitophagy - yeast	0.276218829	0.999890531
+H3K9ac	ko04730	Long-term depression	0.151172103	0.981492614
+H3K27ac	ko04371	Apelin signaling pathway	0.282164781	0.999890531
+H3K9ac	ko05322	Systemic lupus erythematosus	0.151172103	0.981492614
+H3K27ac	ko05100	Bacterial invasion of epithelial cells	0.282164781	0.999890531
+H3K9ac	ko04130	SNARE interactions in vesicular transport	0.166231378	0.981492614
+H3K27ac	ko05130	Pathogenic Escherichia coli infection	0.282164781	0.999890531
+H3K9ac	ko05167	Kaposi sarcoma-associated herpesvirus infection	0.166231378	0.981492614
+H3K27ac	ko00140	Steroid hormone biosynthesis	0.287302973	0.999890531
+H3K9ac	ko03320	PPAR signaling pathway	0.170117868	0.981492614
+H3K27ac	ko05322	Systemic lupus erythematosus	0.287302973	0.999890531
+H3K9ac	ko04013	MAPK signaling pathway - fly	0.170117868	0.981492614
+H3K27ac	ko00270	Cysteine and methionine metabolism	0.30168448	0.999890531
+H3K9ac	ko05016	Huntington disease	0.176554034	0.981492614
+H3K27ac	ko00290	Valine, leucine and isoleucine biosynthesis	0.307228501	0.999890531
+H3K9ac	ko04213	Longevity regulating pathway - multiple species	0.18109128	0.981492614
+H3K27ac	ko04714	Thermogenesis	0.315303081	0.999890531
+H3K9ac	ko04623	Cytosolic DNA-sensing pathway	0.181367935	0.981492614
+H3K27ac	ko04920	Adipocytokine signaling pathway	0.321243208	0.999890531
+H3K9ac	ko04660	T cell receptor signaling pathway	0.181367935	0.981492614
+H3K27ac	ko05211	Renal cell carcinoma	0.321243208	0.999890531
+H3K9ac	ko02024	Quorum sensing	0.186157925	0.981492614
+H3K27ac	ko00310	Lysine degradation	0.325480979	0.999890531
+H3K9ac	ko01524	Platinum drug resistance	0.191510604	0.981492614
+H3K27ac	ko03015	mRNA surveillance pathway	0.325480979	0.999890531
+H3K9ac	ko04910	Insulin signaling pathway	0.197675248	0.981492614
+H3K27ac	ko03430	Mismatch repair	0.332371039	0.999890531
+H3K9ac	ko03060	Protein export	0.204341541	0.981492614
+H3K27ac	ko04530	Tight junction	0.332834921	0.999890531
+H3K9ac	ko00650	Butanoate metabolism	0.208745226	0.981492614
+H3K27ac	ko00051	Fructose and mannose metabolism	0.341710437	0.999890531
+H3K9ac	ko03030	DNA replication	0.208745226	0.981492614
+H3K27ac	ko05202	Transcriptional misregulation in cancer	0.354771918	0.999890531
+H3K9ac	ko04145	Phagosome	0.208745226	0.981492614
+H3K27ac	ko05131	Shigellosis	0.357482693	0.999890531
+H3K9ac	ko05145	Toxoplasmosis	0.216955306	0.981492614
+H3K27ac	ko05166	Human T-cell leukemia virus 1 infection	0.365094956	0.999890531
+H3K9ac	ko05131	Shigellosis	0.222494324	0.981492614
+H3K27ac	ko04138	Autophagy - yeast	0.384229521	0.999890531
+H3K9ac	ko05132	Salmonella infection	0.222494324	0.981492614
+H3K27ac	ko05134	Legionellosis	0.387697104	0.999890531
+H3K9ac	ko00670	One carbon pool by folate	0.225185639	0.981492614
+H3K27ac	ko04932	Non-alcoholic fatty liver disease	0.39077154	0.999890531
+H3K9ac	ko04210	Apoptosis	0.225185639	0.981492614
+H3K27ac	ko00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis	0.407223678	0.999890531
+H3K9ac	ko04150	mTOR signaling pathway	0.227084404	0.981492614
+H3K27ac	ko03410	Base excision repair	0.407223678	0.999890531
+H3K9ac	ko04666	Fc gamma R-mediated phagocytosis	0.23725846	0.981492614
+H3K27ac	ko04621	NOD-like receptor signaling pathway	0.407223678	0.999890531
+H3K9ac	ko01200	Carbon metabolism	0.241874686	0.981492614
+H3K27ac	ko05152	Tuberculosis	0.407223678	0.999890531
+H3K9ac	ko04371	Apelin signaling pathway	0.24537062	0.981492614
+H3K27ac	ko03050	Proteasome	0.415987496	0.999890531
+H3K9ac	ko01521	EGFR tyrosine kinase inhibitor resistance	0.24944892	0.981492614
+H3K27ac	ko03030	DNA replication	0.436508839	0.999890531
+H3K9ac	ko04664	Fc epsilon RI signaling pathway	0.24944892	0.981492614
+H3K27ac	ko05168	Herpes simplex virus 1 infection	0.455768075	0.999890531
+H3K9ac	ko05202	Transcriptional misregulation in cancer	0.24944892	0.981492614
+H3K27ac	ko00510	N-Glycan biosynthesis	0.456824487	0.999890531
+H3K9ac	ko02020	Two-component system	0.261153789	0.981492614
+H3K27ac	ko03020	RNA polymerase	0.479418387	0.999890531
+H3K9ac	ko03460	Fanconi anemia pathway	0.261153789	0.981492614
+H3K27ac	ko04068	FoxO signaling pathway	0.479418387	0.999890531
+H3K9ac	ko04721	Synaptic vesicle cycle	0.261153789	0.981492614
+H3K27ac	ko00565	Ether lipid metabolism	0.481456052	0.999890531
+H3K9ac	ko01210	2-Oxocarboxylic acid metabolism	0.26785601	0.981492614
+H3K27ac	ko04212	Longevity regulating pathway - worm	0.50257897	0.999890531
+H3K9ac	ko05160	Hepatitis C	0.271961209	0.981492614
+H3K27ac	ko03018	RNA degradation	0.509317533	0.999890531
+H3K9ac	ko05206	MicroRNAs in cancer	0.273892627	0.981492614
+H3K27ac	ko05167	Kaposi sarcoma-associated herpesvirus infection	0.510714263	0.999890531
+H3K9ac	ko04122	Sulfur relay system	0.278333726	0.981492614
+H3K27ac	ko00240	Pyrimidine metabolism	0.513690779	0.999890531
+H3K9ac	ko05223	Non-small cell lung cancer	0.278333726	0.981492614
+H3K27ac	ko00920	Sulfur metabolism	0.589502783	0.999890531
+H3K9ac	ko03410	Base excision repair	0.301614198	0.999989806
+H3K27ac	ko04910	Insulin signaling pathway	0.589502783	0.999890531
+H3K9ac	ko04217	Necroptosis	0.301614198	0.999989806
+H3K27ac	ko04072	Phospholipase D signaling pathway	0.591759705	0.999890531
+H3K9ac	ko05134	Legionellosis	0.303476335	0.999989806
+H3K27ac	ko04341	Hedgehog signaling pathway - fly	0.6041463	0.999890531
+H3K9ac	ko04932	Non-alcoholic fatty liver disease	0.322875116	0.999989806
+H3K27ac	ko04978	Mineral absorption	0.6041463	0.999890531
+H3K9ac	ko03440	Homologous recombination	0.333496463	0.999989806
+H3K27ac	ko05146	Amoebiasis	0.6041463	0.999890531
+H3K9ac	ko04966	Collecting duct acid secretion	0.341914538	0.999989806
+H3K27ac	ko00900	Terpenoid backbone biosynthesis	0.616463388	0.999890531
+H3K9ac	ko05213	Endometrial cancer	0.341914538	0.999989806
+H3K27ac	ko00513	Various types of N-glycan biosynthesis	0.629144031	0.999890531
+H3K9ac	ko04141	Protein processing in endoplasmic reticulum	0.344579086	0.999989806
+H3K27ac	ko00072	NA	0.639242352	0.999890531
+H3K9ac	ko00051	Fructose and mannose metabolism	0.347817675	0.999989806
+H3K27ac	ko04122	Sulfur relay system	0.639242352	0.999890531
+H3K9ac	ko04071	Sphingolipid signaling pathway	0.357611658	0.999989806
+H3K27ac	ko04142	Lysosome	0.641127826	0.999890531
+H3K9ac	ko03420	Nucleotide excision repair	0.367529997	0.999989806
+H3K27ac	ko04114	Oocyte meiosis	0.647951961	0.999890531
+H3K9ac	ko04934	Cushing syndrome	0.370653043	0.999989806
+H3K27ac	ko04810	Regulation of actin cytoskeleton	0.647951961	0.999890531
+H3K9ac	ko05200	Pathways in cancer	0.382753462	0.999989806
+H3K27ac	ko00630	Glyoxylate and dicarboxylate metabolism	0.652301876	0.999890531
+H3K9ac	ko04062	Chemokine signaling pathway	0.38576018	0.999989806
+H3K27ac	ko02020	Two-component system	0.662402172	0.999890531
+H3K9ac	ko05168	Herpes simplex virus 1 infection	0.38576018	0.999989806
+H3K27ac	ko00650	Butanoate metabolism	0.666075657	0.999890531
+H3K9ac	ko01523	Antifolate resistance	0.405774387	0.999989806
+H3K27ac	ko04152	AMPK signaling pathway	0.666075657	0.999890531
+H3K9ac	ko04670	Leukocyte transendothelial migration	0.405774387	0.999989806
+H3K27ac	ko04216	Ferroptosis	0.671236841	0.999890531
+H3K9ac	ko00450	Selenocompound metabolism	0.414727868	0.999989806
+H3K27ac	ko00040	Pentose and glucuronate interconversions	0.67272111	0.999890531
+H3K9ac	ko00511	Other glycan degradation	0.414727868	0.999989806
+H3K27ac	ko04914	Progesterone-mediated oocyte maturation	0.683667046	0.999890531
+H3K9ac	ko04260	Cardiac muscle contraction	0.414727868	0.999989806
+H3K27ac	ko00600	Sphingolipid metabolism	0.700266347	0.999890531
+H3K9ac	ko04724	Glutamatergic synapse	0.414727868	0.999989806
+H3K27ac	ko00361	Chlorocyclohexane and chlorobenzene degradation	0.700402977	0.999890531
+H3K9ac	ko05100	Bacterial invasion of epithelial cells	0.420766013	0.999989806
+H3K27ac	ko00623	Toluene degradation	0.700402977	0.999890531
+H3K9ac	ko03020	RNA polymerase	0.42837639	0.999989806
+H3K27ac	ko00561	Glycerolipid metabolism	0.702351967	0.999890531
+H3K9ac	ko04068	FoxO signaling pathway	0.42837639	0.999989806
+H3K27ac	ko05016	Huntington disease	0.717693211	0.999890531
+H3K9ac	ko05205	Proteoglycans in cancer	0.42837639	0.999989806
+H3K27ac	ko05012	Parkinson disease	0.719281232	0.999890531
+H3K9ac	ko04010	MAPK signaling pathway	0.430905355	0.999989806
+H3K27ac	ko00860	Porphyrin metabolism	0.722907191	0.999890531
+H3K9ac	ko00020	Citrate cycle (TCA cycle)	0.432907972	0.999989806
+H3K27ac	ko05231	Choline metabolism in cancer	0.722907191	0.999890531
+H3K9ac	ko04810	Regulation of actin cytoskeleton	0.432907972	0.999989806
+H3K27ac	ko04020	Calcium signaling pathway	0.726989982	0.999890531
+H3K9ac	ko03018	RNA degradation	0.437807421	0.999989806
+H3K27ac	ko04933	AGE-RAGE signaling pathway in diabetic complications	0.726989982	0.999890531
+H3K9ac	ko04113	Meiosis - yeast	0.440751486	0.999989806
+H3K27ac	ko05418	Fluid shear stress and atherosclerosis	0.746478247	0.999890531
+H3K9ac	ko04111	Cell cycle - yeast	0.464960604	0.999989806
+H3K27ac	ko04370	VEGF signaling pathway	0.751225187	0.999890531
+H3K9ac	ko01522	Endocrine resistance	0.465584644	0.999989806
+H3K27ac	ko05203	Viral carcinogenesis	0.755705822	0.999890531
+H3K9ac	ko04012	ErbB signaling pathway	0.465584644	0.999989806
+H3K27ac	ko00521	Streptomycin biosynthesis	0.773315953	0.999890531
+H3K9ac	ko04622	RIG-I-like receptor signaling pathway	0.465584644	0.999989806
+H3K27ac	ko00720	Carbon fixation pathways in prokaryotes	0.773315953	0.999890531
+H3K9ac	ko05212	Pancreatic cancer	0.465584644	0.999989806
+H3K27ac	ko04520	Adherens junction	0.773315953	0.999890531
+H3K9ac	ko05224	Breast cancer	0.465584644	0.999989806
+H3K27ac	ko04144	Endocytosis	0.776173321	0.999890531
+H3K9ac	ko05166	Human T-cell leukemia virus 1 infection	0.468188129	0.999989806
+H3K27ac	ko00620	Pyruvate metabolism	0.776591888	0.999890531
+H3K9ac	ko04720	Long-term potentiation	0.468304574	0.999989806
+H3K27ac	ko00450	Selenocompound metabolism	0.793451416	0.999890531
+H3K9ac	ko05323	Rheumatoid arthritis	0.468304574	0.999989806
+H3K27ac	ko04260	Cardiac muscle contraction	0.793451416	0.999890531
+H3K9ac	ko04015	Rap1 signaling pathway	0.469638122	0.999989806
+H3K27ac	ko05014	Amyotrophic lateral sclerosis	0.793451416	0.999890531
+H3K9ac	ko05120	Epithelial cell signaling in Helicobacter pylori infection	0.469638122	0.999989806
+H3K27ac	ko05169	Epstein-Barr virus infection	0.79685576	0.999890531
+H3K9ac	ko04072	Phospholipase D signaling pathway	0.470307905	0.999989806
+H3K27ac	ko00480	Glutathione metabolism	0.799060319	0.999890531
+H3K9ac	ko00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis	0.470610288	0.999989806
+H3K27ac	ko04010	MAPK signaling pathway	0.803362545	0.999890531
+H3K9ac	ko04621	NOD-like receptor signaling pathway	0.470610288	0.999989806
+H3K27ac	ko01200	Carbon metabolism	0.805167501	0.999890531
+H3K9ac	ko05152	Tuberculosis	0.470610288	0.999989806
+H3K27ac	ko00300	Lysine biosynthesis	0.811804085	0.999890531
+H3K9ac	ko04014	Ras signaling pathway	0.470689795	0.999989806
+H3K27ac	ko05230	Central carbon metabolism in cancer	0.811804085	0.999890531
+H3K9ac	ko00680	Methane metabolism	0.507527589	0.999989806
+H3K27ac	ko04011	MAPK signaling pathway - yeast	0.821014115	0.999890531
+H3K9ac	ko00100	Steroid biosynthesis	0.509745513	0.999989806
+H3K27ac	ko00052	Galactose metabolism	0.821748896	0.999890531
+H3K9ac	ko00710	Carbon fixation in photosynthetic organisms	0.515157997	0.999989806
+H3K27ac	ko00062	Fatty acid elongation	0.828531297	0.999890531
+H3K9ac	ko00900	Terpenoid backbone biosynthesis	0.518594297	0.999989806
+H3K27ac	ko00100	Steroid biosynthesis	0.829278548	0.999890531
+H3K9ac	ko00270	Cysteine and methionine metabolism	0.522611365	0.999989806
+H3K27ac	ko00280	Valine, leucine and isoleucine degradation	0.839951897	0.999890531
+H3K9ac	ko04360	Axon guidance	0.522809025	0.999989806
+H3K27ac	ko05010	Alzheimer disease	0.839951897	0.999890531
+H3K9ac	ko04510	Focal adhesion	0.522809025	0.999989806
+H3K27ac	ko00562	Inositol phosphate metabolism	0.841051167	0.999890531
+H3K9ac	ko04912	GnRH signaling pathway	0.522809025	0.999989806
+H3K27ac	ko04310	Wnt signaling pathway	0.843776551	0.999890531
+H3K9ac	ko04370	VEGF signaling pathway	0.528242116	0.999989806
+H3K27ac	ko04727	GABAergic synapse	0.843776551	0.999890531
+H3K9ac	ko03450	Non-homologous end-joining	0.535803738	0.999989806
+H3K27ac	ko04934	Cushing syndrome	0.843776551	0.999890531
+H3K9ac	ko04391	Hippo signaling pathway - fly	0.535803738	0.999989806
+H3K27ac	ko05161	Hepatitis B	0.843776551	0.999890531
+H3K9ac	ko05214	Glioma	0.535803738	0.999989806
+H3K27ac	ko04146	Peroxisome	0.851538341	0.999890531
+H3K9ac	ko00513	Various types of N-glycan biosynthesis	0.547935097	0.999989806
+H3K27ac	ko00020	Citrate cycle (TCA cycle)	0.852085407	0.999890531
+H3K9ac	ko00400	Phenylalanine, tyrosine and tryptophan biosynthesis	0.552690984	0.999989806
+H3K27ac	ko04213	Longevity regulating pathway - multiple species	0.852085407	0.999890531
+H3K9ac	ko05164	Influenza A	0.552690984	0.999989806
+H3K27ac	ko00250	Alanine, aspartate and glutamate metabolism	0.860640202	0.999890531
+H3K9ac	ko00280	Valine, leucine and isoleucine degradation	0.555066631	0.999989806
+H3K27ac	ko04931	Insulin resistance	0.870333146	0.999890531
+H3K9ac	ko00790	Folate biosynthesis	0.558290603	0.999989806
+H3K27ac	ko00520	Amino sugar and nucleotide sugar metabolism	0.87733807	0.999890531
+H3K9ac	ko04915	Estrogen signaling pathway	0.565057987	0.999989806
+H3K27ac	ko00640	Propanoate metabolism	0.881133222	0.999890531
+H3K9ac	ko05110	Vibrio cholerae infection	0.565057987	0.999989806
+H3K27ac	ko02024	Quorum sensing	0.881872681	0.999890531
+H3K9ac	ko00310	Lysine degradation	0.565290968	0.999989806
+H3K27ac	ko03440	Homologous recombination	0.881872681	0.999890531
+H3K9ac	ko05225	Hepatocellular carcinoma	0.579069245	0.999989806
+H3K27ac	ko00564	Glycerophospholipid metabolism	0.884736938	0.999890531
+H3K9ac	ko00521	Streptomycin biosynthesis	0.58466277	0.999989806
+H3K27ac	ko01524	Platinum drug resistance	0.889584178	0.999890531
+H3K9ac	ko04520	Adherens junction	0.58466277	0.999989806
+H3K27ac	ko05034	Alcoholism	0.89747637	0.999890531
+H3K9ac	ko04723	Retrograde endocannabinoid signaling	0.584908102	0.999989806
+H3K27ac	ko00910	Nitrogen metabolism	0.910703515	0.999890531
+H3K9ac	ko04218	Cellular senescence	0.591662386	0.999989806
+H3K27ac	ko03320	PPAR signaling pathway	0.910703515	0.999890531
+H3K9ac	ko00140	Steroid hormone biosynthesis	0.600433472	0.999989806
+H3K27ac	ko04013	MAPK signaling pathway - fly	0.910703515	0.999890531
+H3K9ac	ko00362	Benzoate degradation	0.609251665	0.999989806
+H3K27ac	ko04070	Phosphatidylinositol signaling system	0.910703515	0.999890531
+H3K9ac	ko05034	Alcoholism	0.613080155	0.999989806
+H3K27ac	ko04922	Glucagon signaling pathway	0.910703515	0.999890531
+H3K9ac	ko05165	Human papillomavirus infection	0.613080155	0.999989806
+H3K27ac	ko00710	Carbon fixation in photosynthetic organisms	0.918660349	0.999890531
+H3K9ac	ko04110	Cell cycle	0.625185769	0.999989806
+H3K27ac	ko01040	Biosynthesis of unsaturated fatty acids	0.918660349	0.999890531
+H3K9ac	ko00920	Sulfur metabolism	0.628904542	0.999989806
+H3K27ac	ko04919	Thyroid hormone signaling pathway	0.918660349	0.999890531
+H3K9ac	ko04212	Longevity regulating pathway - worm	0.638868684	0.999989806
+H3K27ac	ko04062	Chemokine signaling pathway	0.925910466	0.999890531
+H3K9ac	ko05418	Fluid shear stress and atherosclerosis	0.645668399	0.999989806
+H3K27ac	ko00260	Glycine, serine and threonine metabolism	0.929043518	0.999890531
+H3K9ac	ko00510	N-Glycan biosynthesis	0.654294624	0.999989806
+H3K27ac	ko00970	Aminoacyl-tRNA biosynthesis	0.934812517	0.999890531
+H3K9ac	ko03008	Ribosome biogenesis in eukaryotes	0.656176346	0.999989806
+H3K27ac	ko01212	Fatty acid metabolism	0.939623735	0.999890531
+H3K9ac	ko04920	Adipocytokine signaling pathway	0.658831197	0.999989806
+H3K27ac	ko01230	Biosynthesis of amino acids	0.941770089	0.999890531
+H3K9ac	ko04926	Relaxin signaling pathway	0.665665062	0.999989806
+H3K27ac	ko04921	Oxytocin signaling pathway	0.944019062	0.999890531
+H3K9ac	ko04214	Apoptosis - fly	0.684753949	0.999989806
+H3K27ac	ko00983	Drug metabolism - other enzymes	0.94409747	0.999890531
+H3K9ac	ko05230	Central carbon metabolism in cancer	0.684753949	0.999989806
+H3K27ac	ko00220	Arginine biosynthesis	0.949015154	0.999890531
+H3K9ac	ko04139	Mitophagy - yeast	0.686369836	0.999989806
+H3K27ac	ko00400	Phenylalanine, tyrosine and tryptophan biosynthesis	0.949015154	0.999890531
+H3K9ac	ko03015	mRNA surveillance pathway	0.688320034	0.999989806
+H3K27ac	ko00770	Pantothenate and CoA biosynthesis	0.949015154	0.999890531
+H3K9ac	ko04919	Thyroid hormone signaling pathway	0.68961153	0.999989806
+H3K27ac	ko05164	Influenza A	0.949015154	0.999890531
+H3K9ac	ko00220	Arginine biosynthesis	0.710266676	0.999989806
+H3K27ac	ko04141	Protein processing in endoplasmic reticulum	0.951176497	0.999890531
+H3K9ac	ko04390	Hippo signaling pathway	0.710793003	0.999989806
+H3K27ac	ko00340	Histidine metabolism	0.957713404	0.999890531
+H3K9ac	ko00520	Amino sugar and nucleotide sugar metabolism	0.713201998	0.999989806
+H3K27ac	ko00030	Pentose phosphate pathway	0.9614909	0.999890531
+H3K9ac	ko05231	Choline metabolism in cancer	0.725426329	0.999989806
+H3K27ac	ko04071	Sphingolipid signaling pathway	0.9614909	0.999890531
+H3K9ac	ko04725	Cholinergic synapse	0.727939262	0.999989806
+H3K27ac	ko01210	2-Oxocarboxylic acid metabolism	0.962126089	0.999890531
+H3K9ac	ko05226	Gastric cancer	0.727939262	0.999989806
+H3K27ac	ko00071	Fatty acid degradation	0.967650063	0.999890531
+H3K9ac	ko00230	Purine metabolism	0.739889608	0.999989806
+H3K27ac	ko04723	Retrograde endocannabinoid signaling	0.968066664	0.999890531
+H3K9ac	ko04146	Peroxisome	0.741896083	0.999989806
+H3K27ac	ko00010	Glycolysis / Gluconeogenesis	0.968166025	0.999890531
+H3K9ac	ko04530	Tight junction	0.7421986	0.999989806
+H3K27ac	ko00627	Aminobenzoate degradation	0.972396177	0.999890531
+H3K9ac	ko04152	AMPK signaling pathway	0.757286758	0.999989806
+H3K27ac	ko00680	Methane metabolism	0.973522844	0.999890531
+H3K9ac	ko00480	Glutathione metabolism	0.759508105	0.999989806
+H3K27ac	ko04151	PI3K-Akt signaling pathway	0.978049499	0.999890531
+H3K9ac	ko05215	Prostate cancer	0.766542156	0.999989806
+H3K27ac	ko05225	Hepatocellular carcinoma	0.978049499	0.999890531
+H3K9ac	ko04211	Longevity regulating pathway	0.783865373	0.999989806
+H3K27ac	ko05200	Pathways in cancer	0.979958352	0.999890531
+H3K9ac	ko04120	Ubiquitin mediated proteolysis	0.785311579	0.999989806
+H3K27ac	ko05165	Human papillomavirus infection	0.980014697	0.999890531
+H3K9ac	ko00561	Glycerolipid metabolism	0.795125488	0.999989806
+H3K27ac	ko01130	NA	0.98415742	0.999890531
+H3K9ac	ko00720	Carbon fixation pathways in prokaryotes	0.796069484	0.999989806
+H3K27ac	ko00380	Tryptophan metabolism	0.98667938	0.999890531
+H3K9ac	ko04611	Platelet activation	0.796069484	0.999989806
+H3K27ac	ko00500	Starch and sucrose metabolism	0.989346701	0.999890531
+H3K9ac	ko00630	Glyoxylate and dicarboxylate metabolism	0.796717692	0.999989806
+H3K27ac	ko01220	Degradation of aromatic compounds	0.999022657	0.999890531
+H3K9ac	ko00072	NA	0.797189644	0.999989806
+H3K27ac	ko01120	Microbial metabolism in diverse environments	0.999121611	0.999890531
+H3K9ac	ko00430	Taurine and hypotaurine metabolism	0.797189644	0.999989806
+H3K27ac	ko00350	Tyrosine metabolism	0.999890531	0.999890531
+H3K9ac	ko05162	Measles	0.797189644	0.999989806
+H3K9ac	ko00130	Ubiquinone and other terpenoid-quinone biosynthesis	0.800724849	0.999989806
+H3K9ac	ko04726	Serotonergic synapse	0.800724849	0.999989806
+H3K9ac	ko01212	Fatty acid metabolism	0.805824176	0.999989806
+H3K9ac	ko04921	Oxytocin signaling pathway	0.815036947	0.999989806
+H3K9ac	ko00620	Pyruvate metabolism	0.817140002	0.999989806
+H3K9ac	ko00562	Inositol phosphate metabolism	0.822785333	0.999989806
+H3K9ac	ko00061	Fatty acid biosynthesis	0.830166424	0.999989806
+H3K9ac	ko05014	Amyotrophic lateral sclerosis	0.830166424	0.999989806
+H3K9ac	ko04931	Insulin resistance	0.830738135	0.999989806
+H3K9ac	ko01040	Biosynthesis of unsaturated fatty acids	0.834283267	0.999989806
+H3K9ac	ko04114	Oocyte meiosis	0.844791352	0.999989806
+H3K9ac	ko00040	Pentose and glucuronate interconversions	0.845171372	0.999989806
+H3K9ac	ko04916	Melanogenesis	0.857947818	0.999989806
+H3K9ac	ko00565	Ether lipid metabolism	0.859248919	0.999989806
+H3K9ac	ko00071	Fatty acid degradation	0.868071143	0.999989806
+H3K9ac	ko04972	Pancreatic secretion	0.868851729	0.999989806
+H3K9ac	ko05133	Pertussis	0.868851729	0.999989806
+H3K9ac	ko04962	Vasopressin-regulated water reabsorption	0.879518801	0.999989806
+H3K9ac	ko00340	Histidine metabolism	0.8798887	0.999989806
+H3K9ac	ko04011	MAPK signaling pathway - yeast	0.881476549	0.999989806
+H3K9ac	ko00062	Fatty acid elongation	0.88386948	0.999989806
+H3K9ac	ko01130	NA	0.888166018	0.999989806
+H3K9ac	ko04020	Calcium signaling pathway	0.89519485	0.999989806
+H3K9ac	ko00030	Pentose phosphate pathway	0.896746116	0.999989806
+H3K9ac	ko00640	Propanoate metabolism	0.897889026	0.999989806
+H3K9ac	ko04261	Adrenergic signaling in cardiomyocytes	0.89897618	0.999989806
+H3K9ac	ko00983	Drug metabolism - other enzymes	0.902225514	0.999989806
+H3K9ac	ko04310	Wnt signaling pathway	0.904574302	0.999989806
+H3K9ac	ko04070	Phosphatidylinositol signaling system	0.91560963	0.999989806
+H3K9ac	ko04914	Progesterone-mediated oocyte maturation	0.91560963	0.999989806
+H3K9ac	ko04922	Glucagon signaling pathway	0.91560963	0.999989806
+H3K9ac	ko00564	Glycerophospholipid metabolism	0.916434467	0.999989806
+H3K9ac	ko00460	Cyanoamino acid metabolism	0.923997478	0.999989806
+H3K9ac	ko04978	Mineral absorption	0.941688826	0.999989806
+H3K9ac	ko05146	Amoebiasis	0.941688826	0.999989806
+H3K9ac	ko00960	Tropane, piperidine and pyridine alkaloid biosynthesis	0.948181371	0.999989806
+H3K9ac	ko04270	Vascular smooth muscle contraction	0.956138744	0.999989806
+H3K9ac	ko00410	beta-Alanine metabolism	0.958323199	0.999989806
+H3K9ac	ko04024	cAMP signaling pathway	0.960255797	0.999989806
+H3K9ac	ko02010	ABC transporters	0.966037691	0.999989806
+H3K9ac	ko04022	cGMP-PKG signaling pathway	0.966037691	0.999989806
+H3K9ac	ko00603	Glycosphingolipid biosynthesis - globo and isoglobo series	0.967011277	0.999989806
+H3K9ac	ko04961	Endocrine and other factor-regulated calcium reabsorption	0.967011277	0.999989806
+H3K9ac	ko04918	Thyroid hormone synthesis	0.967397297	0.999989806
+H3K9ac	ko00970	Aminoacyl-tRNA biosynthesis	0.970711572	0.999989806
+H3K9ac	ko00930	Caprolactam degradation	0.97437763	0.999989806
+H3K9ac	ko05161	Hepatitis B	0.97437763	0.999989806
+H3K9ac	ko00361	Chlorocyclohexane and chlorobenzene degradation	0.975191239	0.999989806
+H3K9ac	ko04668	TNF signaling pathway	0.975191239	0.999989806
+H3K9ac	ko05204	Chemical carcinogenesis - DNA adducts	0.979165182	0.999989806
+H3K9ac	ko00860	Porphyrin metabolism	0.982323253	0.999989806
+H3K9ac	ko00965	Betalain biosynthesis	0.984266395	0.999989806
+H3K9ac	ko00260	Glycine, serine and threonine metabolism	0.986176142	0.999989806
+H3K9ac	ko04728	Dopaminergic synapse	0.988163366	0.999989806
+H3K9ac	ko00010	Glycolysis / Gluconeogenesis	0.988770308	0.999989806
+H3K9ac	ko00780	Biotin metabolism	0.989454815	0.999989806
+H3K9ac	ko00980	Metabolism of xenobiotics by cytochrome P450	0.994010152	0.999989806
+H3K9ac	ko00982	Drug metabolism - cytochrome P450	0.994010152	0.999989806
+H3K9ac	ko00300	Lysine biosynthesis	0.994041614	0.999989806
+H3K9ac	ko04925	Aldosterone synthesis and secretion	0.994041614	0.999989806
+H3K9ac	ko00600	Sphingolipid metabolism	0.994943101	0.999989806
+H3K9ac	ko00053	Ascorbate and aldarate metabolism	0.995521854	0.999989806
+H3K9ac	ko05030	Cocaine addiction	0.996634707	0.999989806
+H3K9ac	ko00052	Galactose metabolism	0.997185526	0.999989806
+H3K9ac	ko00940	Phenylpropanoid biosynthesis	0.997376587	0.999989806
+H3K9ac	ko00500	Starch and sucrose metabolism	0.997635717	0.999989806
+H3K9ac	ko00950	Isoquinoline alkaloid biosynthesis	0.997898652	0.999989806
+H3K9ac	ko00330	Arginine and proline metabolism	0.998182478	0.999989806
+H3K9ac	ko00350	Tyrosine metabolism	0.998182478	0.999989806
+H3K9ac	ko00625	Chloroalkane and chloroalkene degradation	0.998369835	0.999989806
+H3K9ac	ko05031	Amphetamine addiction	0.998572666	0.999989806
+H3K9ac	ko04976	Bile secretion	0.998927816	0.999989806
+H3K9ac	ko00830	Retinol metabolism	0.999194681	0.999989806
+H3K9ac	ko00910	Nitrogen metabolism	0.999395187	0.999989806
+H3K9ac	ko00621	Dioxin degradation	0.999658971	0.999989806
+H3K9ac	ko00624	Polycyclic aromatic hydrocarbon degradation	0.999658971	0.999989806
+H3K9ac	ko00643	Styrene degradation	0.999674791	0.999989806
+H3K9ac	ko00360	Phenylalanine metabolism	0.999883416	0.999989806
+H3K9ac	ko00626	Naphthalene degradation	0.999929679	0.999989806
+H3K9ac	ko00627	Aminobenzoate degradation	0.999935182	0.999989806
+H3K9ac	ko00380	Tryptophan metabolism	0.999949333	0.999989806
+H3K9ac	ko01120	Microbial metabolism in diverse environments	0.999985693	0.999989806
+H3K9ac	ko01220	Degradation of aromatic compounds	0.999989806	0.999989806
