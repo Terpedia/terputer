@@ -1,0 +1,13 @@
+gsm	matrix_column	condition	menthol_uM	wnt3a_ng_mL	replicate	source_url
+GSM7766037	con1	Control	0	0	1	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766037
+GSM7766038	con2	Control	0	0	2	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766038
+GSM7766039	con3	Control	0	0	3	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766039
+GSM7766040	M1	Menthol	100	0	1	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766040
+GSM7766041	M2	Menthol	100	0	2	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766041
+GSM7766042	M3	Menthol	100	0	3	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766042
+GSM7766043	W1	Wnt3a	0	100	1	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766043
+GSM7766044	W2	Wnt3a	0	100	2	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766044
+GSM7766045	W3	Wnt3a	0	100	3	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766045
+GSM7766046	M_W1	Menthol+Wnt3a	100	100	1	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766046
+GSM7766047	M_W2	Menthol+Wnt3a	100	100	2	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766047
+GSM7766048	M_W3	Menthol+Wnt3a	100	100	3	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7766048

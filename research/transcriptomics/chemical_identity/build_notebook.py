@@ -38,6 +38,8 @@ Deduplicate repeated dose or comparison rows within a study. Group only by a bro
     value = label.lower()
     if 'mentholmint' in value:
         return 'MentholMint formulation'
+    if 'menthol' in value:
+        return 'menthol; stereochemistry unverified'
     if 'caryophyllene' in value or 'bcp' in value:
         return 'beta-caryophyllene'
     if 'terpinen-4-ol' in value:
@@ -107,7 +109,7 @@ for row in matrix:
     print(row['label_family_for_triage'], row['study_count'], row['study_ids'], row['replication_status'])"""),
     nbformat.v4.new_markdown_cell("""## Interpretation
 
-The curated manifests contain multiple studies under the broad linalool, limonene, terpinen-4-ol, and β-caryophyllene labels. These are **candidate comparisons**, not replicated metabolic or signaling responses. Some labels expressly leave stereochemistry unresolved; the MentholMint exposure is a nicotine-containing commercial aerosol rather than isolated menthol. The Terpedia ChEBI extract includes distinct stereochemical candidate records for several labels, underscoring why a name-only join is insufficient. A future synthesis needs source-confirmed chemical identity, matched controls and doses, raw count-based within-study effects, replicate-level uncertainty, and a declared orthology or pathway mapping before grading reproducibility or target dependence."""),
+The curated manifests contain multiple studies under the broad linalool, limonene, terpinen-4-ol, and β-caryophyllene labels. These are **candidate comparisons**, not replicated metabolic or signaling responses. Some labels expressly leave stereochemistry unresolved. GSE242559 directly applies menthol in an ND7/23 cell-line factorial design, but its stereochemistry is unverified in this audit. GSE263903 instead uses a nicotine-containing commercial MentholMint aerosol in pooled mouse lung libraries. They cannot establish cross-study replication of isolated menthol. The Terpedia ChEBI extract includes distinct stereochemical candidate records for several labels, underscoring why a name-only join is insufficient. A future synthesis needs source-confirmed chemical identity, matched controls and doses, raw count-based within-study effects, replicate-level uncertainty, and a declared orthology or pathway mapping before grading reproducibility or target dependence."""),
 ]
 
 notebook = nbformat.v4.new_notebook(cells=cells, metadata={"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"}})

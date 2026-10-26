@@ -1,7 +1,7 @@
 # Chemical identity and replication triage
 
 The [executed notebook](../../../notebooks/terputer-chemical-identity-replication-audit.ipynb)
-compares the exact exposure labels in the 14 curated transcriptomics contrasts.
+compares the exact exposure labels in the 16 curated transcriptomics contrasts.
 It produces `identity_audit.tsv` and `replication_triage.tsv` with a Terputer
 fresh-kernel [execution receipt](../../execution-receipts/terputer-chemical-identity-replication-audit.json).
 
@@ -15,8 +15,11 @@ the structure, stereochemistry, purity, or dose of the exposed material.
 The triage finds two curated studies each under the broad linalool, limonene,
 terpinen-4-ol, and β-caryophyllene labels. None of these pairs is graded as
 a replicated metabolic or signaling response. The label families are only
-leads for study-design and raw-count review. `GSE263903` is a commercial
-MentholMint nicotine-containing aerosol, not isolated menthol exposure.
+leads for study-design and raw-count review. `GSE242559` directly applies
+menthol to ND7/23 cells in a Wnt3a factorial design, but the audit cannot
+verify stereochemistry or target dependency. `GSE263903` is a commercial
+MentholMint nicotine-containing aerosol, not isolated menthol exposure;
+the two studies do not establish cross-study replication.
 
 To refresh the candidate extract with appropriate BigQuery access, run the
 saved SQL and preserve its output and query date before rebuilding the
