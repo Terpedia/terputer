@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/transcriptomics/gse230454-459/report-spec.json",
+  "manifest_sha256": "88d3edd6a3fdc754850cb1c0d798923bb0af7d1a2d4bb6bb5cd1f5067b999229",
+  "notebook": "notebooks/terputer-paclitaxel-drg.ipynb",
+  "notebook_sha256": "05a492a24448308326d229464b1e485dd3513bf229bc806060be07b76c26b6dd",
+  "executed_code_cells": 2,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-paclitaxel-drg.json",
+  "notebook_execution_receipt_sha256": "f9a8b9bac8859f448a9dbfb67652f73784a563f2a686366935c276c9de50f055",
+  "artifact_sha256": {
+    "research/transcriptomics/gse230454-459/results/analysis_summary.json": "029912c4f0cd504f0f72d3c7c94988d251e4b9c246a1102c711f3a33442fbb60",
+    "research/transcriptomics/gse230454-459/results/background_summary.json": "f6d5423867596b2f116ff92a37a79d138bd6c3c2df9c45e0c946accaa7ba34c9",
+    "research/transcriptomics/gse230454-459/results/marker_descriptive.tsv": "8ae43f5ec475b8927a7ec3266f39d19435bc3d3a6d83cb1bd4beb883e9da7910",
+    "research/transcriptomics/gse230454-459/results/sample_qc.tsv": "f0b40cbead279d737bca73ee60668315eeb642f8cfc960dc25310ecd89ca5714"
+  },
+  "claim_count": 6,
+  "observed_claim_count": 3,
+  "report_sha256": "bf09e951f522d301861a5a82e5bceaaa49b2002bbaf6dd13263de847d20a7ffb",
+  "ledger_sha256": "1c6bbc5f171973b3159d1a4daddf8de59dc8912fb951d755fc08ad21401b9b61",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth."
+}

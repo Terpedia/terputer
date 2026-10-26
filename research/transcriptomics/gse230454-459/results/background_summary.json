@@ -1,0 +1,6 @@
+{
+  "eligible_features_control_mean_tpm_at_least_1": 14119,
+  "fraction_positive": 0.5371485232665203,
+  "fraction_negative": 0.4628514767334797,
+  "median_log2_tpm_plus_1_ratio": 0.02036478651627771
+}

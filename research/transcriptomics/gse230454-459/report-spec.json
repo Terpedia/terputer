@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "slug": "paclitaxel-drg-label-audit",
+  "title": "Mouse DRG paclitaxel candidate: a metadata audit and descriptive TPM brief",
+  "question": "Can public mouse DRG transcriptomics support an interpretable paclitaxel-response contrast?",
+  "notebook": "notebooks/terputer-paclitaxel-drg.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-paclitaxel-drg.json",
+  "sources": [
+    {
+      "id": "control",
+      "title": "GEO GSE230454",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE230454"
+    },
+    {
+      "id": "pax",
+      "title": "GEO GSE230459",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE230459"
+    },
+    {
+      "id": "paper",
+      "title": "Primary study article",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12353069/"
+    }
+  ],
+  "claims": [
+    {
+      "id": "D01",
+      "class": "source-reported",
+      "text": "GSE230454 and GSE230459 provide female SW mouse dorsal-root-ganglion RNA-seq control and Pax-titled sample groups, respectively.",
+      "sources": [
+        "control",
+        "pax"
+      ],
+      "limitation": "The group title is not a validated exposure label."
+    },
+    {
+      "id": "D02",
+      "class": "source-reported",
+      "text": "Every GSE230459 sample treatment-protocol field says saline although the sample titles say Pax and the study article describes paclitaxel dosing.",
+      "sources": [
+        "pax",
+        "paper"
+      ],
+      "limitation": "The exact samples cannot be assigned confidently to paclitaxel from the public metadata alone."
+    },
+    {
+      "id": "D03",
+      "class": "observed",
+      "text": "The processed workbooks contain 48,431 aligned feature rows and four TPM sample columns per arm.",
+      "sources": [
+        "control",
+        "pax"
+      ],
+      "limitation": "The independence of the four sample columns has not been established.",
+      "artifacts": [
+        "research/transcriptomics/gse230454-459/results/analysis_summary.json",
+        "research/transcriptomics/gse230454-459/results/sample_qc.tsv"
+      ]
+    },
+    {
+      "id": "D04",
+      "class": "observed",
+      "text": "Among 14,119 features with control mean TPM at least one, 53.7% have positive and 46.3% negative descriptive log2(TPM + 1) ratios; the median ratio is +0.020.",
+      "sources": [
+        "control",
+        "pax"
+      ],
+      "limitation": "TPM ratios are compositional and do not constitute count-based differential expression.",
+      "artifacts": [
+        "research/transcriptomics/gse230454-459/results/background_summary.json"
+      ]
+    },
+    {
+      "id": "D05",
+      "class": "observed",
+      "text": "The predeclared cell-cycle, interferon, cholesterol-synthesis, and injury-signaling marker panels have mixed descriptive directions.",
+      "sources": [
+        "control",
+        "pax"
+      ],
+      "limitation": "This is not pathway enrichment or evidence for a shared drug-response program.",
+      "artifacts": [
+        "research/transcriptomics/gse230454-459/results/marker_descriptive.tsv"
+      ]
+    },
+    {
+      "id": "D06",
+      "class": "proposed",
+      "text": "Reconcile the eight GSM treatment records with the submitter and raw-data metadata before a replicate-aware count-based comparison.",
+      "sources": [
+        "control",
+        "pax"
+      ],
+      "limitation": "The reconciliation and count-based analysis have not been performed."
+    }
+  ],
+  "abstract": [
+    "D01",
+    "D02",
+    "D04"
+  ],
+  "sections": {
+    "background": [
+      "D01",
+      "D02"
+    ],
+    "methods": [
+      "D03"
+    ],
+    "results": [
+      "D04",
+      "D05"
+    ],
+    "interpretation": [
+      "D02",
+      "D05"
+    ],
+    "limitations": [
+      "D02",
+      "D03",
+      "D04"
+    ],
+    "next_steps": [
+      "D06"
+    ]
+  }
+}
