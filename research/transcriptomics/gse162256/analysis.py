@@ -40,6 +40,25 @@ def run(root: Path = Path(".")) -> dict:
     matrix = matrix.apply(pd.to_numeric, errors="raise")
     counts = pd.Series([column.split(".", 1)[0] for column in matrix.columns]).value_counts().to_dict()
     symbols = matrix.index.to_series().str.rsplit("_", n=1).str[-1]
+    control_columns = matrix.columns.str.startswith("Controls.")
+    controls = matrix.loc[:, control_columns]
+    eligible = (controls > 0).mean(axis=1) >= 0.20
+    background = {}
+    background_rows = []
+    for prefix, label in list(GROUPS.items())[1:]:
+        exposed = matrix.loc[:, matrix.columns.str.startswith(prefix + ".")]
+        differences = exposed.median(axis=1) - controls.median(axis=1)
+        reference = differences[eligible]
+        background[label] = reference
+        background_rows.append({
+            "contrast": label + "_vs_control",
+            "baseline_detection_threshold": 0.20,
+            "eligible_features": len(reference),
+            "fraction_lower_median": float((reference < 0).mean()),
+            "fraction_equal_median": float((reference == 0).mean()),
+            "median_feature_difference_reported_units": float(reference.median()),
+        })
+    pd.DataFrame(background_rows).to_csv(output / "background_descriptive.tsv", sep="\t", index=False)
     results = []
     for panel, genes in PANELS.items():
         for gene in genes:
@@ -61,6 +80,7 @@ def run(root: Path = Path(".")) -> dict:
                     "median_control": float(control.median()),
                     "median_exposed": float(exposed.median()),
                     "median_difference_reported_units": float(exposed.median() - control.median()),
+                    "background_lower_tail_fraction": float((background[label] <= exposed.median() - control.median()).mean()) if eligible.loc[matches[0]] else None,
                     "detection_control": float((control > 0).mean()),
                     "detection_exposed": float((exposed > 0).mean()),
                 })

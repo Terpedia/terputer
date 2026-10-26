@@ -60,7 +60,19 @@
       "artifacts": [
         "research/transcriptomics/gse162256/results/marker_descriptive.tsv"
       ],
-      "limitation": "These are descriptive medians in the source's processed E-value units, not count-based differential-expression estimates."
+      "limitation": "The overall processed matrix also shifts lower, so marker direction alone is not cell-cycle-specific or a count-based differential-expression estimate."
+    },
+    {
+      "id": "A07",
+      "class": "observed",
+      "text": "Among 9,276 features detected in at least 20% of control cells, 69.8% and 64.3% have lower medians at 16 and 48 hours, respectively, than control.",
+      "sources": [
+        "geo"
+      ],
+      "artifacts": [
+        "research/transcriptomics/gse162256/results/background_descriptive.tsv"
+      ],
+      "limitation": "This is a descriptive feature-wide background in processed E-value units; feature dependence and cell-level sampling preclude an inferential gene-set test."
     },
     {
       "id": "A04",
@@ -99,6 +111,7 @@
   "abstract": [
     "A01",
     "A03",
+    "A07",
     "A05"
   ],
   "sections": {
@@ -109,6 +122,7 @@
       "A02"
     ],
     "results": [
+      "A07",
       "A03",
       "A04"
     ],
