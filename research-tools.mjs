@@ -34,8 +34,8 @@ export const toolDefinitions = [
   { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Set project_slug for a submodule; include extra_paths for scripts or pinned inputs. In a terpedia-report fork, stage the project submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
   { name: 'fork_report_workspace', description: 'Fork public Terpedia/terputer to the connected GitHub user as terpedia-report and return its Codespace URL. The Terpedia GitHub session is used in chat; standalone local MCP use can authenticate with gh.', parameters: { type: 'object', properties: {} } },
   { name: 'list_research_projects', description: 'List the research project submodules and pinned commits in this user-owned terpedia-report checkout.', parameters: { type: 'object', properties: {} } },
-  { name: 'add_research_project_submodule', description: 'Stage a user-owned terpedia-<slug> project repository under projects/<slug> in this terpedia-report checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' } }, required: ['slug'] } },
-  { name: 'update_research_project_submodule', description: 'Fetch the latest default-branch commit for an existing project submodule and stage its new pointer for review.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
+  { name: 'add_research_project_submodule', description: 'Attach a user-owned terpedia-<slug> repository under projects/<slug>. A connected GitHub session commits the pointer to the report fork; standalone local MCP use stages it in the checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' }, commit: { type: 'string' } }, required: ['slug'] } },
+  { name: 'update_research_project_submodule', description: 'Advance a project submodule pointer to the project’s latest default-branch commit. A connected GitHub session commits remotely; standalone local MCP use stages it locally.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
   { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh Python kernel and save its outputs. Set project_slug for an attached project and declare research/ outputs for the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the report workspace or an attached project submodule.', parameters: { type: 'object', properties: { project_slug: { type: 'string' } } } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path'] } },
@@ -46,8 +46,8 @@ export const toolDefinitions = [
 export async function callResearchTool(name, args = {}, context = {}) {
   if (name === 'fork_report_workspace') return forkReportWorkspace(context.githubSession);
   if (name === 'list_research_projects') return listResearchProjects();
-  if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args);
-  if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args);
+  if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args, context.githubSession);
+  if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args, context.githubSession);
   const localTools = ['generate_research_report', 'publish_research_report', 'execute_notebook', 'list_notebooks', 'read_workspace_file', 'write_workspace_file'];
   const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
   if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
@@ -172,11 +172,11 @@ export async function callResearchTool(name, args = {}, context = {}) {
     let projectSubmodule;
     try {
       const attached = await addResearchProjectSubmodule({
-        slug: spec.slug, repository: `https://github.com/${result.repository}`
-      });
+        slug: spec.slug, repository: `https://github.com/${result.repository}`, commit: result.commit
+      }, session);
       projectSubmodule = { attached: true, ...attached, publishedCommit: result.commit,
-        needsSync: attached.commit !== result.commit };
-      if (projectSubmodule.needsSync) projectSubmodule.next = 'The project repository advanced on GitHub. Reconcile local project changes with the published commit, then stage and push the report fork submodule pointer.';
+        needsSync: Boolean(attached.localSyncRequired || attached.commit !== result.commit) };
+      if (projectSubmodule.needsSync && !attached.next) projectSubmodule.next = 'The project repository advanced on GitHub. Reconcile local project changes with the published commit, then stage and push the report fork submodule pointer.';
     } catch (error) {
       projectSubmodule = { attached: false, reason: error instanceof Error ? error.message : String(error) };
     }

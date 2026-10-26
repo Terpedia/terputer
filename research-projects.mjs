@@ -85,7 +85,23 @@ export async function resolveResearchWorkspace(slug) {
   return absolute;
 }
 
-export async function addResearchProjectSubmodule({ slug, repository }) {
+async function attachWithLinkedGithub(slug, commit, repository, session) {
+  if (!slugPattern.test(slug || '')) throw new Error('Invalid project slug.');
+  if (commit != null && !/^[a-f0-9]{40}$/.test(String(commit))) throw new Error('Invalid project commit SHA.');
+  const base = (process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
+  const response = await fetch(`${base}/api/github/research/project-submodule`, {
+    method: 'POST', headers: { authorization: `Bearer ${session}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ slug, ...(commit ? { commit } : {}), ...(repository ? { repository } : {}) }), signal: AbortSignal.timeout(60_000)
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || `Project attachment failed (${response.status})`);
+  return { ...result, attachedRemotely: true, localSyncRequired: true };
+}
+
+export async function addResearchProjectSubmodule({ slug, repository, commit }, session = process.env.TERPUTER_GITHUB_SESSION) {
+  if (session) {
+    return attachWithLinkedGithub(slug, commit, repository, session);
+  }
   const user = await reportRepository();
   if (!slugPattern.test(slug || '')) throw new Error('Use a lowercase project slug with letters, numbers, and hyphens.');
   const expected = `https://github.com/${user}/terpedia-${slug}`;
@@ -111,7 +127,8 @@ export async function addResearchProjectSubmodule({ slug, repository }) {
   return { path, repository: repo.html_url, commit, staged: true, next: 'Review and commit the staged .gitmodules and submodule pointer, then push your report repository.' };
 }
 
-export async function updateResearchProjectSubmodule({ slug }) {
+export async function updateResearchProjectSubmodule({ slug }, session = process.env.TERPUTER_GITHUB_SESSION) {
+  if (session) return attachWithLinkedGithub(slug, null, null, session);
   await reportRepository();
   if (!slugPattern.test(slug || '')) throw new Error('Invalid project slug.');
   const path = `projects/${slug}`;
