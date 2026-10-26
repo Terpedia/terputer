@@ -1,7 +1,7 @@
 # Chemical identity and replication triage
 
 The [executed notebook](../../../notebooks/terputer-chemical-identity-replication-audit.ipynb)
-compares the exact exposure labels in the 12 curated transcriptomics contrasts.
+compares the exact exposure labels in the 14 curated transcriptomics contrasts.
 It produces `identity_audit.tsv` and `replication_triage.tsv` with a Terputer
 fresh-kernel [execution receipt](../../execution-receipts/terputer-chemical-identity-replication-audit.json).
 

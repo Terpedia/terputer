@@ -9,7 +9,7 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[3]
 here = Path(__file__).resolve().parent
 output = root / "research/transcriptomics/bigquery-ready"
-revision = "ca68b550976e634befb76b332a77cad50d632444"
+revision = "7ca77dcc01687fbdb38169059f127480fc0b8082"
 repo = f"https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell/blob/{revision}"
 geo = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE263903"
 version = "terpedia-menthol-aerosol-single-cell-2026-10-26"
@@ -29,7 +29,7 @@ study_rows = [{
     "study_id": "GSE263903", "accession": "GSE263903",
     "title": "Menthol-mint flavored e-cigarette aerosol mouse-lung single-cell study",
     "organism": "Mus musculus; C57BL/6J lung", "assay": "10x single-cell RNA-seq; primary UMI counts",
-    "source_url": geo, "evidence_class": "Ten GEO libraries; six checksum-pinned matrices in executed descriptive audit",
+    "source_url": geo, "evidence_class": "Ten GEO libraries; all ten checksum-pinned matrices in executed descriptive audit",
     "source_sha256": source_sha, "source_revision": revision, "retrieved_at": "2026-10-26",
     "limitations": limits,
 }]
@@ -46,7 +46,7 @@ for row in samples:
     })
 
 contrast_rows = []
-for control in ("PGVG", "Air"):
+for control in ("PGVG", "Air", "Mango", "Tobacco"):
     contrast_rows.append({
         "contrast_id": f"GSE263903:MentholMint-vs-{control}:myeloid-marker-targets",
         "study_id": "GSE263903",
@@ -60,9 +60,9 @@ for control in ("PGVG", "Air"):
     })
 
 observation_rows = [{
-    "observation_id": "GSE263903:six-libraries:cells-qc", "study_id": "GSE263903",
-    "comparison": "Six analyzed libraries: air, PG:VG, and MentholMint, male and female pools",
-    "metric": "cells_after_notebook_qc", "value": 37962, "feature_universe": 39608,
+    "observation_id": "GSE263903:ten-libraries:cells-qc", "study_id": "GSE263903",
+    "comparison": "Ten analyzed libraries: air, PG:VG, Mango, MentholMint, and Tobacco, male and female pools",
+    "metric": "cells_after_notebook_qc", "value": 74117, "feature_universe": 76229,
     "evidence_class": "executed primary single-cell count audit",
     "method": "10x filtered matrices; minimum 500 UMI, 200 detected genes, maximum 20% mitochondrial UMI",
     "source_url": qc_url, "source_sha256": qc_sha, "analysis_version": version,
@@ -73,7 +73,8 @@ for row in effects:
         continue
     selected = (row["treated"] == "MentholMint" and
                 ((row["control"] == "PGVG" and row["gene"] in {"Il1b", "Cxcl2", "Hmgcr"}) or
-                 (row["control"] == "Air" and row["sex"] == "Female" and row["gene"] in {"Il1b", "Cxcl2"})))
+                 (row["control"] == "Air" and row["sex"] == "Female" and row["gene"] in {"Il1b", "Cxcl2"}) or
+                 (row["control"] in {"Mango", "Tobacco"} and row["gene"] in {"Il1b", "Cxcl2"})))
     if not selected:
         continue
     observation_rows.append({
