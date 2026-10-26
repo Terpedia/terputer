@@ -1,0 +1,41 @@
+{
+  "schema_version": 2,
+  "slug": "ufh001-bcp-fpkm",
+  "title": "β-Caryophyllene in hypoxic UFH-001: an executed FPKM dose audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-ufh001-bcp-fpkm.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-ufh001-bcp-fpkm.json",
+  "data_inputs": [
+    {"path":"research/ufh001-bcp-fpkm/data/GSE125511_FPKM_geneMatrix_NORMALIZED.txt.gz","url":"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE125nnn/GSE125511/suppl/GSE125511_FPKM_geneMatrix_NORMALIZED.txt.gz","sha256":"662960a32245e6b64b20879215e42d340ba19a5c6c16a0b79fbef0ef6c88d415"},
+    {"path":"research/ufh001-bcp-fpkm/data/hgnc_complete_set.txt","url":"https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt","sha256":"12363916be36f8f6f91879b0faade4eeaac973722de7136ec61329b77f2c2f91"}
+  ],
+  "sources": [
+    {"id":"geo","title":"GEO GSE125511 series and nine samples","url":"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE125511"},
+    {"id":"controls","title":"GEO GSE123856 control source","url":"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123856"},
+    {"id":"matrix","title":"GSE125511 supplementary FPKM matrix","url":"https://ftp.ncbi.nlm.nih.gov/geo/series/GSE125nnn/GSE125511/suppl/GSE125511_FPKM_geneMatrix_NORMALIZED.txt.gz"},
+    {"id":"hgnc","title":"HGNC complete approved gene set","url":"https://www.genenames.org/download/"},
+    {"id":"paper","title":"Original UFH-001 β-caryophyllene breast-cancer study","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC8561761/"},
+    {"id":"hepg2","title":"Independent HepG2 processed-count audit","url":"https://github.com/Terpedia/terpedia-hepg2-bcp-rsem"}
+  ],
+  "claims": [
+    {"id":"C01","class":"source-reported","text":"GSE125511 contains three DMSO vehicle, three 20 µM β-caryophyllene, and three 200 µM β-caryophyllene UFH-001 bulk RNA-seq libraries, all under 1% oxygen for 16 hours.","sources":["geo"],"limitation":"No normoxic treated arm is present, so an oxygen-by-treatment interaction cannot be estimated."},
+    {"id":"C02","class":"source-reported","text":"The three vehicle libraries are the same libraries deposited as GSM3514416, GSM3514418, and GSM3514420 in GSE123856.","sources":["geo","controls"],"limitation":"These controls must not be counted as an independent cohort in a synthesis."},
+    {"id":"C03","class":"observed","text":"The pinned matrix contains 60,603 unique feature rows and nine complete nonnegative FPKM columns. A pinned one-to-one approved HGNC crosswalk maps 40,641 rows; 14,055 mapped rows have mean FPKM at least 1 in an arm.","sources":["matrix","hgnc"],"artifacts":["research/ufh001-bcp-fpkm/results/analysis_summary.json","research/ufh001-bcp-fpkm/results/sample_qc.tsv"],"limitation":"Mapping coverage depends on the pinned 2026 HGNC snapshot. FPKM is processed abundance, not raw integer counts."},
+    {"id":"C04","class":"observed","text":"Median pairwise Pearson correlations of log1p(FPKM) are 0.9855 within vehicle, 0.9863 within 20 µM, and 0.9866 within 200 µM libraries.","sources":["matrix"],"artifacts":["research/ufh001-bcp-fpkm/results/sample_correlations.tsv","research/ufh001-bcp-fpkm/results/analysis_summary.json"],"limitation":"Similar global profiles do not establish treatment equivalence or support a differential-expression claim."},
+    {"id":"C05","class":"observed","text":"Among the 14,055 filtered mapped rows, descriptive mean-FPKM ratios with a 0.1 pseudocount place 250 higher and 226 lower by at least twofold at 20 µM, versus 364 higher and 263 lower at 200 µM. With a 1.0 pseudocount the respective counts are 188/184 and 259/194.","sources":["matrix","hgnc"],"artifacts":["research/ufh001-bcp-fpkm/results/descriptive_effects.tsv","research/ufh001-bcp-fpkm/results/analysis_summary.json"],"limitation":"These threshold counts are pseudocount-sensitive descriptions, not statistically tested DEGs. Both contrasts share the same three controls."},
+    {"id":"C06","class":"observed","text":"At 200 µM, mean HMGCR FPKM is 163.36 versus 56.71 in vehicle (descriptive log2 ratio +1.525 with a 0.1 pseudocount); SCD, SQLE, FDFT1, HMGCS1, INSIG1, and STARD4 also show higher mean FPKM. These markers have little mean change at 20 µM.","sources":["matrix","hgnc"],"artifacts":["research/ufh001-bcp-fpkm/results/marker_effects.tsv","research/ufh001-bcp-fpkm/results/analysis_summary.json"],"limitation":"Marker directions alone do not establish pathway significance, flux, cholesterol synthesis, or direct HMGCR binding."},
+    {"id":"C07","class":"source-reported","text":"The source article reports a cholesterol-biosynthesis response and increased β-caryophyllene sensitivity when HMGCR is blocked.","sources":["paper"],"limitation":"The notebook does not reproduce the intervention experiment, and the reported interaction does not prove direct ligand binding to HMGCR."},
+    {"id":"C08","class":"observed","text":"PGF mean FPKM is 0.483 in vehicle and 0.333 at 200 µM, below the predeclared FPKM filter; its 0.1-pseudocount log2 ratio is -0.429.","sources":["matrix","hepg2"],"artifacts":["research/ufh001-bcp-fpkm/results/marker_effects.tsv"],"limitation":"Low expression and differing cell context, oxygen, dose, time, vehicle, and quantification prevent a PGF replication claim across GSE125511 and GSE276099."},
+    {"id":"C09","class":"proposed","text":"Reprocess raw libraries with a pinned reference and replicate-aware count model, then compare cholesterol and signaling effects with the processed-matrix directions.","sources":["geo","matrix"],"limitation":"Raw-read reprocessing, differential-expression inference, and adjusted p-values were not generated here."},
+    {"id":"C10","class":"proposed","text":"Cross UFH-001 and HepG2 cells with matched β-caryophyllene doses, oxygen conditions, vehicle, exposure time, and HMGCR or PGF perturbations to estimate context and target interactions.","sources":["geo","hepg2","paper"],"limitation":"The existing studies confound these design factors and contain no shared genetic Perturb-seq contrast."}
+  ],
+  "abstract":["C01","C03","C06"],
+  "sections":{
+    "background":["C01","C02","C07"],
+    "methods":["C03","C04","C05"],
+    "results":["C04","C05","C06","C08"],
+    "interpretation":["C06","C07","C08"],
+    "limitations":["C02","C03","C05","C08"],
+    "next_steps":["C09","C10"]
+  }
+}

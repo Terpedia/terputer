@@ -1,0 +1,205 @@
+{
+  "source_accession": "GSE125511",
+  "assay": "bulk RNA-seq normalized FPKM",
+  "matrix_sha256": "662960a32245e6b64b20879215e42d340ba19a5c6c16a0b79fbef0ef6c88d415",
+  "hgnc_source_sha256": "12363916be36f8f6f91879b0faade4eeaac973722de7136ec61329b77f2c2f91",
+  "hgnc_crosswalk_sha256": "d38e83b643c29cbb2ff7b20dc6aa8d57702f885ed8b8fcd3ae4af6d6369b998b",
+  "matrix_feature_rows": 60603,
+  "sample_count": 9,
+  "approved_one_to_one_hgnc_crosswalk_rows": 41850,
+  "matrix_rows_with_one_to_one_hgnc_map": 40641,
+  "included_feature_rows_max_arm_mean_fpkm_ge_1": 14055,
+  "median_log1p_fpkm_correlation_by_arm_pair": {
+    "bcp200:bcp200": 0.9865635318972459,
+    "bcp200:vehicle": 0.9860340555857439,
+    "bcp20:bcp20": 0.9863328447849736,
+    "bcp20:bcp200": 0.9861996165763655,
+    "bcp20:vehicle": 0.9871654907919034,
+    "vehicle:vehicle": 0.985481472734461
+  },
+  "twofold_descriptive_counts": {
+    "bcp20": {
+      "0.1": {
+        "higher": 250,
+        "lower": 226
+      },
+      "1.0": {
+        "higher": 188,
+        "lower": 184
+      }
+    },
+    "bcp200": {
+      "0.1": {
+        "higher": 364,
+        "lower": 263
+      },
+      "1.0": {
+        "higher": 259,
+        "lower": 194
+      }
+    }
+  },
+  "marker_rows": {
+    "HMGCR": [
+      {
+        "ensembl_gene_id": "ENSG00000113161",
+        "entrez_id": "3156",
+        "mean_vehicle_fpkm": 56.70633333333333,
+        "mean_bcp20_fpkm": 51.974466666666665,
+        "mean_bcp200_fpkm": 163.36076666666668,
+        "bcp20_log2_ratio_0_1": -0.12547562601699078,
+        "bcp200_log2_ratio_0_1": 1.5248207164383059
+      }
+    ],
+    "SCD": [
+      {
+        "ensembl_gene_id": "ENSG00000099194",
+        "entrez_id": "6319",
+        "mean_vehicle_fpkm": 523.2383333333333,
+        "mean_bcp20_fpkm": 517.1293333333333,
+        "mean_bcp200_fpkm": 1086.7313333333334,
+        "bcp20_log2_ratio_0_1": -0.016939840715289096,
+        "bcp200_log2_ratio_0_1": 1.0543122221110515
+      }
+    ],
+    "SQLE": [
+      {
+        "ensembl_gene_id": "ENSG00000104549",
+        "entrez_id": "6713",
+        "mean_vehicle_fpkm": 35.0982,
+        "mean_bcp20_fpkm": 33.434266666666666,
+        "mean_bcp200_fpkm": 124.3523,
+        "bcp20_log2_ratio_0_1": -0.06986559951322213,
+        "bcp200_log2_ratio_0_1": 1.8220193350674585
+      }
+    ],
+    "FDFT1": [
+      {
+        "ensembl_gene_id": "ENSG00000079459",
+        "entrez_id": "2222",
+        "mean_vehicle_fpkm": 155.887,
+        "mean_bcp20_fpkm": 162.44233333333332,
+        "mean_bcp200_fpkm": 475.085,
+        "bcp20_log2_ratio_0_1": 0.05938971025704649,
+        "bcp200_log2_ratio_0_1": 1.6070634963125832
+      }
+    ],
+    "HMGCS1": [
+      {
+        "ensembl_gene_id": "ENSG00000112972",
+        "entrez_id": "3157",
+        "mean_vehicle_fpkm": 21.231666666666666,
+        "mean_bcp20_fpkm": 21.3439,
+        "mean_bcp200_fpkm": 120.97346666666667,
+        "bcp20_log2_ratio_0_1": 0.007570623026194021,
+        "bcp200_log2_ratio_0_1": 2.5048141375117123
+      }
+    ],
+    "LDLR": [
+      {
+        "ensembl_gene_id": "ENSG00000130164",
+        "entrez_id": "3949",
+        "mean_vehicle_fpkm": 59.028333333333336,
+        "mean_bcp20_fpkm": 56.6346,
+        "mean_bcp200_fpkm": 106.6528,
+        "bcp20_log2_ratio_0_1": -0.059620770618898485,
+        "bcp200_log2_ratio_0_1": 0.8523523933862697
+      }
+    ],
+    "INSIG1": [
+      {
+        "ensembl_gene_id": "ENSG00000186480",
+        "entrez_id": "3638",
+        "mean_vehicle_fpkm": 39.59133333333333,
+        "mean_bcp20_fpkm": 37.538399999999996,
+        "mean_bcp200_fpkm": 132.483,
+        "bcp20_log2_ratio_0_1": -0.07661872624044845,
+        "bcp200_log2_ratio_0_1": 1.739999870612135
+      }
+    ],
+    "STARD4": [
+      {
+        "ensembl_gene_id": "ENSG00000164211",
+        "entrez_id": "134429",
+        "mean_vehicle_fpkm": 14.774166666666668,
+        "mean_bcp20_fpkm": 15.665566666666667,
+        "mean_bcp200_fpkm": 38.46,
+        "bcp20_log2_ratio_0_1": 0.08396818328485758,
+        "bcp200_log2_ratio_0_1": 1.374296208662925
+      }
+    ],
+    "SREBF2": [
+      {
+        "ensembl_gene_id": "ENSG00000198911",
+        "entrez_id": "6721",
+        "mean_vehicle_fpkm": 55.452466666666666,
+        "mean_bcp20_fpkm": 51.718466666666664,
+        "mean_bcp200_fpkm": 82.73386666666667,
+        "bcp20_log2_ratio_0_1": -0.10038464614814617,
+        "bcp200_log2_ratio_0_1": 0.5763697626479068
+      }
+    ],
+    "PGF": [
+      {
+        "ensembl_gene_id": "ENSG00000119630",
+        "entrez_id": "5228",
+        "mean_vehicle_fpkm": 0.48277766666666666,
+        "mean_bcp20_fpkm": 0.2759103333333333,
+        "mean_bcp200_fpkm": 0.33292466666666665,
+        "bcp20_log2_ratio_0_1": -0.632557017269161,
+        "bcp200_log2_ratio_0_1": -0.428829588132576
+      }
+    ],
+    "NR4A1": [
+      {
+        "ensembl_gene_id": "ENSG00000123358",
+        "entrez_id": "3164",
+        "mean_vehicle_fpkm": 1.0275586666666667,
+        "mean_bcp20_fpkm": 1.2787,
+        "mean_bcp200_fpkm": 1.2975473333333334,
+        "bcp20_log2_ratio_0_1": 0.29010606733136485,
+        "bcp200_log2_ratio_0_1": 0.3096946477438102
+      }
+    ],
+    "CSF1R": [
+      {
+        "ensembl_gene_id": "ENSG00000182578",
+        "entrez_id": "1436",
+        "mean_vehicle_fpkm": 0.176141,
+        "mean_bcp20_fpkm": 0.42228920000000003,
+        "mean_bcp200_fpkm": 0.330149,
+        "bcp20_log2_ratio_0_1": 0.919443763890511,
+        "bcp200_log2_ratio_0_1": 0.6394313760365321
+      }
+    ],
+    "ARTN": [
+      {
+        "ensembl_gene_id": "ENSG00000117407",
+        "entrez_id": "9048",
+        "mean_vehicle_fpkm": 0.544405,
+        "mean_bcp20_fpkm": 0.537928,
+        "mean_bcp200_fpkm": 0.7936183333333333,
+        "bcp20_log2_ratio_0_1": -0.014574085273618904,
+        "bcp200_log2_ratio_0_1": 0.4716910961329955
+      }
+    ],
+    "CACNA1E": [
+      {
+        "ensembl_gene_id": "ENSG00000198216",
+        "entrez_id": "777",
+        "mean_vehicle_fpkm": 0.0015961833333333333,
+        "mean_bcp20_fpkm": 0.0020043166666666667,
+        "mean_bcp200_fpkm": 0.0011085666666666666,
+        "bcp20_log2_ratio_0_1": 0.0057840007731333664,
+        "bcp200_log2_ratio_0_1": -0.006940967133733192
+      }
+    ]
+  },
+  "limitations": [
+    "Processed FPKM, no new differential expression or adjusted p-values",
+    "All libraries are UFH-001 under 1% oxygen for 16 h",
+    "Vehicle controls are identical to three GSE123856 libraries and must not be counted twice",
+    "Shared control makes dose contrasts correlated",
+    "Different cell line, oxygen, dose, time, and vehicle than GSE276099"
+  ]
+}

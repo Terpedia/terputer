@@ -1,0 +1,106 @@
+{
+  "source_projects": {
+    "GSE276099": "d575b95ae276283746cf3db8543c777d4a86d462",
+    "GSE125511": "258d36bad9bbd8df99e8141c3e140b2f85d04a00"
+  },
+  "input_sha256": {
+    "hepg2_descriptive_effects.tsv": "345e58b56a7b57ca43e4cde689424acbc363a88ee5adcb164ee678425c6d3373",
+    "ufh001_descriptive_effects.tsv": "7eef7fe7c5f0b3bedd452308a6d250c553d7fe74a2cc09eb1731b291bff2d564",
+    "hgnc_crosswalk.tsv": "d38e83b643c29cbb2ff7b20dc6aa8d57702f885ed8b8fcd3ae4af6d6369b998b"
+  },
+  "hepg2_rows": 17034,
+  "ufh001_rows": 60603,
+  "ufh001_mapped_entrez_rows": 40641,
+  "shared_entrez_ids": 16772,
+  "shared_ids_with_symbol_mismatch_excluded": 294,
+  "strict_shared_ids": 16478,
+  "strict_shared_ids_expressed_in_both": 10241,
+  "dose_comparisons": {
+    "bcp20": {
+      "strict_overlap": {
+        "overlap_rows": 16478,
+        "nonzero_in_both": 14541,
+        "same_sign": 7157,
+        "different_sign": 7384,
+        "same_sign_fraction": 0.49219448456089676,
+        "sign_frequency_baseline_fraction": 0.5012610652724865,
+        "same_sign_minus_baseline": -0.009066580711589722,
+        "ufh_positive_fraction": 0.4292001925589712,
+        "hepg2_positive_fraction": 0.4910941475826972,
+        "spearman_effect_rank_correlation": -0.022781139443777822
+      },
+      "both_expressed_pc_0_1": {
+        "overlap_rows": 10241,
+        "nonzero_in_both": 10241,
+        "same_sign": 5003,
+        "different_sign": 5238,
+        "same_sign_fraction": 0.48852651108290207,
+        "sign_frequency_baseline_fraction": 0.49441887671457296,
+        "same_sign_minus_baseline": -0.005892365631670893,
+        "ufh_positive_fraction": 0.3845327604726101,
+        "hepg2_positive_fraction": 0.5241675617615468,
+        "spearman_effect_rank_correlation": -0.026241687827981936
+      },
+      "both_expressed_pc_1": {
+        "overlap_rows": 10241,
+        "nonzero_in_both": 10241,
+        "same_sign": 5003,
+        "different_sign": 5238,
+        "same_sign_fraction": 0.48852651108290207,
+        "sign_frequency_baseline_fraction": 0.49441887671457296,
+        "same_sign_minus_baseline": -0.005892365631670893,
+        "ufh_positive_fraction": 0.3845327604726101,
+        "hepg2_positive_fraction": 0.5241675617615468,
+        "spearman_effect_rank_correlation": -0.02725188717742558
+      }
+    },
+    "bcp200": {
+      "strict_overlap": {
+        "overlap_rows": 16478,
+        "nonzero_in_both": 14577,
+        "same_sign": 7093,
+        "different_sign": 7484,
+        "same_sign_fraction": 0.4865884612746107,
+        "sign_frequency_baseline_fraction": 0.5000516379843959,
+        "same_sign_minus_baseline": -0.013463176709785196,
+        "ufh_positive_fraction": 0.4973588529875832,
+        "hepg2_positive_fraction": 0.4902243259930027,
+        "spearman_effect_rank_correlation": -0.03855563818186821
+      },
+      "both_expressed_pc_0_1": {
+        "overlap_rows": 10241,
+        "nonzero_in_both": 10241,
+        "same_sign": 5006,
+        "different_sign": 5235,
+        "same_sign_fraction": 0.4888194512254663,
+        "sign_frequency_baseline_fraction": 0.4989545718327931,
+        "same_sign_minus_baseline": -0.010135120607326853,
+        "ufh_positive_fraction": 0.47837125280734305,
+        "hepg2_positive_fraction": 0.5241675617615468,
+        "spearman_effect_rank_correlation": -0.04817903305900349
+      },
+      "both_expressed_pc_1": {
+        "overlap_rows": 10241,
+        "nonzero_in_both": 10241,
+        "same_sign": 5006,
+        "different_sign": 5235,
+        "same_sign_fraction": 0.4888194512254663,
+        "sign_frequency_baseline_fraction": 0.4989545718327931,
+        "same_sign_minus_baseline": -0.010135120607326853,
+        "ufh_positive_fraction": 0.47837125280734305,
+        "hepg2_positive_fraction": 0.5241675617615468,
+        "spearman_effect_rank_correlation": -0.04654929786673545
+      }
+    }
+  },
+  "predeclared_marker_count": 13,
+  "predeclared_markers_present": 13,
+  "predeclared_markers_missing": [],
+  "limitations": [
+    "Two processed bulk RNA-seq studies with different cell line, oxygen, dose, duration, vehicle, and quantification",
+    "FPKM and CPM pseudocount ratios have different measurement scales; effect magnitudes are not directly comparable",
+    "No new replicate-aware differential-expression model, p values, or context interaction",
+    "GSE125511 dose contrasts share controls that are also reused from GSE123856",
+    "Symbol mismatches are excluded from the primary join, which may remove valid renamed genes"
+  ]
+}
