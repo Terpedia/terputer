@@ -63,6 +63,13 @@ export async function addResearchProjectSubmodule({ slug, repository }) {
     throw new Error(`The project repository must be ${expected}.`);
   }
   const path = `projects/${slug}`;
+  const registered = await run('git', ['config', '-f', '.gitmodules', '--get', `submodule.${path}.url`], { cwd: root }).catch(() => null);
+  if (registered) {
+    const url = registered.stdout.trim().replace(/\.git$/, '');
+    if (url.toLowerCase() !== expected.toLowerCase()) throw new Error(`${path} already points to a different repository.`);
+    await command('git', ['submodule', 'update', '--init', '--', path]);
+    return { path, repository: expected, commit: await command('git', ['-C', path, 'rev-parse', 'HEAD']), staged: false, alreadyAttached: true };
+  }
   await access(join(root, path)).then(() => { throw new Error(`${path} already exists.`); }).catch((error) => {
     if (error.code !== 'ENOENT') throw error;
   });
