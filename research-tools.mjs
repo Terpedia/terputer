@@ -29,6 +29,7 @@ export const toolDefinitions = [
   { name: 'search_terpedia_bigquery', description: 'Search Terpedia provenance records through its BigQuery-backed Knowledge API. Returns source rows, not inferred conclusions.', parameters: { type: 'object', properties: { query: { type: 'string' }, source: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 20 } }, required: ['query'] } },
   { name: 'search_transcriptomic_studies', description: 'Search curated transcriptomic study records in Terpedia BigQuery. Returns provenance and evidence class.', parameters: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['query'] } },
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
+  { name: 'get_transcriptomic_evidence', description: 'Get curated exposure contrasts and evidence-graded numeric observations for a study accession from Terpedia BigQuery. Returns provenance and limitations, not raw gene-level effects.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from an executed notebook. Set project_slug to work inside an attached project submodule.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['manifest_path'] } },
   { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Set project_slug for a submodule; include extra_paths for scripts or pinned inputs. In a terpedia-report fork, stage the project submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
@@ -50,7 +51,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
   if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args, context.githubSession);
   const localTools = ['generate_research_report', 'publish_research_report', 'execute_notebook', 'list_notebooks', 'read_workspace_file', 'write_workspace_file'];
   const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
-  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
+  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.TERPUTER_WORKER_TOKEN}` },
@@ -60,7 +61,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
     if (!response.ok) throw new Error(payload.error || `Research Worker returned HTTP ${response.status}`);
     return payload.result;
   }
-  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples') {
+  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_evidence') {
     const base = (process.env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     const key = process.env.TERPUTER_BIGQUERY_TOOL_KEY;
     if (!base || !key) throw new Error('Terputer BigQuery adapter is not configured');
@@ -74,7 +75,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
     } else {
       const accession = String(args.accession || '').trim().toUpperCase();
       if (!/^[A-Z0-9_-]{4,30}$/.test(accession)) throw new Error('Invalid accession');
-      url = `${base}/v1/studies/${encodeURIComponent(accession)}/samples`;
+      url = `${base}/v1/studies/${encodeURIComponent(accession)}/${name === 'get_transcriptomic_evidence' ? 'evidence' : 'samples'}`;
     }
     const response = await fetch(url, options);
     if (!response.ok) throw new Error(`BigQuery adapter returned HTTP ${response.status}`);
