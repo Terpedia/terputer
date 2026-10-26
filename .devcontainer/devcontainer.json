@@ -4,7 +4,7 @@
   "features": { "ghcr.io/devcontainers/features/node:1": { "version": "22" } },
   "forwardPorts": [4173],
   "portsAttributes": { "4173": { "label": "Terputer", "onAutoForward": "openBrowser", "visibility": "private" } },
-  "postCreateCommand": "bash .devcontainer/setup.sh && git submodule update --init --recursive",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
   "postStartCommand": "bash .devcontainer/start.sh",
   "customizations": { "vscode": { "extensions": ["ms-python.python", "ms-toolsai.jupyter"] } }
 }
