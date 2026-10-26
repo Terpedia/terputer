@@ -1,5 +1,5 @@
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
-const snapshotRevision = '9556432a8ad10db937c179a78148502718367476';
+const snapshotRevision = '817d6a87599992bbd3e36095c13e3893500764da';
 const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
 
 export async function authorizeRequest(request, env) {
