@@ -1,3 +1,5 @@
+import { getTranscriptomicFeatureEffect } from '../transcriptomic-feature-effect.mjs';
+
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const snapshotRevision = 'caf957370b90a86ef9b9c520bd799ce9007ea086';
 const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
@@ -123,6 +125,7 @@ async function searchEntrez(db, query, limit) {
 }
 
 export async function handleTool(name, args, env) {
+  if (name === 'get_transcriptomic_feature_effect') return getTranscriptomicFeatureEffect(args);
   if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_evidence') {
     const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     let path, options = { headers: { 'x-terputer-tool-key': env.TERPUTER_BIGQUERY_TOOL_KEY } };
