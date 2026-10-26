@@ -1,0 +1,7 @@
+sample	group	median_fpkm	zero_features	nonfinite_values
+LM-DZ1	control	22.49	58	0
+LM-DZ2	control	20.57	81	0
+LM-DZ3	control	21.615000000000002	53	0
+LM-FZC1	linalool_8h_1xMIC	40.55	105	0
+LM-FZC2	linalool_8h_1xMIC	39.655	94	0
+LM-FZC3	linalool_8h_1xMIC	38.349999999999994	146	0

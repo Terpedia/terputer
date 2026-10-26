@@ -1,0 +1,105 @@
+{
+  "bulk": {
+    "features": 2976,
+    "samples": 6,
+    "directions": {
+      "positive": 1955,
+      "negative": 1011,
+      "zero": 10
+    },
+    "median_fpkm_control_range": [
+      20.57,
+      22.49
+    ],
+    "median_fpkm_treated_range": [
+      38.349999999999994,
+      40.55
+    ]
+  },
+  "perturbseq": {
+    "input_rows_ifnb": 185185,
+    "input_rows_ifng": 173859,
+    "shared_perturbations": [
+      "BATF2",
+      "PARP12"
+    ],
+    "records": [
+      {
+        "target": "BATF2",
+        "shared_tested_features": 11574,
+        "features_after_filter": 2014,
+        "spearman": 0.06902704503003204,
+        "sign_agreement": 0.5228401191658392,
+        "median_abs_difference": 0.09708783736884614,
+        "cells_ifnb": 605,
+        "cells_ifng": 522
+      },
+      {
+        "target": "PARP12",
+        "shared_tested_features": 11579,
+        "features_after_filter": 2014,
+        "spearman": 0.038066539662191874,
+        "sign_agreement": 0.5148957298907646,
+        "median_abs_difference": 0.10098316304241842,
+        "cells_ifnb": 550,
+        "cells_ifng": 619
+      }
+    ]
+  },
+  "botrytis_arm_comparisons": [
+    {
+      "left_arm": "1,8-cineole",
+      "right_arm": "terpinen-4-ol",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.43260411638605917,
+      "sign_agreement": 0.6484444444444445,
+      "median_abs_log2_ratio_difference": 0.24459507364986055
+    },
+    {
+      "left_arm": "1,8-cineole",
+      "right_arm": "tea tree oil",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.4673232970451437,
+      "sign_agreement": 0.6678888888888889,
+      "median_abs_log2_ratio_difference": 0.24088829742737777
+    },
+    {
+      "left_arm": "1,8-cineole",
+      "right_arm": "1,8-cineole and terpinen-4-ol",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.38441823277882603,
+      "sign_agreement": 0.6277777777777778,
+      "median_abs_log2_ratio_difference": 0.27424947780575987
+    },
+    {
+      "left_arm": "terpinen-4-ol",
+      "right_arm": "tea tree oil",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.46044785463927407,
+      "sign_agreement": 0.6567777777777778,
+      "median_abs_log2_ratio_difference": 0.2641656691821389
+    },
+    {
+      "left_arm": "terpinen-4-ol",
+      "right_arm": "1,8-cineole and terpinen-4-ol",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.5055994069168652,
+      "sign_agreement": 0.6813333333333333,
+      "median_abs_log2_ratio_difference": 0.2377658974056568
+    },
+    {
+      "left_arm": "tea tree oil",
+      "right_arm": "1,8-cineole and terpinen-4-ol",
+      "features_control_fpkm_at_least_1": 9000,
+      "spearman": 0.3241155140590393,
+      "sign_agreement": 0.5941111111111111,
+      "median_abs_log2_ratio_difference": 0.3225345394200215
+    }
+  ],
+  "selected_studies": {
+    "GSE138291": 15,
+    "PRJNA608617": 6,
+    "PRJNA913446": 6
+  },
+  "inference_status": "descriptive_processed_data_only"
+}

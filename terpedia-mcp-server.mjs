@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import { callResearchTool } from './research-tools.mjs';
 
 const apiBase = (process.env.TERPUTER_API_URL || 'http://127.0.0.1:4173').replace(/\/$/, '');
 const server = new McpServer({ name: 'terpedia-knowledge', version: '0.1.0' });
@@ -45,6 +46,38 @@ server.registerTool('lookup_terpedia_identifier', {
 }, async ({ identifier, source }) => ({
   content: [{ type: 'text', text: await search(identifier, source, 10) }],
 }));
+
+const researchTools = [
+  ['search_geo_series', z.object({ query: z.string().trim().min(2).max(300), limit: z.number().int().min(1).max(10).default(5) })],
+  ['search_pubmed', z.object({ query: z.string().trim().min(2).max(300), limit: z.number().int().min(1).max(10).default(5) })],
+  ['search_terpedia_bigquery', z.object({ query: z.string().trim().min(2).max(500), source: z.string().trim().regex(/^[a-z0-9_-]+$/i).default('all'), limit: z.number().int().min(1).max(20).default(8) })],
+  ['search_transcriptomic_studies', z.object({ query: z.string().trim().min(2).max(200), limit: z.number().int().min(1).max(30).default(10) })],
+  ['get_transcriptomic_samples', z.object({ accession: z.string().trim().regex(/^[A-Za-z0-9_-]{4,30}$/) })],
+  ['get_ena_runs', z.object({ accession: z.string().trim().min(5).max(30) })],
+  ['list_notebooks', z.object({})],
+  ['read_workspace_file', z.object({ path: z.string().min(1).max(300) })],
+  ['write_workspace_file', z.object({ path: z.string().min(1).max(300), content: z.string().max(2_000_000) })],
+  ['execute_python_cell', z.object({ code: z.string().min(1).max(200_000), timeout_seconds: z.number().int().min(1).max(30).default(20) })]
+];
+for (const [name, schema] of researchTools) {
+  server.registerTool(name, {
+    title: name.replaceAll('_', ' '),
+    description: {
+      search_geo_series: 'Search public NCBI GEO expression study metadata.',
+      search_pubmed: 'Search PubMed for primary research article metadata.',
+      search_terpedia_bigquery: 'Search Terpedia BigQuery-backed knowledge records with provenance.',
+      search_transcriptomic_studies: 'Search curated transcriptomic study records in Terpedia BigQuery.',
+      get_transcriptomic_samples: 'List curated sample records for a transcriptomic study.',
+      get_ena_runs: 'Inspect public ENA sequencing runs and checksums.',
+      list_notebooks: 'List Jupyter notebooks in this Terputer workspace.',
+      read_workspace_file: 'Read a small research file or notebook in this Codespace.',
+      write_workspace_file: 'Save a research file or notebook in this Codespace.',
+      execute_python_cell: 'Run Python in this Codespace Jupyter kernel.'
+    }[name],
+    inputSchema: schema,
+    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell'].includes(name) }
+  }, async (args) => ({ content: [{ type: 'text', text: JSON.stringify(await callResearchTool(name, args)) }] }));
+}
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

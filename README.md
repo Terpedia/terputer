@@ -7,8 +7,8 @@ Terputer is a repo-backed, Codespaces-native bioinformatics workspace. It combin
 1. Push this repository to GitHub.
 2. Create a Codespace from the repository using the included `.devcontainer` configuration.
 3. The Codespace installs Node, Python, Jupyter, and the app. Its private forwarded port opens Terputer.
-4. Ask Terpedia to draft a research report. Terputer adds its methods, candidate sources, and editable Python code to the notebook.
-5. Review and run notebook cells in the user's own Codespace. Save the `.ipynb` into the repository, then use Git to commit and push it.
+4. Connect GitHub in Terputer, then ask for a white paper or research paper. Terpedia creates a private `terpedia-*` project repository with a Jupyter notebook and a Markdown manuscript draft.
+5. Open the project repository in Codespaces to review and run the notebook. Colab remains available as an optional notebook viewer/runtime.
 
 Notebooks are stored under `notebooks/` in the current Codespace checkout. The notebook itself is standard Jupyter `nbformat` 4 and can also be opened in Jupyter or VS Code. The app does not create, start, commit, or push Codespaces on behalf of the user; GitHub remains the owner of repository and Codespace lifecycle.
 
@@ -29,7 +29,7 @@ bash .devcontainer/start.sh
 
 ## Terpedia integration
 
-The browser calls the Node server. The server proxies BigQuery-backed searches to the Terpedia Knowledge API and kernel execution to the local Python kernel service. Copilot in the Codespace receives the `terpedia` MCP tools from the root `.mcp.json`; those tools call the same local search route, so the Knowledge API key stays server-side. Configure `TERPEDIA_KNOWLEDGE_API_KEY` as a Codespaces secret and `VITE_TERPEDIA_CHAT_URL` before the Vite production build. Never prefix server secrets with `VITE_`.
+The browser calls the Node server. The server proxies BigQuery-backed searches to the Terpedia Knowledge API, research requests to the Terpedia chat backend, and kernel execution to the local Python kernel service. GitHub OAuth uses the chat backend and returns a signed session to Terputer. The chat proxy forwards that session to the research endpoint; it never receives a GitHub access token. Configure `TERPEDIA_KNOWLEDGE_API_KEY` as a Codespaces secret. `TERPEDIA_CHAT_API_URL` can override the default `https://api.terpedia.com` for local development. Never prefix server secrets with `VITE_`.
 
 The MCP server exposes `search_terpedia_knowledge` and `lookup_terpedia_identifier`. In VS Code/Codespaces, accept the workspace MCP server trust prompt, then enable these tools in Copilot Chat if they are not active. Check MCP Servers in the Chat customizations UI to confirm the server starts. The workspace config does not grant Copilot access to other Terpedia services or to arbitrary BigQuery SQL. The API key is not in `.mcp.json`; it must be present in the Codespace environment before the Node server starts.
 
@@ -38,3 +38,11 @@ Generated Python is a draft. The app does not run generated cells automatically;
 ## Current scope
 
 The app supports chat-to-report drafting, editable Markdown/Python cells, per-cell execution in the Codespace kernel, saving/opening `.ipynb` files in the repo checkout, and downloading a notebook. Project collaboration, autosave, kernel restart controls, richer Jupyter outputs, and persistent chat history remain future work.
+
+## Transcriptomics research workspace
+
+The [executed notebook](notebooks/terputer-transcriptomics.ipynb), [white paper](research/transcriptomics/white-paper.md), and [critical review](research/transcriptomics/critical-review.md) cover linalool bulk RNA-seq, a second fungal terpene exposure study, and an A549 Perturb-seq context demonstration. Derived tables are under `research/transcriptomics/results/`; pinned source inputs and manifests are under `research/transcriptomics/data/`.
+
+The in-app research agent uses `TERPUTER_OPENROUTER_API_KEY` and exposes GEO, PubMed, ENA, Terpedia Knowledge API, Jupyter execution, and workspace file tools. The MCP server exposes the same research tools to a compatible MCP client. Configure `TERPUTER_WORKER_URL` and `TERPUTER_WORKER_TOKEN` to route public discovery and BigQuery-backed queries through `cloudflare/worker.mjs`; otherwise the app uses local adapters. `search_terpedia_bigquery` uses the existing Knowledge API. The typed `search_transcriptomic_studies` and `get_transcriptomic_samples` tools use `cloudrun/main.py` when `TERPUTER_BIGQUERY_API_URL` and `TERPUTER_BIGQUERY_TOOL_KEY` are configured.
+
+`cloudrun/schema.sql` defines the proposed Terpedia BigQuery dataset. `python cloudrun/prepare_records.py` regenerates reviewable JSONL files from the pinned local manifests; it does not write to BigQuery. A curator should review these before loading them. Deployment requires a Google Cloud principal with BigQuery dataset and Cloud Run permissions, a dedicated service account with read access to the research dataset, and secrets set outside the repository. The Worker handles lightweight metadata calls; count matrices and notebooks execute in the Codespace or a job environment, not in the Worker.

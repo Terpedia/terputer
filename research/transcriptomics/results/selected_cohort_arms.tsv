@@ -1,0 +1,10 @@
+study	organism	arm	samples
+GSE138291	Botrytis cinerea B05.10	1,8-cineole	3
+GSE138291	Botrytis cinerea B05.10	1,8-cineole and terpinen-4-ol	3
+GSE138291	Botrytis cinerea B05.10	tea tree oil	3
+GSE138291	Botrytis cinerea B05.10	terpinen-4-ol	3
+GSE138291	Botrytis cinerea B05.10	untreated	3
+PRJNA608617	Penicillium digitatum DSM 62840	R-(+)-limonene	2
+PRJNA608617	Penicillium digitatum DSM 62840	untreated	4
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	linalool	3
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	vehicle control	3

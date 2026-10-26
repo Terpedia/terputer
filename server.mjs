@@ -3,15 +3,45 @@ import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { runResearchAgent } from './research-agent.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const port = Number(process.env.PORT || 4173);
 const kbBase = (process.env.TERPEDIA_KB_API_URL || 'https://terpedia-knowledge-nanrsdlaoa-uc.a.run.app').replace(/\/$/, '');
+const chatBase = (process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const setJson = (status, data) => { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(data)); };
+  if (url.pathname === '/api/agent/chat' && req.method === 'POST') {
+    try {
+      let body = '';
+      for await (const chunk of req) { body += chunk; if (body.length > 150_000) { setJson(413, { error: 'Agent request is too large.' }); return; } }
+      setJson(200, await runResearchAgent(JSON.parse(body)));
+    } catch (error) { setJson(error?.status || 500, { error: error instanceof Error ? error.message : 'Research agent failed.' }); }
+    return;
+  }
+  if (url.pathname === '/api/terpedia/chat' && req.method === 'POST') {
+    const bearer = req.headers.authorization;
+    if (!/^Bearer [A-Za-z0-9._-]+$/.test(bearer || '')) { setJson(401, { error: 'Connect GitHub first.' }); return; }
+    try {
+      let body = '';
+      for await (const chunk of req) { body += chunk; if (body.length > 100_000) { setJson(413, { error: 'Chat request is too large.' }); return; } }
+      const input = JSON.parse(body);
+      const query = String(input.query || '').trim();
+      if (!query || query.length > 20_000) { setJson(400, { error: 'A research question is required.' }); return; }
+      const upstream = await fetch(`${chatBase}/api/v1/query`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: bearer }, body: JSON.stringify({ query, task: input.task || undefined, study_id: input.study_id || undefined }), signal: AbortSignal.timeout(120_000) });
+      const result = await upstream.json();
+      setJson(upstream.status, result);
+    } catch (error) { setJson(502, { error: error instanceof Error ? error.message : 'Research chat failed.' }); }
+    return;
+  }
+  if (url.pathname === '/api/terpedia/github/status' && req.method === 'GET') {
+    try { const upstream = await fetch(`${chatBase}/api/github/status`, { headers: { authorization: req.headers.authorization || '' }, signal: AbortSignal.timeout(10_000) }); setJson(upstream.status, await upstream.json()); }
+    catch (error) { setJson(502, { error: error instanceof Error ? error.message : 'GitHub status failed.' }); }
+    return;
+  }
   if (url.pathname === '/api/kernel/status' && req.method === 'GET') { try { const upstream = await fetch('http://127.0.0.1:8765/api/kernel/status', { signal: AbortSignal.timeout(1500) }); const data = await upstream.json(); setJson(upstream.status, data); } catch { setJson(503, { connected: false, message: 'Python kernel service is unavailable.' }); } return; }
   if (url.pathname === '/api/kernel/execute' && req.method === 'POST') { try { let body = ''; for await (const chunk of req) { body += chunk; if (body.length > 256_000) { setJson(413, { error: 'Cell exceeds 256 KB.' }); return; } } const upstream = await fetch('http://127.0.0.1:8765/api/kernel/execute', { method: 'POST', headers: { 'content-type': 'application/json' }, body, signal: AbortSignal.timeout(35_000) }); setJson(upstream.status, await upstream.json()); } catch (error) { setJson(502, { error: error instanceof Error ? error.message : 'Python kernel request failed.' }); } return; }
   if (url.pathname === '/api/notebooks' && req.method === 'GET') { try { const dir = join(root, 'notebooks'); const { readdir } = await import('node:fs/promises'); const files = await readdir(dir).catch(() => []); setJson(200, { notebooks: files.filter(name => /^[a-z0-9][a-z0-9-]{0,79}\.ipynb$/.test(name)) }); } catch { setJson(200, { notebooks: [] }); } return; }

@@ -1,0 +1,69 @@
+# Terputer Transcriptomics: an evidence-preserving workspace for terpene RNA-seq and Perturb-seq
+
+**Working white paper · 26 October 2026 · Methods and results from an executed Terputer notebook**
+
+## Abstract
+
+Terputer now combines a Codespaces Jupyter kernel, research chat, public-study discovery, Terpedia knowledge search, and curated transcriptomics study and sample records in Terpedia BigQuery. We used its notebook workflow to examine two terpene-exposure bulk RNA-seq studies and a public Perturb-seq summary. The strongest supported result is a **within-study descriptive comparison**: in *Botrytis cinerea* GSE138291, 1,8-cineole and terpinen-4-ol response vectors had Spearman correlation 0.433 across 9,000 control-expressed features, with 64.8% sign agreement. This does not establish a shared causal mechanism. A linalool dataset in *Listeria monocytogenes* showed broad expression changes, but its processed FPKM values and unresolved gene crosswalk prevent formal differential-expression or cross-organism pathway claims. In the published A549 genetic Perturb-seq summary, the only shared targets across the two selected interferon contexts were BATF2 and PARP12, and their feature-wise correlations were near zero (0.069 and 0.038). These genetic perturbations are a demonstration of context analysis, not terpene exposure experiments. **The central question—what metabolic or signaling response is reproducible across terpene exposures—remains open.**
+
+## Research question and decision rule
+
+> Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?
+
+A reproducible response needs the same mapped feature or pathway measured in independent biological experiments, with compatible chemical identity, dose, time, control, assay, annotation, and direction of effect. A target-specific claim additionally needs target engagement or perturbation evidence. We do not promote a processed abundance ratio, a shared-control correlation, or a genetic Perturb-seq association to either claim.
+
+## Why this matters for computational biology
+
+The [Codebreaker Labs computational biologist role](https://codebreakerlabs.io/careers/computational-biologist) calls for reasoning about pooled perturbations, guide/variant assignment, donor and batch structure, cell state, and predictive models in primary-cell single-cell RNA-seq. Terputer addresses the upstream research workflow: find studies, preserve sample and chemical provenance, run an inspectable notebook, and separate observation from inference. For variant-installation data, the same workspace should later record edit genotype, guide assignment quality, donor, batch, cell state, and per-cell QC before any pseudobulk or hierarchical effect model. No HDR variant-installation data were analyzed here.
+
+## Architecture and provenance
+
+The Terputer source implements a chat tool loop through its local Node server and Python kernel; the analysis reported here was executed with `nbclient` in the local environment, not through a verified in-app chat session. Public GEO, PubMed, and ENA metadata tools can run locally or through an authenticated Cloudflare Worker. Terpedia knowledge search uses the existing BigQuery-backed Knowledge API. A separate, read-only Cloud Run adapter is specified for curated transcriptomics tables in `terpedia-489015.terpedia_research`; the `terpedia_research` dataset now contains four study records, 33 sample records, and two descriptive within-study observations, while the contrast table remains empty pending curatorial completion and publication of stable artifact links. Cloud Run is suited to BigQuery client queries; the Worker handles small metadata lookups and routes typed study queries. Workspace files and notebook outputs remain in the Codespace repository and can be reviewed before publishing.
+
+The notebook [terputer-transcriptomics.ipynb](../../notebooks/terputer-transcriptomics.ipynb) records code, source checksums, source revision, inclusion rules, results, and interpretation. `research/transcriptomics/data/run_manifest.json` pins GSE136998 (SHA-256 `f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811`). `jiang_sources.json` pins PIE revision `d0519f67452a0662c2db30c3831900b38aa3c017` and its Parquet checksums. The GSE138291 processed matrix SHA-256 is `2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0`. The 27-sample candidate-cohort manifest is metadata; two of its cohorts have not been expression-analyzed.
+
+## Methods
+
+### Study selection
+
+We selected [GSE136998](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998) for bacterial linalool exposure (three treated, three controls), [GSE138291](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291) for a five-arm fungal exposure experiment (three samples per arm: untreated, tea tree oil, 1,8-cineole, terpinen-4-ol, and a two-component mixture), and two additional candidate studies, [PRJNA608617](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617) and [PRJNA913446](https://www.ebi.ac.uk/ena/browser/view/PRJNA913446), for sample-metadata curation only. [PIE Jiang](https://huggingface.co/datasets/arcinstitute/PIE_jiang) A549 IFN-β and IFN-γ differential-expression summaries were used only to demonstrate a genetic perturbation-by-context comparison. These are different biological questions and are not pooled into a terpene meta-analysis.
+
+### Calculations
+
+For each processed FPKM feature, we computed `log2((mean treated FPKM + 0.1)/(mean control FPKM + 0.1))`. GSE138291 arm similarity used Spearman correlation, sign agreement, and median absolute ratio difference on features with mean control FPKM ≥ 1. We varied the pseudocount (0.01, 0.1, 1) and left one control sample out in a sensitivity screen. The PIE comparison intersected shared perturbation targets and compared published feature-level effect summaries after the notebook's filtering. All derived tables are in `research/transcriptomics/results/`. No p-values, false-discovery estimates, guide reassignment, or raw-read reprocessing were generated.
+
+## Results
+
+| Evidence | Executed observation | Defensible interpretation |
+| --- | --- | --- |
+| GSE136998 linalool vs untreated | 2,976 gene features, six samples; 1,955 positive and 1,011 negative descriptive ratios, 10 zero | A broad processed-expression shift in one bacterial experiment; the control and treated median FPKM ranges differ substantially, so library/normalization and annotation require review before pathway interpretation. |
+| GSE138291 pure-compound comparison | Across 9,000 control-expressed features, 1,8-cineole vs terpinen-4-ol ratio vectors: Spearman 0.433; 64.8% sign agreement; median absolute log2-ratio difference 0.245 | Moderate within-study similarity in processed abundance patterns. Both contrasts use the same untreated controls, which can increase apparent agreement. |
+| GSE138291 other treatment-arm pairs | Spearman 0.324–0.506 across pairwise arms; sign agreement 59.4–68.1% | Treatment identity matters within this fungal experiment; mixture and whole oil cannot be treated as pure-compound replicates. |
+| PIE A549 context demonstration | Only BATF2 and PARP12 were shared perturbations in the selected IFN-β/IFN-γ summaries; feature-wise Spearman 0.069 and 0.038 | Published genetic perturbation effects differ across these contexts. This does not measure terpene response or establish target specificity for any terpene. |
+| PRJNA608617 / PRJNA913446 | Six selected sample records in each cohort, metadata only | Candidate independent datasets for raw-count analysis; no response result yet. |
+
+The exact arm-comparison values and sensitivity outputs are in `gse138291_arm_similarity.tsv` and `gse138291_pure_compound_sensitivity.tsv`. The shared-control dependence remains even when varying pseudocount or removing one control. We therefore report an observed pattern, not statistical reproducibility.
+
+## What can be answered now
+
+**Within one fungal context**, pure 1,8-cineole and terpinen-4-ol have partially aligned descriptive response vectors. **Across contexts or targets**, the present evidence is insufficient to name a reproducible metabolic or signaling program. GSE136998 has unresolved gene identifiers for pathway mapping; GSE138291 is fungal and shares its controls; PIE describes genetic perturbation under interferon, not chemical exposure. It would be scientifically misleading to list “universal terpene pathways” from these materials.
+
+## Next analyses
+
+1. Obtain raw counts or quantify reads for GSE136998, GSE138291, PRJNA608617, and PRJNA913446 with versioned references and sample-level QC. Verify the exposure metadata and chemical identity against the associated papers.
+2. Estimate within-study effects using count-aware models and the recorded design, then apply stable organism-specific gene-to-pathway mappings. Preserve gene-level tables, confidence intervals, and multiple-testing corrections.
+3. Compare independent studies at pathway level only after verifying comparable dose and time strata. Use a hierarchical model or leave-one-study-out validation to quantify cross-study agreement and heterogeneity.
+4. For any chemical-plus-Perturb-seq experiment, include dose, vehicle, guide identity, assignment confidence, cell state, donor, batch, replicate, and target-engagement evidence. Aggregate cells to biological replicates or use an appropriate mixed model; never treat cells as independent biological replicates.
+5. Extend the loaded study and sample metadata with reviewed contrasts and analysis artifacts in Terpedia BigQuery. The current schema has `transcriptomic_studies`, `transcriptomic_samples`, and `transcriptomic_contrasts`; a later version should add feature-level results, ontology mappings, and analysis-run lineage.
+
+## Limitations and reproducibility status
+
+This is a working research white paper based on executed descriptive notebook analysis. It is not a peer-reviewed mechanistic conclusion. GSE136998 and GSE138291 inputs are processed FPKM, so formal differential expression cannot be inferred from the reported ratios. Cross-species gene and pathway mapping has not been done. The selected PIE tables do not contain terpene-exposure effects and cannot answer target specificity. Candidate PRJNA cohorts are metadata-only. The BigQuery study/sample metadata and two descriptive within-study observations were loaded after Google Cloud reauthentication; detailed contrasts remain staged locally. The Cloudflare Worker and Cloud Run adapter are source implementations, not live services at the time of this paper. The in-app research agent has not been demonstrated end to end with a configured model key.
+
+## Primary sources
+
+- [NCBI GEO GSE136998](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998)
+- [NCBI GEO GSE138291](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291)
+- [ENA PRJNA608617](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617) and [PRJNA913446](https://www.ebi.ac.uk/ena/browser/view/PRJNA913446)
+- [PIE Jiang dataset card and pinned revision](https://huggingface.co/datasets/arcinstitute/PIE_jiang/tree/d0519f67452a0662c2db30c3831900b38aa3c017)
+- [Codebreaker Labs role](https://codebreakerlabs.io/careers/computational-biologist)
