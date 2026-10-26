@@ -18,7 +18,7 @@ async function searchEntrez(db, query, limit) {
   return { query, total: Number(found.esearchresult?.count || 0), records };
 }
 
-async function handleTool(name, args, env) {
+export async function handleTool(name, args, env) {
   if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples') {
     if (!env.TERPUTER_BIGQUERY_API_URL || !env.TERPUTER_BIGQUERY_TOOL_KEY) throw new Error('BigQuery adapter is not configured');
     const base = env.TERPUTER_BIGQUERY_API_URL.replace(/\/$/, '');

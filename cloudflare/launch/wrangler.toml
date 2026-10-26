@@ -4,6 +4,10 @@ main = "worker.mjs"
 compatibility_date = "2026-10-26"
 workers_dev = true
 
+[vars]
+TERPEDIA_KB_API_URL = "https://terpedia-knowledge-nanrsdlaoa-uc.a.run.app"
+TERPUTER_BIGQUERY_API_URL = "https://terputer-transcriptomics-api-715567218723.us-central1.run.app"
+
 [[routes]]
 pattern = "terputer.terpedia.com"
 custom_domain = true

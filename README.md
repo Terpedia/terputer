@@ -4,6 +4,12 @@ Terputer is a repo-backed, Codespaces-native bioinformatics workspace. It combin
 
 The public [Terputer Codespace example](https://terputer.terpedia.com) opens a ready-to-run transcriptomics workspace. Its [example repository](https://github.com/Terpedia/terpedia-transcriptomics-demo) includes the executed notebook, white paper, critical review, and pinned data. The [example overview](https://terputer.terpedia.com/about) links to each artifact.
 
+## Remote research MCP
+
+Connect an MCP client over Streamable HTTP at `https://terputer.terpedia.com/mcp`. The [API index](https://terputer.terpedia.com/api) lists the tools. Public access includes read-only GEO, PubMed, and ENA metadata discovery. Curated Terpedia BigQuery study and sample search, plus Terpedia Knowledge search, require a Terputer bearer token supplied as the `Authorization` header. The direct `POST /v1/tools/call` adapter uses the same token. The root URL continues to open the Codespace example.
+
+The remote MCP has no access to a user's Codespace files or Python kernel. Those tools remain available through the workspace's local stdio MCP server. The BigQuery adapter runs on Cloud Run with a dedicated service account that can read the `terpedia_research` dataset; its shared key is stored in Secret Manager and Cloudflare Worker secrets.
+
 ## User workflow
 
 1. Push this repository to GitHub.
