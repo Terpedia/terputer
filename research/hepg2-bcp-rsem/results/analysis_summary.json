@@ -1,0 +1,80 @@
+{
+  "source_accession": "GSE276099",
+  "assay": "bulk RNA-seq processed RSEM-style fractional counts",
+  "matrix_sha256": "0b9c79088d962c49b0bbd3832a98646daba23985c51f4153cc4f938151c98aeb",
+  "matrix_rows": 17054,
+  "valid_numeric_gene_rows": 17034,
+  "excluded_nonnumeric_or_blank_rows": 20,
+  "fractional_entries": 75830,
+  "sample_count": 6,
+  "library_totals_retained_rows": {
+    "read_count_C1": 20986136.33,
+    "read_count_C2": 20898201.5,
+    "read_count_C3": 20974381.08,
+    "read_count_T1": 21016583.89,
+    "read_count_T2": 21071474.79,
+    "read_count_T3": 21050266.79
+  },
+  "included_gene_rows_max_arm_mean_cpm_ge_1": 12321,
+  "correlation_median_by_group": {
+    "within_control": 0.9937515073594501,
+    "within_treated": 0.9979463575395975,
+    "between_arms": 0.9943027550373146
+  },
+  "twofold_descriptive_count_pseudocount_0_1": {
+    "higher": 74,
+    "lower": 146
+  },
+  "twofold_descriptive_count_pseudocount_1": {
+    "higher": 34,
+    "lower": 79
+  },
+  "paper_marker_gene_descriptions": {
+    "PGF": [
+      {
+        "gene_id": "5228",
+        "mean_control_cpm": 1.9241667577275658,
+        "mean_treated_cpm": 0.7602112185935568,
+        "log2_ratio_0_1": -1.2345652973672234
+      }
+    ],
+    "NR4A1": [
+      {
+        "gene_id": "3164",
+        "mean_control_cpm": 59.84557148510803,
+        "mean_treated_cpm": 100.74434673669077,
+        "log2_ratio_0_1": 0.7504051270150941
+      }
+    ],
+    "CSF1R": [
+      {
+        "gene_id": "1436",
+        "mean_control_cpm": 0.8116074394512233,
+        "mean_treated_cpm": 2.48462170069888,
+        "log2_ratio_0_1": 1.503468531974878
+      }
+    ],
+    "ARTN": [
+      {
+        "gene_id": "9048",
+        "mean_control_cpm": 5.377525546873163,
+        "mean_treated_cpm": 3.3738543258157594,
+        "log2_ratio_0_1": -0.6569870511922583
+      }
+    ],
+    "CACNA1E": [
+      {
+        "gene_id": "777",
+        "mean_control_cpm": 2.5433616744410563,
+        "mean_treated_cpm": 1.1247225673661247,
+        "log2_ratio_0_1": -1.1099188563422988
+      }
+    ]
+  },
+  "limitations": [
+    "Processed fractional counts; no new differential expression or adjusted p-values",
+    "Six libraries from one HepG2 cell line; no cross-context replication",
+    "GEO per-sample dose fields show 150/151/152 \u00b5M although protocol says 150 \u00b5M",
+    "CPM and pseudocount thresholds are descriptive and sensitive to filtering"
+  ]
+}

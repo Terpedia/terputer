@@ -1,0 +1,7 @@
+matrix_column	geo_accession	arm	title	treatment_field	protocol	source_url
+read_count_C1	GSM8491080	control	Control 1	150 uM ethanol	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491080
+read_count_C2	GSM8491081	control	Control 2	151 uM ethanol	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491081
+read_count_C3	GSM8491082	control	Control 3	152 uM ethanol	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491082
+read_count_T1	GSM8491083	bcp	Treatment 1	150 uM Beta-caryophyllene	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491083
+read_count_T2	GSM8491084	bcp	Treatment 2	151 uM Beta-caryophyllene	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491084
+read_count_T3	GSM8491085	bcp	Treatment 3	152 uM Beta-caryophyllene	HepG2 cells were treated by 150 µM β-caryophyllene or ethanol for 24 h.	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8491085
