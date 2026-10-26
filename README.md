@@ -12,11 +12,13 @@ The remote MCP has no access to a user's Codespace files or Python kernel. Those
 
 ## User workflow
 
-1. Push this repository to GitHub.
-2. Create a Codespace from the repository using the included `.devcontainer` configuration.
+1. Fork `Terpedia/terputer` to your GitHub account with the name `terpedia-report`. The local `fork_report_workspace` MCP tool can do this after `gh auth login`, or use GitHub's Fork button and set the fork name.
+2. Create a Codespace from your `terpedia-report` fork using the included `.devcontainer` configuration.
 3. The Codespace installs Node, Python, Jupyter, and the app. Its private forwarded port opens Terputer.
 4. Connect GitHub in Terputer, then ask for a white paper or research paper. Terpedia creates a private `terpedia-*` project repository with a Jupyter notebook and a Markdown manuscript draft.
-5. Open the project repository in Codespaces to review and run the notebook. Colab remains available as an optional notebook viewer/runtime.
+5. Use `add_research_project_submodule` with the project slug to attach that repository at `projects/<slug>`. Review and commit the staged `.gitmodules` and project pointer, then push your report fork. Open the project submodule in Codespaces to review and run its notebook. Colab remains available as an optional notebook viewer/runtime.
+
+The `list_research_projects` tool shows each pinned project commit. `update_research_project_submodule` fetches the latest project revision and stages a new pointer for review. When cloning a report fork elsewhere, run `git submodule update --init --recursive`. Access to private project repositories requires the same GitHub account or explicit collaborator access. Each project remains its own repository; the report fork stores only its URL and pinned commit. These tools require an authenticated GitHub CLI in the Codespace and a checkout whose `origin` is the authenticated user's `terpedia-report` fork. They do not commit or push changes.
 
 Notebooks are stored under `notebooks/` in the current Codespace checkout. The notebook itself is standard Jupyter `nbformat` 4 and can also be opened in Jupyter or VS Code. The app does not create, start, commit, or push Codespaces on behalf of the user; GitHub remains the owner of repository and Codespace lifecycle.
 

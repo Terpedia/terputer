@@ -1,0 +1,86 @@
+import { access, readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const run = promisify(execFile);
+const root = fileURLToPath(new URL('.', import.meta.url));
+const slugPattern = /^[a-z0-9][a-z0-9-]{0,62}$/;
+
+async function command(file, args) {
+  try {
+    const { stdout } = await run(file, args, { cwd: root, timeout: 120_000, maxBuffer: 1024 * 1024 });
+    return stdout.trim();
+  } catch (error) {
+    throw new Error(String(error.stderr || error.message || error).trim().slice(0, 1000));
+  }
+}
+
+async function githubUser() {
+  const user = JSON.parse(await command('gh', ['api', 'user']));
+  if (!/^[A-Za-z0-9-]{1,39}$/.test(user.login || '')) throw new Error('GitHub CLI is not authenticated. Run gh auth login in this Codespace.');
+  return user.login;
+}
+
+async function reportRepository() {
+  const remote = await command('git', ['remote', 'get-url', 'origin']);
+  const match = remote.match(/^(?:https:\/\/github\.com\/|git@github\.com:)([A-Za-z0-9-]+)\/terpedia-report(?:\.git)?$/);
+  if (!match) throw new Error('Open your username/terpedia-report fork in Codespaces before managing project submodules.');
+  const user = await githubUser();
+  if (match[1].toLowerCase() !== user.toLowerCase()) throw new Error('This report repository is not owned by the authenticated GitHub user.');
+  return user;
+}
+
+export async function forkReportWorkspace() {
+  const user = await githubUser();
+  const existing = await run('gh', ['api', `repos/${user}/terpedia-report`], { cwd: root }).catch(() => null);
+  if (existing) {
+    const repo = JSON.parse(existing.stdout);
+    if (repo.parent?.full_name !== 'Terpedia/terputer') throw new Error(`${user}/terpedia-report already exists and is not a fork of Terpedia/terputer.`);
+    return { repository: repo.html_url, codespace_url: `https://github.com/codespaces/new?repo=${repo.id}`, created: false };
+  }
+  const source = JSON.parse(await command('gh', ['api', 'repos/Terpedia/terputer']));
+  if (source.private) throw new Error('Terpedia/terputer must be public before users can fork it.');
+  const repo = JSON.parse(await command('gh', ['api', '-X', 'POST', 'repos/Terpedia/terputer/forks', '-f', 'name=terpedia-report', '-F', 'default_branch_only=true']));
+  return { repository: repo.html_url, codespace_url: `https://github.com/codespaces/new?repo=${repo.id}`, created: true };
+}
+
+export async function listResearchProjects() {
+  await reportRepository();
+  const output = await command('git', ['submodule', 'status', '--', 'projects']);
+  return { projects: output ? output.split('\n').map((line) => {
+    const match = line.match(/^([ +\-U])([0-9a-f]{40})\s+projects\/([a-z0-9-]+)(?:\s|$)/);
+    return match ? { slug: match[3], commit: match[2], initialized: match[1] !== '-', changed: match[1] === '+' } : null;
+  }).filter(Boolean) : [] };
+}
+
+export async function addResearchProjectSubmodule({ slug, repository }) {
+  const user = await reportRepository();
+  if (!slugPattern.test(slug || '')) throw new Error('Use a lowercase project slug with letters, numbers, and hyphens.');
+  const expected = `https://github.com/${user}/terpedia-${slug}`;
+  if (repository && repository.replace(/\.git$/, '').toLowerCase() !== expected.toLowerCase()) {
+    throw new Error(`The project repository must be ${expected}.`);
+  }
+  const path = `projects/${slug}`;
+  await access(join(root, path)).then(() => { throw new Error(`${path} already exists.`); }).catch((error) => {
+    if (error.code !== 'ENOENT') throw error;
+  });
+  const repo = JSON.parse(await command('gh', ['api', `repos/${user}/terpedia-${slug}`]));
+  if (repo.owner?.login?.toLowerCase() !== user.toLowerCase()) throw new Error('Project repository is not owned by the authenticated user.');
+  await command('git', ['submodule', 'add', repo.clone_url, path]);
+  await command('git', ['add', '--', '.gitmodules', path]);
+  const commit = await command('git', ['-C', path, 'rev-parse', 'HEAD']);
+  return { path, repository: repo.html_url, commit, staged: true, next: 'Review and commit the staged .gitmodules and submodule pointer, then push your report repository.' };
+}
+
+export async function updateResearchProjectSubmodule({ slug }) {
+  await reportRepository();
+  if (!slugPattern.test(slug || '')) throw new Error('Invalid project slug.');
+  const path = `projects/${slug}`;
+  const modules = await readFile(join(root, '.gitmodules'), 'utf8').catch(() => '');
+  if (!modules.includes(`path = ${path}`)) throw new Error(`${path} is not a registered research submodule.`);
+  await command('git', ['submodule', 'update', '--init', '--remote', '--', path]);
+  await command('git', ['add', '--', path]);
+  return { path, commit: await command('git', ['-C', path, 'rev-parse', 'HEAD']), staged: true, next: 'Review the new project revision, then commit and push the report repository.' };
+}
