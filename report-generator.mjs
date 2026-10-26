@@ -70,9 +70,9 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
     }
     const realRoot = await realpath(workspaceRoot);
     for (const [name, expectedHash] of Object.entries(pinned)) {
-      const input = workspacePath(name, ['research']);
+      const input = workspacePath(name, ['research', 'terputer_bio']);
       const realInput = await realpath(input.path);
-      if (!relative(realRoot, realInput).startsWith(`research${sep}`)) {
+      if (!['research', 'terputer_bio'].some((prefix) => relative(realRoot, realInput).startsWith(`${prefix}${sep}`))) {
         throw new Error(`Pinned input leaves the research workspace: ${input.name}`);
       }
       if (!/^[a-f0-9]{64}$/.test(String(expectedHash)) || await sha256File(input.path) !== expectedHash) {

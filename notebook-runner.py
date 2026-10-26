@@ -59,11 +59,12 @@ def main() -> None:
     input_paths = {}
     input_hashes = {}
     for name in input_names:
-        if not name.startswith("research/"):
-            raise ValueError("Input paths must be relative to research/")
+        prefix = next((item for item in ("research", "terputer_bio") if name.startswith(f"{item}/")), None)
+        if prefix is None:
+            raise ValueError("Input paths must be relative to research/ or terputer_bio/")
         path = (workspace / name).resolve(strict=True)
-        if workspace / "research" not in path.parents or not path.is_relative_to(workspace):
-            raise ValueError("Input path leaves the research workspace")
+        if workspace / prefix not in path.parents or not path.is_relative_to(workspace):
+            raise ValueError("Input path leaves its declared workspace directory")
         if path.relative_to(workspace).as_posix() != name or not path.is_file():
             raise ValueError("Input paths must name normalized existing files")
         input_paths[name] = path
