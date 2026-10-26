@@ -1,0 +1,15 @@
+{
+  "source_archive_sha256": "64eb1c7cf6aeea6e54fab89ad9133914db6a0afdd28f1696242fa8fb5139b653",
+  "source_workbook_sha256": "7b8692619334467570868fe8456c0dd1fcf21ea0d6bef5c0f854754ff86ed6fb",
+  "all_gene_rows": 13974,
+  "published_deg_rows": 1568,
+  "published_deg_unique_gene_ids": 1568,
+  "published_deg_meeting_adjusted_p_and_effect_cutoff": 1568,
+  "reported_up": 979,
+  "reported_down": 589,
+  "interpretation": "Audit of author-supplied tables, not a new raw-count differential-expression fit.",
+  "significant_rna_kegg_terms": 3,
+  "significant_protein_kegg_terms": 1,
+  "significant_in_both": 1,
+  "same_gene_protein_members_in_shared_pathways": 1
+}

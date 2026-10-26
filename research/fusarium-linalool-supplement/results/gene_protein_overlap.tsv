@@ -1,0 +1,2 @@
+kegg_core	pathway	gene_id	protein_id	rna_log2fc	rna_adjusted_p	rna_direction	protein_log2fc	protein_p	protein_direction	direction_agrees
+00520	Amino sugar and nucleotide sugar metabolism	FOXG_03194	FOXG_03194P0	-1.57244821906891	0.0128172533089404	down	-1.03927717373343	0.00757947912287966	down	True
