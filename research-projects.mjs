@@ -133,9 +133,14 @@ export async function addResearchProjectSubmodule({ slug, repository, commit: re
   });
   const repo = JSON.parse(await command('gh', ['api', `repos/${user}/terpedia-${slug}`]));
   if (repo.owner?.login?.toLowerCase() !== user.toLowerCase()) throw new Error('Project repository is not owned by the authenticated user.');
+  if (requestedCommit) {
+    // Reject an unknown revision before git submodule add changes .gitmodules and the index.
+    const revision = JSON.parse(await command('gh', ['api', `repos/${user}/terpedia-${slug}/commits/${requestedCommit}`]));
+    if (revision.sha !== requestedCommit) throw new Error('Requested project commit does not belong to the repository.');
+  }
   await command('git', ['submodule', 'add', repo.clone_url, path]);
   if (requestedCommit) {
-    await command('git', ['-C', path, 'fetch', 'origin']);
+    await command('git', ['-C', path, 'fetch', 'origin', requestedCommit]);
     await command('git', ['-C', path, 'cat-file', '-e', `${requestedCommit}^{commit}`]);
     await command('git', ['-C', path, 'checkout', '--detach', requestedCommit]);
   }
