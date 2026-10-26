@@ -1,0 +1,7 @@
+nbformat
+nbclient
+ipykernel
+pandas
+numpy
+matplotlib
+pyarrow

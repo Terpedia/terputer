@@ -1,0 +1,30 @@
+# Selected transcriptomics datasets for the next analysis
+
+26 October 2026. Selection follows accession and sample-level inspection. The [27-row sample manifest](../data/selected_studies/sample_manifest.tsv) records every selected sample, its archive accession, arm, exposure time, and source record. [`build_selected_dataset_manifest.py`](../scripts/build_selected_dataset_manifest.py) recreates the manifest from GEO and ENA metadata. GSE138291's processed FPKM matrix has now been analyzed descriptively in the [Terputer notebook](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb); no raw sequencing reads have been downloaded for these three cohorts.
+
+| Priority | Dataset and contrast | Why it matters | Main limitation |
+|---|---|---|---|
+| 1 | [GSE138291](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291): *B. cinerea* B05.10, 2 h exposure to 1,8-cineole, terpinen-4-ol, tea-tree oil, or the two-compound mixture versus untreated control; 3 samples per arm | The same organism, time, and nominal dose support separate pure-compound contrasts and a bounded mixture comparison. Raw SRA reads and a processed FPKM table are public. | The source control is PDB alone; no separate solvent control is described in GEO. The mixture cannot be attributed to either component. |
+| 2 | [PRJNA913446](https://www.ebi.ac.uk/ena/browser/view/PRJNA913446): *F. oxysporum* f. sp. *radicis-lycopersici*, linalool 0.8 mL/L versus 0.1% Tween80 vehicle for 6 days; 3 samples per arm | A clean vehicle-matched linalool fungal contrast with raw paired-end reads and associated proteomics. It supplies a second organism for a **hypothesis-generating** comparison with the linalool pilot. | Long inhibitory exposure makes secondary damage and growth effects likely. Exact linalool stereochemistry needs confirmation. |
+| 3 | [PRJNA608617](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617): *P. digitatum* DSM 62840, R-(+)-limonene 840 mg/L at 12 h versus untreated 12 h, with a 0 h reference; 2 samples per arm | Defined stereoisomer, time-matched control, paired-end reads, and a documented biotransformation phenotype connect chemical exposure with metabolic response. | Only two biological samples per condition; limonene transformation changes actual exposure over time. Published pathway claims require independent biochemical checks. |
+
+These are three **new analysis entries**, alongside the existing GSE136998 linalool bacterial pilot. The two linalool studies span bacteria and fungi at very different doses and times. They cannot be called independent replication of one molecular response without identity, exposure, and orthology work. The *B. cinerea* and *P. digitatum* datasets use different compounds and answer complementary questions, not same-compound replication.
+
+## Processing order and decision gates
+
+1. Reconfirm sample labels from archive metadata and freeze raw file URLs, sizes, and MD5 checksums. The current manifest records accession-level labels but has not downloaded reads.
+2. Reanalyze GSE138291 from counts or reads: its processed matrix gives a preliminary within-study comparison, but no differential-expression inference. Use the same reference/annotation for every arm, align or quantify all 15 runs consistently, and estimate each pure-compound effect against the shared control. Treat tests sharing that control as correlated. Report 1,8-cineole, terpinen-4-ol, tea-tree oil, and the two-compound mixture separately.
+3. Analyze PRJNA913446 next with its vehicle control; compare transcript changes to the study's proteomics and growth/viability measurements at matched conditions. Check whether six-day survival or growth differences dominate the signature.
+4. Analyze PRJNA608617 with 12 h untreated as the primary control and 0 h untreated as a time reference. Carry the two-replicate uncertainty through every gene and pathway summary.
+5. Compare pathway programs only after mapping organism-specific genes and recording the pathway universe. A shared broad GO label alone is not reproducibility. Predefine candidate modules (transport, membrane integrity, redox, energy, translation) and report direction, effect size, uncertainty, and heterogeneity with counterexamples.
+6. Search for a public mammalian defined-terpene RNA-seq contrast with accessible raw data before any human-response synthesis. The current selection supports microbial exposure biology, not human translational claims.
+
+## Exclusions and reserves
+
+The [*B. cinerea* linalool paper](https://doi.org/10.1021/acs.jafc.9b03103) has useful RNA-seq/proteomics and biochemical evidence, but an accession and complete source matrix were not confirmed in this pass; keep it in reserve. A [mouse topical beta-caryophyllene wound study](https://doi.org/10.1371/journal.pone.0216104) reports skin RNA-seq with only 2 treated and 3 oil-control samples and major injury/cell-composition effects; it is a distinct in-vivo context and a lower priority for the initial comparison.
+
+## Source evidence
+
+- [GSE138291 GEO series](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291) and its sample-level SOFT family record.
+- [Fusarium linalool study](https://doi.org/10.3390/ijms24010458) and [ENA run metadata](https://www.ebi.ac.uk/ena/browser/view/PRJNA913446).
+- [Penicillium R-(+)-limonene study](https://doi.org/10.3389/fmicb.2020.00744) and [ENA BioSamples/runs](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617).

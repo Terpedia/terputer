@@ -1,0 +1,7 @@
+{
+  "geo_family_soft": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE138nnn/GSE138291/soft/GSE138291_family.soft.gz",
+  "ena_report_template": "https://www.ebi.ac.uk/ena/portal/api/filereport?accession={accession}&result=read_run&fields=run_accession,experiment_accession,sample_accession,sample_alias,study_accession,experiment_title,library_strategy,library_layout,fastq_bytes&format=tsv",
+  "ena_biosample_xml_template": "https://www.ebi.ac.uk/ena/browser/api/xml/{sample_accession}",
+  "records": 27,
+  "scope": "metadata only; treatment identity and dose additionally checked against source articles"
+}

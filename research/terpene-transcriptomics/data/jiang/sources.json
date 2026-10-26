@@ -1,0 +1,23 @@
+{
+  "revision": "d0519f67452a0662c2db30c3831900b38aa3c017",
+  "files": [
+    {
+      "file": "README.md",
+      "url": "https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/README.md",
+      "sha256": "91f97afe7b3052814c16ce65c1284e4bda1b6f254a72a905b8f871b9c00b417d",
+      "bytes": 8631
+    },
+    {
+      "file": "a549_ifnb.parquet",
+      "url": "https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifnb.parquet",
+      "sha256": "8096c53c273a9c455e2f81b5e4aa09afd1f6c44cb34adaa6856968aa9886d40b",
+      "bytes": 6038802
+    },
+    {
+      "file": "a549_ifng.parquet",
+      "url": "https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifng.parquet",
+      "sha256": "8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462",
+      "bytes": 5645995
+    }
+  ]
+}

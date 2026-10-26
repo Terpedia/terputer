@@ -1,0 +1,28 @@
+study	organism	sample	archive_accession	archive_level	label	arm	time	dose	source
+GSE138291	Botrytis cinerea B05.10	GSM4104542	SRX6935313	SRA experiment	T01	untreated	2 h	0	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104542
+GSE138291	Botrytis cinerea B05.10	GSM4104543	SRX6935314	SRA experiment	T02	untreated	2 h	0	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104543
+GSE138291	Botrytis cinerea B05.10	GSM4104544	SRX6935315	SRA experiment	T03	untreated	2 h	0	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104544
+GSE138291	Botrytis cinerea B05.10	GSM4104545	SRX6935316	SRA experiment	T04	tea tree oil	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104545
+GSE138291	Botrytis cinerea B05.10	GSM4104546	SRX6935317	SRA experiment	T05	tea tree oil	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104546
+GSE138291	Botrytis cinerea B05.10	GSM4104547	SRX6935318	SRA experiment	T06	tea tree oil	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104547
+GSE138291	Botrytis cinerea B05.10	GSM4104548	SRX6935319	SRA experiment	T07	1,8-cineole	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104548
+GSE138291	Botrytis cinerea B05.10	GSM4104549	SRX6935320	SRA experiment	T08	1,8-cineole	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104549
+GSE138291	Botrytis cinerea B05.10	GSM4104550	SRX6935321	SRA experiment	T09	1,8-cineole	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104550
+GSE138291	Botrytis cinerea B05.10	GSM4104551	SRX6935322	SRA experiment	T10	terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104551
+GSE138291	Botrytis cinerea B05.10	GSM4104552	SRX6935323	SRA experiment	T11	terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104552
+GSE138291	Botrytis cinerea B05.10	GSM4104553	SRX6935324	SRA experiment	T12	terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104553
+GSE138291	Botrytis cinerea B05.10	GSM4104554	SRX6935325	SRA experiment	T13	1,8-cineole and terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104554
+GSE138291	Botrytis cinerea B05.10	GSM4104555	SRX6935326	SRA experiment	T14	1,8-cineole and terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104555
+GSE138291	Botrytis cinerea B05.10	GSM4104556	SRX6935327	SRA experiment	T15	1,8-cineole and terpinen-4-ol	2 h	0.5 uL/mL	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4104556
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167901	SRR11177190	SRA run	P_0h_1	untreated	0 h	0	https://www.ebi.ac.uk/ena/browser/view/SAMN14167901
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167902	SRR11177189	SRA run	P_0h_2	untreated	0 h	0	https://www.ebi.ac.uk/ena/browser/view/SAMN14167902
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167903	SRR11177188	SRA run	P_12h_1	untreated	12 h	0	https://www.ebi.ac.uk/ena/browser/view/SAMN14167903
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167904	SRR11177187	SRA run	P_12h_2	untreated	12 h	0	https://www.ebi.ac.uk/ena/browser/view/SAMN14167904
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167905	SRR11177186	SRA run	P_L_12h_1	R-(+)-limonene	12 h	840 mg/L	https://www.ebi.ac.uk/ena/browser/view/SAMN14167905
+PRJNA608617	Penicillium digitatum DSM 62840	SAMN14167906	SRR11177185	SRA run	P_L_12h_2	R-(+)-limonene	12 h	840 mg/L	https://www.ebi.ac.uk/ena/browser/view/SAMN14167906
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299105	SRR22799082	SRA run	CK_1	vehicle control	6 d	0	https://www.ebi.ac.uk/ena/browser/view/SAMN32299105
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299106	SRR22799081	SRA run	CK_2	vehicle control	6 d	0	https://www.ebi.ac.uk/ena/browser/view/SAMN32299106
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299107	SRR22799080	SRA run	CK_3	vehicle control	6 d	0	https://www.ebi.ac.uk/ena/browser/view/SAMN32299107
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299108	SRR22799079	SRA run	L800_1	linalool	6 d	0.8 mL/L	https://www.ebi.ac.uk/ena/browser/view/SAMN32299108
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299109	SRR22799078	SRA run	L800_2	linalool	6 d	0.8 mL/L	https://www.ebi.ac.uk/ena/browser/view/SAMN32299109
+PRJNA913446	Fusarium oxysporum f. sp. radicis-lycopersici	SAMN32299110	SRR22799077	SRA run	L800_3	linalool	6 d	0.8 mL/L	https://www.ebi.ac.uk/ena/browser/view/SAMN32299110

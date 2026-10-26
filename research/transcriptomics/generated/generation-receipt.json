@@ -3,7 +3,7 @@
   "generator": "terputer-report-generator-v2",
   "specification_schema_version": 1,
   "manifest": "research/transcriptomics/report-spec.json",
-  "manifest_sha256": "56bec84a24912c587c79ba517aef387f484351789d080191990979ec1ca4cb10",
+  "manifest_sha256": "a00530b239e2fa9a6b162772eb1628a8761be177cbab74658f940dd6a182d03c",
   "notebook": "notebooks/terputer-transcriptomics.ipynb",
   "notebook_sha256": "3522bccb9c65223f50f1806a869ef1872affef5220eef3845dd7d0b803196b73",
   "executed_code_cells": 5,
@@ -13,7 +13,7 @@
   },
   "claim_count": 8,
   "observed_claim_count": 2,
-  "report_sha256": "294be99f979417916ce50bda544c75970689885beb1b50c62da9a96a96face3a",
-  "ledger_sha256": "d27582e757f112157cab8f5f3f16ae2458e385fe6ab70439d8554937d27007c7",
+  "report_sha256": "6eb1e435b783fccd1545792477959a9d918e03343febd6d86f44fa516a7f9849",
+  "ledger_sha256": "0cdad0c3d0d824947177478b1c275381b6746dc7ab1743fcc1680c71f7e572f4",
   "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth."
 }

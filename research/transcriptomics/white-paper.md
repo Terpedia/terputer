@@ -2,7 +2,7 @@
 
 **Working white paper · 26 October 2026 · Methods and results from an executed Terputer notebook**
 
-For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [critically audited transcriptomics white paper](https://terpedia.github.io/research/terpene-transcriptomics/) and its [claim ledger](https://terpedia.github.io/research/terpene-transcriptomics/claim-ledger.html). This note focuses on the Terputer workspace and its executed examples. The A2780 paclitaxel extension below is local to this paper; the linked public page and claim ledger have not yet been updated with it.
+For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [public transcriptomics white-paper snapshot](../terpene-transcriptomics/manuscript/white-paper.md) and its [claim ledger](../terpene-transcriptomics/manuscript/claim-ledger.md). This note focuses on the Terputer workspace and its executed examples. The public snapshot preserves the source manuscript and evidence files while the research custom domain is unavailable.
 
 ## Abstract
 
