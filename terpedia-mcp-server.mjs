@@ -55,6 +55,7 @@ const researchTools = [
   ['get_transcriptomic_samples', z.object({ accession: z.string().trim().regex(/^[A-Za-z0-9_-]{4,30}$/) })],
   ['get_ena_runs', z.object({ accession: z.string().trim().min(5).max(30) })],
   ['generate_research_report', z.object({ manifest_path: z.string().trim().min(1).max(300) })],
+  ['publish_research_report', z.object({ manifest_path: z.string().trim().min(1).max(300), extra_paths: z.array(z.string().trim().min(1).max(300)).max(20).default([]) })],
   ['fork_report_workspace', z.object({})],
   ['list_research_projects', z.object({})],
   ['add_research_project_submodule', z.object({ slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,62}$/), repository: z.string().url().optional() })],
@@ -76,6 +77,7 @@ for (const [name, schema] of researchTools) {
       get_transcriptomic_samples: 'List curated sample records for a transcriptomic study.',
       get_ena_runs: 'Inspect public ENA sequencing runs and checksums.',
       generate_research_report: 'Generate a source-linked report, claim ledger, and provenance receipt from an executed notebook and report specification.',
+      publish_research_report: 'Publish a validated report bundle to the connected user’s private terpedia-* GitHub repository.',
       fork_report_workspace: 'Create or find your terpedia-report fork of the public Terputer repository using GitHub CLI authentication.',
       list_research_projects: 'List project submodules and pinned commits in this terpedia-report checkout.',
       add_research_project_submodule: 'Stage a user-owned terpedia-* project as a Git submodule in projects/.',
@@ -87,7 +89,7 @@ for (const [name, schema] of researchTools) {
       execute_python_cell: 'Run Python in this Codespace Jupyter kernel.'
     }[name],
     inputSchema: schema,
-    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'generate_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name) }
+    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'generate_research_report', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name) }
   }, async (args) => ({ content: [{ type: 'text', text: JSON.stringify(await callResearchTool(name, args)) }] }));
 }
 
