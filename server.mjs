@@ -46,6 +46,14 @@ const server = createServer(async (req, res) => {
     catch (error) { setJson(502, { error: error instanceof Error ? error.message : 'GitHub status failed.' }); }
     return;
   }
+  if (url.pathname === '/api/terpedia/github/config' && req.method === 'GET') {
+    try {
+      const upstream = await fetch(`${chatBase}/api/github/config`, { signal: AbortSignal.timeout(10_000) });
+      const data = await upstream.json();
+      setJson(upstream.status, { ...data, connectUrl: `${chatBase}/api/github/connect` });
+    } catch (error) { setJson(502, { enabled: false, error: error instanceof Error ? error.message : 'GitHub configuration is unavailable.' }); }
+    return;
+  }
   if (url.pathname === '/api/projects' && req.method === 'GET') {
     try { setJson(200, await listResearchProjects()); }
     catch (error) { setJson(500, { error: error instanceof Error ? error.message : 'Could not list projects.' }); }
