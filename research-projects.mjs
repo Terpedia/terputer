@@ -32,7 +32,16 @@ async function reportRepository() {
   return user;
 }
 
-export async function forkReportWorkspace() {
+export async function forkReportWorkspace(session = process.env.TERPUTER_GITHUB_SESSION) {
+  if (session) {
+    const base = (process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
+    const response = await fetch(`${base}/api/github/research/report-workspace`, {
+      method: 'POST', headers: { authorization: `Bearer ${session}` }, signal: AbortSignal.timeout(30_000)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `Report workspace creation failed (${response.status})`);
+    return result;
+  }
   const user = await githubUser();
   const existing = await run('gh', ['api', `repos/${user}/terpedia-report`], { cwd: root }).catch(() => null);
   if (existing) {

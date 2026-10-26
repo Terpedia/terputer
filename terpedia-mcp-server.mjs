@@ -78,7 +78,7 @@ for (const [name, schema] of researchTools) {
       get_ena_runs: 'Inspect public ENA sequencing runs and checksums.',
       generate_research_report: 'Generate a source-linked report, claim ledger, and provenance receipt from an executed notebook and report specification.',
       publish_research_report: 'Publish a validated report bundle to the connected user’s private terpedia-* GitHub repository.',
-      fork_report_workspace: 'Create or find your terpedia-report fork of the public Terputer repository using GitHub CLI authentication.',
+      fork_report_workspace: 'Create or find your terpedia-report fork of the public Terputer repository using a connected GitHub session or local GitHub CLI authentication.',
       list_research_projects: 'List project submodules and pinned commits in this terpedia-report checkout.',
       add_research_project_submodule: 'Stage a user-owned terpedia-* project as a Git submodule in projects/.',
       update_research_project_submodule: 'Stage an existing project submodule at its latest default-branch commit.',

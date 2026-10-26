@@ -32,7 +32,7 @@ export const toolDefinitions = [
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
   { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Include extra_paths for scripts or pinned inputs needed to rerun the notebook. If this is the user’s terpedia-report fork, stage the project as a submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
-  { name: 'fork_report_workspace', description: 'Fork public Terpedia/terputer to the authenticated GitHub user as terpedia-report and return its Codespace URL. Requires gh auth in this Codespace.', parameters: { type: 'object', properties: {} } },
+  { name: 'fork_report_workspace', description: 'Fork public Terpedia/terputer to the connected GitHub user as terpedia-report and return its Codespace URL. The Terpedia GitHub session is used in chat; standalone local MCP use can authenticate with gh.', parameters: { type: 'object', properties: {} } },
   { name: 'list_research_projects', description: 'List the research project submodules and pinned commits in this user-owned terpedia-report checkout.', parameters: { type: 'object', properties: {} } },
   { name: 'add_research_project_submodule', description: 'Stage a user-owned terpedia-<slug> project repository under projects/<slug> in this terpedia-report checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' } }, required: ['slug'] } },
   { name: 'update_research_project_submodule', description: 'Fetch the latest default-branch commit for an existing project submodule and stage its new pointer for review.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
@@ -44,7 +44,7 @@ export const toolDefinitions = [
 ];
 
 export async function callResearchTool(name, args = {}, context = {}) {
-  if (name === 'fork_report_workspace') return forkReportWorkspace();
+  if (name === 'fork_report_workspace') return forkReportWorkspace(context.githubSession);
   if (name === 'list_research_projects') return listResearchProjects();
   if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args);
   if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args);
