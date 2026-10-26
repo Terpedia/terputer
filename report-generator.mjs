@@ -1,6 +1,6 @@
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { readFile, mkdir, writeFile, realpath } from 'node:fs/promises';
+import { readFile, mkdir, writeFile, realpath, stat, rename, unlink } from 'node:fs/promises';
 import { resolve, relative, sep, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,7 +34,17 @@ function publicUrl(value) {
 }
 export async function generateResearchReport(manifestPath, workspaceRoot = root) {
   const workspacePath = (value, allowed) => workspacePathFor(workspaceRoot, value, allowed);
+  const realRoot = await realpath(workspaceRoot);
+  const checkedFile = async (entry, allowed) => {
+    const actual = relative(realRoot, await realpath(entry.path));
+    if (!allowed.some((prefix) => actual.startsWith(`${prefix}${sep}`))) {
+      throw new Error(`File leaves the selected research workspace: ${entry.name}`);
+    }
+    if (!(await stat(entry.path)).isFile()) throw new Error(`Expected a regular file: ${entry.name}`);
+    return entry;
+  };
   const manifestFile = workspacePath(manifestPath, ['research']);
+  await checkedFile(manifestFile, ['research']);
   const manifestBytes = await readFile(manifestFile.path);
   const spec = JSON.parse(manifestBytes.toString('utf8'));
   if (![1, 2].includes(spec.schema_version)) throw new Error('Report specification requires schema_version 1 or 2');
@@ -44,6 +54,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(slug)) throw new Error('Slug must be lowercase letters, digits, and hyphens');
   const notebookFile = workspacePath(spec.notebook, ['notebooks']);
   if (!notebookFile.name.endsWith('.ipynb')) throw new Error('Notebook must be an .ipynb file');
+  await checkedFile(notebookFile, ['notebooks']);
   const notebookBytes = await readFile(notebookFile.path);
   const notebook = JSON.parse(notebookBytes.toString('utf8'));
   if (notebook.nbformat !== 4 || !Array.isArray(notebook.cells)) throw new Error('Notebook is not nbformat 4');
@@ -57,6 +68,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   const inputHashes = new Map();
   if (spec.schema_version === 2) {
     executionReceiptFile = workspacePath(spec.execution_receipt, ['research']);
+    await checkedFile(executionReceiptFile, ['research']);
     executionReceiptBytes = await readFile(executionReceiptFile.path);
     executionReceipt = JSON.parse(executionReceiptBytes.toString('utf8'));
     if (executionReceipt.schema_version !== 2 || executionReceipt.runner !== 'terputer-notebook-runner-v1'
@@ -68,13 +80,9 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
     if (typeof pinned !== 'object' || Array.isArray(pinned) || Object.keys(pinned).length > 50) {
       throw new Error('Notebook execution receipt has invalid pinned inputs');
     }
-    const realRoot = await realpath(workspaceRoot);
     for (const [name, expectedHash] of Object.entries(pinned)) {
       const input = workspacePath(name, ['research', 'terputer_bio']);
-      const realInput = await realpath(input.path);
-      if (!['research', 'terputer_bio'].some((prefix) => relative(realRoot, realInput).startsWith(`${prefix}${sep}`))) {
-        throw new Error(`Pinned input leaves the research workspace: ${input.name}`);
-      }
+      await checkedFile(input, ['research', 'terputer_bio']);
       if (!/^[a-f0-9]{64}$/.test(String(expectedHash)) || await sha256File(input.path) !== expectedHash) {
         throw new Error(`Pinned input changed since notebook execution: ${input.name}`);
       }
@@ -128,6 +136,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
     }
     for (const value of paths) {
       const artifact = workspacePath(value, ['research']);
+      await checkedFile(artifact, ['research']);
       const bytes = await readFile(artifact.path);
       const artifactHash = sha256(bytes);
       if (claim.class === 'observed' && executionReceipt && executionReceipt.artifacts_written?.[artifact.name] !== artifactHash) {
@@ -149,6 +158,17 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   }
   const sourceNumbers = new Map([...sources.keys()].map((id, index) => [id, index + 1]));
   const outputDir = join(workspaceRoot, 'research', slug, 'generated');
+  const researchDir = join(workspaceRoot, 'research');
+  const projectDir = join(researchDir, slug);
+  if (await realpath(researchDir) !== join(realRoot, 'research')) throw new Error('Research directory leaves the selected workspace');
+  await mkdir(projectDir).catch((error) => { if (error.code !== 'EEXIST') throw error; });
+  if (await realpath(projectDir) !== join(realRoot, 'research', slug) || !(await stat(projectDir)).isDirectory()) {
+    throw new Error('Report project directory leaves the selected workspace');
+  }
+  await mkdir(outputDir).catch((error) => { if (error.code !== 'EEXIST') throw error; });
+  if (await realpath(outputDir) !== join(realRoot, 'research', slug, 'generated') || !(await stat(outputDir)).isDirectory()) {
+    throw new Error('Generated report directory leaves the selected workspace');
+  }
   const claimLine = (id, includeArtifacts = true, includeLimitation = false) => {
     const claim = claims.get(id);
     const refs = claim.sources.map((sourceId) => `[${sourceNumbers.get(sourceId)}](${sources.get(sourceId).url})`).join(', ');
@@ -192,7 +212,6 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   lines.push('');
   const ledger = ['claim_id\tevidence_class\tclaim\tsource_ids\tsource_urls\tartifacts\tlimitation'];
   for (const [id, claim] of claims) ledger.push([id, claim.class, claim.text, claim.sources.join(';'), claim.sources.map((sourceId) => sources.get(sourceId).url).join(';'), claim.artifacts.join(';'), claim.limitation].map((value) => String(value).replaceAll('\t', ' ').replaceAll('\n', ' ')).join('\t'));
-  await mkdir(outputDir, { recursive: true });
   const report = lines.join('\n');
   const ledgerText = `${ledger.join('\n')}\n`;
   const receipt = {
@@ -207,9 +226,20 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
     report_sha256: sha256(report), ledger_sha256: sha256(ledgerText),
     limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth.'
   };
-  await writeFile(join(outputDir, 'white-paper.md'), report);
-  await writeFile(join(outputDir, 'claim-ledger.tsv'), ledgerText);
-  await writeFile(join(outputDir, 'generation-receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
+  for (const [name, content] of [
+    ['white-paper.md', report],
+    ['claim-ledger.tsv', ledgerText],
+    ['generation-receipt.json', `${JSON.stringify(receipt, null, 2)}\n`],
+  ]) {
+    const temporary = join(outputDir, `.${name}.${randomUUID()}.tmp`);
+    try {
+      await writeFile(temporary, content, { flag: 'wx' });
+      await rename(temporary, join(outputDir, name));
+    } catch (error) {
+      await unlink(temporary).catch(() => {});
+      throw error;
+    }
+  }
   return { directory: `research/${slug}/generated`, report: `research/${slug}/generated/white-paper.md`, ledger: `research/${slug}/generated/claim-ledger.tsv`, receipt: `research/${slug}/generated/generation-receipt.json`, ...receipt };
 }
 
