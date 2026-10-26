@@ -30,6 +30,7 @@ export const toolDefinitions = [
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
+  { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Include extra_paths for scripts or pinned inputs needed to rerun the notebook.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
   { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh workspace Python kernel and save its outputs. Declare research/ files expected to be written so their hashes are included in the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
@@ -37,7 +38,7 @@ export const toolDefinitions = [
   { name: 'execute_python_cell', description: 'Execute Python in the current Terputer Codespace Jupyter kernel. Use only code needed for the requested research; inspect returned errors and outputs.', parameters: { type: 'object', properties: { code: { type: 'string' }, timeout_seconds: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['code'] } }
 ];
 
-export async function callResearchTool(name, args = {}) {
+export async function callResearchTool(name, args = {}, context = {}) {
   if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
@@ -117,6 +118,45 @@ export async function callResearchTool(name, args = {}) {
   }
   if (name === 'generate_research_report') {
     return generateResearchReport(args.manifest_path);
+  }
+  if (name === 'publish_research_report') {
+    const session = context.githubSession || process.env.TERPUTER_GITHUB_SESSION;
+    if (!session) throw new Error('Connect GitHub in Terputer before publishing a research report.');
+    const generated = await generateResearchReport(args.manifest_path);
+    if (generated.specification_schema_version !== 2) throw new Error('Only version 2 reports with execution provenance can be published.');
+    const spec = JSON.parse(await readFile(workspacePath(args.manifest_path), 'utf8'));
+    const required = [args.manifest_path, spec.notebook, spec.execution_receipt,
+      generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256)];
+    const extras = Array.isArray(args.extra_paths) ? args.extra_paths : [];
+    if (extras.length > 20) throw new Error('At most 20 extra paths are allowed.');
+    const paths = [...new Set([...required, ...extras, 'requirements.txt', 'notebook-runner.py', 'report-generator.mjs'])];
+    if (paths.length > 49) throw new Error('Report bundle has too many files.');
+    const files = [];
+    let bytesTotal = 0;
+    for (const path of paths) {
+      if (typeof path !== 'string' || path.includes('..') || path.split('/').some((part) => part.startsWith('.'))
+          || !(/^(?:research|notebooks)\/[A-Za-z0-9._/-]+$/.test(path) || ['requirements.txt', 'notebook-runner.py', 'report-generator.mjs'].includes(path))) {
+        throw new Error(`Invalid report publication path: ${path}`);
+      }
+      const absolute = ['requirements.txt', 'notebook-runner.py', 'report-generator.mjs'].includes(path)
+        ? join(workspaceRoot, path) : workspacePath(path);
+      const bytes = await readFile(absolute);
+      if (bytes.length > 2_000_000) throw new Error(`Report file exceeds 2 MB: ${path}`);
+      bytesTotal += bytes.length;
+      files.push({ path, content_base64: bytes.toString('base64') });
+    }
+    const artifactPaths = Object.keys(generated.artifact_sha256);
+    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nReview code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
+    bytesTotal += Buffer.byteLength(readme);
+    if (bytesTotal > 7_000_000) throw new Error('Report bundle exceeds 7 MB.');
+    files.push({ path: 'README.md', content_base64: Buffer.from(readme).toString('base64') });
+    const response = await fetch(`${(process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '')}/api/github/research/report-bundle`, {
+      method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${session}` },
+      body: JSON.stringify({ slug: spec.slug, files }), signal: AbortSignal.timeout(120_000)
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `GitHub report publication failed (${response.status})`);
+    return result;
   }
   if (name === 'execute_notebook') {
     const path = workspacePath(args.path);

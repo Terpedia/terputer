@@ -18,7 +18,10 @@ const server = createServer(async (req, res) => {
     try {
       let body = '';
       for await (const chunk of req) { body += chunk; if (body.length > 150_000) { setJson(413, { error: 'Agent request is too large.' }); return; } }
-      setJson(200, await runResearchAgent(JSON.parse(body)));
+      const input = JSON.parse(body);
+      const bearer = req.headers.authorization || '';
+      input.githubSession = /^Bearer [A-Za-z0-9._-]+$/.test(bearer) ? bearer.slice(7) : null;
+      setJson(200, await runResearchAgent(input));
     } catch (error) { setJson(error?.status || 500, { error: error instanceof Error ? error.message : 'Research agent failed.' }); }
     return;
   }

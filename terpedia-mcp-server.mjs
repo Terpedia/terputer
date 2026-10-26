@@ -55,6 +55,7 @@ const researchTools = [
   ['get_transcriptomic_samples', z.object({ accession: z.string().trim().regex(/^[A-Za-z0-9_-]{4,30}$/) })],
   ['get_ena_runs', z.object({ accession: z.string().trim().min(5).max(30) })],
   ['generate_research_report', z.object({ manifest_path: z.string().trim().min(1).max(300) })],
+  ['publish_research_report', z.object({ manifest_path: z.string().trim().min(1).max(300), extra_paths: z.array(z.string().trim().min(1).max(300)).max(20).default([]) })],
   ['execute_notebook', z.object({ path: z.string().trim().min(1).max(300), cell_timeout_seconds: z.number().int().min(1).max(600).default(120), artifact_paths: z.array(z.string().trim().min(1).max(300)).max(50).default([]) })],
   ['list_notebooks', z.object({})],
   ['read_workspace_file', z.object({ path: z.string().min(1).max(300) })],
@@ -72,6 +73,7 @@ for (const [name, schema] of researchTools) {
       get_transcriptomic_samples: 'List curated sample records for a transcriptomic study.',
       get_ena_runs: 'Inspect public ENA sequencing runs and checksums.',
       generate_research_report: 'Generate a source-linked report, claim ledger, and provenance receipt from an executed notebook and report specification.',
+      publish_research_report: 'Publish a validated report bundle to the connected user’s private terpedia-* GitHub repository.',
       execute_notebook: 'Execute and save a notebook using a fresh Python kernel; declare result artifacts to record their hashes and require that the run writes them.',
       list_notebooks: 'List Jupyter notebooks in this Terputer workspace.',
       read_workspace_file: 'Read a small research file or notebook in this Codespace.',
@@ -79,7 +81,7 @@ for (const [name, schema] of researchTools) {
       execute_python_cell: 'Run Python in this Codespace Jupyter kernel.'
     }[name],
     inputSchema: schema,
-    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'generate_research_report'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook'].includes(name) }
+    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'generate_research_report', 'publish_research_report'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook', 'publish_research_report'].includes(name) }
   }, async (args) => ({ content: [{ type: 'text', text: JSON.stringify(await callResearchTool(name, args)) }] }));
 }
 
