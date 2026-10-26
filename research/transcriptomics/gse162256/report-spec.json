@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "slug": "a2780-paclitaxel-single-cell",
+  "title": "Paclitaxel exposure in A2780: a single-cell descriptive evidence brief",
+  "question": "Which predeclared response markers change after paclitaxel exposure in A2780 cells, and what can be compared with HCC1143?",
+  "notebook": "notebooks/terputer-gse162256-single-cell.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-gse162256-single-cell.json",
+  "sources": [
+    {
+      "id": "geo",
+      "title": "GEO GSE162256",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256"
+    },
+    {
+      "id": "paper",
+      "title": "Primary GSE162256 study article",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8210883/"
+    },
+    {
+      "id": "hcc1143",
+      "title": "GEO GSE266934 HCC1143 comparison",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934"
+    },
+    {
+      "id": "review",
+      "title": "Terputer transcriptomics white paper cross-context assessment",
+      "url": "https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md"
+    }
+  ],
+  "claims": [
+    {
+      "id": "A01",
+      "class": "source-reported",
+      "text": "GSE162256 profiles A2780 cells after paclitaxel, celecoxib, their combination, or control; the paclitaxel arms used here are 5 nM at 16 and 48 hours.",
+      "sources": [
+        "geo",
+        "paper"
+      ],
+      "limitation": "This is a chemical-exposure study, not a genetic Perturb-seq experiment."
+    },
+    {
+      "id": "A02",
+      "class": "observed",
+      "text": "The quality-filtered processed matrix has 9,664 feature rows and 338 cell columns, including 46 control, 56 paclitaxel 16-hour, and 53 paclitaxel 48-hour cells.",
+      "sources": [
+        "geo"
+      ],
+      "artifacts": [
+        "research/transcriptomics/gse162256/results/analysis_summary.json"
+      ],
+      "limitation": "Cell counts do not establish independent biological culture replication."
+    },
+    {
+      "id": "A03",
+      "class": "observed",
+      "text": "All six predeclared cell-cycle markers have lower median reported values at both paclitaxel times than in control cells.",
+      "sources": [
+        "geo"
+      ],
+      "artifacts": [
+        "research/transcriptomics/gse162256/results/marker_descriptive.tsv"
+      ],
+      "limitation": "These are descriptive medians in the source's processed E-value units, not count-based differential-expression estimates."
+    },
+    {
+      "id": "A04",
+      "class": "observed",
+      "text": "Three of seven predeclared interferon markers (IFIT3, MX1, OAS1) are absent from the processed A2780 matrix, and the available markers do not show a uniformly higher median after paclitaxel.",
+      "sources": [
+        "geo"
+      ],
+      "artifacts": [
+        "research/transcriptomics/gse162256/results/marker_descriptive.tsv"
+      ],
+      "limitation": "Missing features and zero-heavy expression make this panel inconclusive for cross-context pathway comparison."
+    },
+    {
+      "id": "A05",
+      "class": "source-reported",
+      "text": "The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect.",
+      "sources": [
+        "geo",
+        "hcc1143",
+        "review"
+      ],
+      "limitation": "No matched factorial treatment-by-cell-line analysis or independent-culture effect estimate was performed."
+    },
+    {
+      "id": "A06",
+      "class": "proposed",
+      "text": "Repeat vehicle-matched paclitaxel exposure at shared dose and time points across independent A2780 and HCC1143 cultures, then compare replicate-aware marker or pathway effects.",
+      "sources": [
+        "geo",
+        "hcc1143"
+      ],
+      "limitation": "This follow-up experiment has not been performed."
+    }
+  ],
+  "abstract": [
+    "A01",
+    "A03",
+    "A05"
+  ],
+  "sections": {
+    "background": [
+      "A01"
+    ],
+    "methods": [
+      "A02"
+    ],
+    "results": [
+      "A03",
+      "A04"
+    ],
+    "interpretation": [
+      "A05"
+    ],
+    "limitations": [
+      "A02",
+      "A05"
+    ],
+    "next_steps": [
+      "A06"
+    ]
+  }
+}
