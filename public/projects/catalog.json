@@ -34,10 +34,20 @@
     "title": "Menthol-mint aerosol mouse-lung single-cell audit",
     "category": "Transcriptomics",
     "status": "Executed descriptive analysis",
-    "summary": "GSE263903 six-library 10x audit: mixed menthol-mint aerosol with nicotine; marker-bin Il1b/Cxcl2 contrasts depend on the control and collection date.",
+    "summary": "GSE263903 ten-library 10x audit: mixed menthol-mint aerosol with nicotine; marker-bin Il1b/Cxcl2 contrasts depend on the control and collection date.",
     "repository": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell",
     "paper": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell/blob/main/research/menthol-aerosol-single-cell/generated/white-paper.md",
     "notebook": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell/blob/main/notebooks/gse263903_menthol_aerosol.ipynb"
+  },
+  {
+    "slug": "menthol-wnt3a-rnaseq",
+    "title": "Menthol by Wnt3a bulk RNA-seq audit",
+    "category": "Transcriptomics",
+    "status": "Executed descriptive analysis",
+    "summary": "GSE242559 direct menthol exposure in ND7/23 cells with and without Wnt3a; 12 processed-FPKM libraries support a pseudocount-sensitive descriptive interaction, not a target claim.",
+    "repository": "https://github.com/Terpedia/terpedia-menthol-wnt3a-rnaseq",
+    "paper": "https://github.com/Terpedia/terpedia-menthol-wnt3a-rnaseq/blob/ef29dc4c796e360c2e7330d22c0f3948d7abae3b/research/menthol-wnt3a-rnaseq/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-menthol-wnt3a-rnaseq/blob/ef29dc4c796e360c2e7330d22c0f3948d7abae3b/notebooks/gse242559_menthol_wnt3a.ipynb"
   },
   {
     "slug": "census",
