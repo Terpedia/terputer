@@ -5,6 +5,7 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
 import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule, resolveResearchWorkspace } from './research-projects.mjs';
+import { getTranscriptomicFeatureEffect } from './transcriptomic-feature-effect.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const allowedRoots = ['notebooks', 'research'];
@@ -30,6 +31,7 @@ export const toolDefinitions = [
   { name: 'search_transcriptomic_studies', description: 'Search curated transcriptomic study records in Terpedia BigQuery. Returns provenance and evidence class.', parameters: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['query'] } },
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_transcriptomic_evidence', description: 'Get curated exposure contrasts and evidence-graded numeric observations for a study accession from Terpedia BigQuery. Returns provenance and limitations, not raw gene-level effects.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
+  { name: 'get_transcriptomic_feature_effect', description: 'Look up one source feature in the checksum-pinned GSE242559 processed-FPKM table. Returns descriptive menthol and Wnt3a effects, not differential-expression or target evidence.', parameters: { type: 'object', properties: { accession: { type: 'string' }, feature: { type: 'string' } }, required: ['accession', 'feature'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from an executed notebook. Set project_slug to work inside an attached project submodule.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['manifest_path'] } },
   { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Set project_slug for a submodule; include extra_paths for scripts or pinned inputs. In a terpedia-report fork, stage the project submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
@@ -45,13 +47,14 @@ export const toolDefinitions = [
 ];
 
 export async function callResearchTool(name, args = {}, context = {}) {
+  if (name === 'get_transcriptomic_feature_effect' && !(process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN)) return getTranscriptomicFeatureEffect(args);
   if (name === 'fork_report_workspace') return forkReportWorkspace(context.githubSession);
   if (name === 'list_research_projects') return listResearchProjects();
   if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args, context.githubSession);
   if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args, context.githubSession);
   const localTools = ['generate_research_report', 'publish_research_report', 'execute_notebook', 'list_notebooks', 'read_workspace_file', 'write_workspace_file'];
   const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
-  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence'].includes(name)
+  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence', 'get_transcriptomic_feature_effect'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.TERPUTER_WORKER_TOKEN}` },
