@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/fusarium-linalool-supplement/report-spec.json",
+  "manifest_sha256": "4dd22c76b496538c73416038c45a0e386a7eefd3db4bc0ae1059aa3c9ef8d93e",
+  "notebook": "notebooks/terputer-fusarium-linalool-supplement.ipynb",
+  "notebook_sha256": "9e0f86b769e73ce037a76958b6dc18d09786645300fc5819b1eb2f04bdff1060",
+  "executed_code_cells": 4,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-fusarium-linalool-supplement.json",
+  "notebook_execution_receipt_sha256": "6079ced29832ecfbe05f5613f4f218db9c092b6231400584df70fae96a44813a",
+  "artifact_sha256": {
+    "research/fusarium-linalool-supplement/results/analysis_summary.json": "1fd3939f3b651da62078e0a6c78aaad2bf40fce8a0c83c74d33a39842f0b4dc4",
+    "research/fusarium-linalool-supplement/results/gene_protein_overlap.tsv": "f0e95c401723f32d6bb709cbd036182a075864769cc16f864611025b12e4b6ee",
+    "research/fusarium-linalool-supplement/results/pathway_crossomics.tsv": "79d9c62278231e391cd1610f881dae550f1e94f6be273c4747c4ddec234d1476"
+  },
+  "input_sha256": {
+    "research/fusarium-linalool-supplement/data/ijms-24-00458-s001.zip": "64eb1c7cf6aeea6e54fab89ad9133914db6a0afdd28f1696242fa8fb5139b653"
+  },
+  "external_data_inputs": [
+    {
+      "path": "research/fusarium-linalool-supplement/data/ijms-24-00458-s001.zip",
+      "url": "https://mdpi-res.com/d_attachment/ijms/ijms-24-00458/article_deploy/ijms-24-00458-s001.zip",
+      "sha256": "64eb1c7cf6aeea6e54fab89ad9133914db6a0afdd28f1696242fa8fb5139b653"
+    }
+  ],
+  "claim_count": 9,
+  "observed_claim_count": 4,
+  "report_sha256": "ca8b41ebe2414ef4448b5b07d7f8bf1c1a1666aa3b8e367ffd0ce78df5abfe6e",
+  "ledger_sha256": "bc7d4ce08e92b5bd000578d821be3063c78463618ccc3412de015a08c6fb8d0a",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth."
+}

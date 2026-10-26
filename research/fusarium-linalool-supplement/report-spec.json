@@ -1,0 +1,110 @@
+{
+  "schema_version": 2,
+  "slug": "fusarium-linalool-supplement",
+  "title": "Linalool response in Fusarium: a published-table audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-fusarium-linalool-supplement.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-fusarium-linalool-supplement.json",
+  "data_inputs": [
+    {
+      "path": "research/fusarium-linalool-supplement/data/ijms-24-00458-s001.zip",
+      "url": "https://mdpi-res.com/d_attachment/ijms/ijms-24-00458/article_deploy/ijms-24-00458-s001.zip",
+      "sha256": "64eb1c7cf6aeea6e54fab89ad9133914db6a0afdd28f1696242fa8fb5139b653"
+    }
+  ],
+  "sources": [
+    {
+      "id": "paper",
+      "title": "Li et al., linalool antifungal response in Fusarium oxysporum (2023)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9820380/"
+    },
+    {
+      "id": "supplement",
+      "title": "Publisher supplementary data archive for the Fusarium linalool study",
+      "url": "https://mdpi-res.com/d_attachment/ijms/ijms-24-00458/article_deploy/ijms-24-00458-s001.zip"
+    },
+    {
+      "id": "reads",
+      "title": "ENA PRJNA913446 raw-read study",
+      "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA913446"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "class": "source-reported",
+      "text": "The source study compares three biological replicates of Fusarium oxysporum grown for six days with 0.8 mL/L linalool against three 0.1% Tween80 vehicle controls.",
+      "sources": ["paper", "reads"],
+      "limitation": "The long growth-inhibiting exposure can include secondary stress and growth-state effects."
+    },
+    {
+      "id": "C02",
+      "class": "observed",
+      "text": "The publisher's Table S4 contains 1,568 unique reported differential-expression genes, with 979 labeled up and 589 down; every row has adjusted p < 0.05 and absolute log2 fold change at least 1.",
+      "sources": ["supplement", "paper"],
+      "artifacts": ["research/fusarium-linalool-supplement/results/analysis_summary.json"],
+      "limitation": "This audits the authors' processed table; it does not independently re-estimate differential expression from raw counts."
+    },
+    {
+      "id": "C03",
+      "class": "observed",
+      "text": "At adjusted p < 0.05, three KEGG terms in the published RNA table and one in the protein table are significant; amino sugar and nucleotide sugar metabolism (00520) is the only term shared by both lists.",
+      "sources": ["supplement"],
+      "artifacts": ["research/fusarium-linalool-supplement/results/pathway_crossomics.tsv"],
+      "limitation": "Both omics layers come from one study; pathway overlap is within-study support, not independent replication or direct target evidence."
+    },
+    {
+      "id": "C04",
+      "class": "observed",
+      "text": "The shared pathway member lists intersect at one exact gene/protein identifier, FOXG_03194 (hexokinase-1), reported down in both tables (RNA log2FC -1.57; protein log2FC -1.04).",
+      "sources": ["supplement"],
+      "artifacts": ["research/fusarium-linalool-supplement/results/gene_protein_overlap.tsv"],
+      "limitation": "One mapped molecule is too little to infer broad transcript-protein concordance or a causal target."
+    },
+    {
+      "id": "C05",
+      "class": "source-reported",
+      "text": "The source paper separately reports fungal membrane damage and oxidative stress, and tomato salicylic-acid and jasmonic-acid response markers after linalool exposure.",
+      "sources": ["paper"],
+      "limitation": "These phenotype and host-marker assays are outside the audited fungal supplement tables and must not be conflated with fungal pathway enrichment."
+    },
+    {
+      "id": "C06",
+      "class": "source-reported",
+      "text": "The supplement provides published DEG, protein, and enrichment tables, while PRJNA913446 holds the raw reads needed to repeat gene quantification and the count model.",
+      "sources": ["supplement", "reads"],
+      "limitation": "This notebook cannot assess alignment, sample-level count uncertainty, batch effects, or the original enrichment universe from the processed tables alone."
+    },
+    {
+      "id": "C07",
+      "class": "proposed",
+      "text": "Reprocess the six PRJNA913446 libraries against a pinned Fusarium reference, quantify integer counts, audit sample assignment and batch, and re-fit a biological-replicate count model before using these gene calls for cross-study comparison.",
+      "sources": ["reads", "paper"],
+      "limitation": "Raw-read reanalysis has not been run in this project."
+    },
+    {
+      "id": "C08",
+      "class": "proposed",
+      "text": "Compare linalool responses with another compatible exposure cohort at the pathway level only after chemical form, organism, time, dose, viability, controls, and orthology have been resolved; test a specific target with separate binding or chemical-genetic evidence.",
+      "sources": ["paper", "reads"],
+      "limitation": "The present within-study transcript/protein agreement does not establish cross-context reproducibility or target dependency."
+    },
+    {
+      "id": "C09",
+      "class": "observed",
+      "text": "The notebook checks the pinned supplement checksum, reads Tables S3, S4, S6, S8, and S10, audits S4 gene IDs and reported thresholds, joins significant KEGG terms by five-digit pathway ID at adjusted p < 0.05, and compares exact RNA/protein member identifiers.",
+      "sources": ["supplement"],
+      "artifacts": ["research/fusarium-linalool-supplement/results/analysis_summary.json"],
+      "limitation": "The method uses published statistics and does not recompute differential expression or enrichment."
+    }
+  ],
+  "abstract": ["C02", "C03", "C06"],
+  "sections": {
+    "background": ["C01"],
+    "methods": ["C09"],
+    "results": ["C02", "C03", "C04"],
+    "interpretation": ["C03", "C05"],
+    "limitations": ["C06"],
+    "next_steps": ["C07", "C08"]
+  }
+}
