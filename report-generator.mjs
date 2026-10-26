@@ -104,7 +104,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   }
   const sourceNumbers = new Map([...sources.keys()].map((id, index) => [id, index + 1]));
   const outputDir = join(workspaceRoot, 'research', slug, 'generated');
-  const claimLine = (id, includeArtifacts = true) => {
+  const claimLine = (id, includeArtifacts = true, includeLimitation = false) => {
     const claim = claims.get(id);
     const refs = claim.sources.map((sourceId) => `[${sourceNumbers.get(sourceId)}](${sources.get(sourceId).url})`).join(', ');
     const artifactLinks = includeArtifacts ? claim.artifacts.map((value) => {
@@ -112,7 +112,12 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
       return `[${file.name}](${relative(outputDir, file.path).split(sep).join('/')})`;
     }) : [];
     const prefix = claim.class === 'proposed' ? '**Proposed:** ' : '';
-    return `${prefix}${claim.text} (claim ${id}; ${refs})${artifactLinks.length ? ` Artifacts: ${artifactLinks.join(', ')}.` : ''}`;
+    return `${prefix}${claim.text} (claim ${id}; ${refs})${artifactLinks.length ? ` Artifacts: ${artifactLinks.join(', ')}.` : ''}${includeLimitation ? ` **Limitation:** ${claim.limitation}` : ''}`;
+  };
+  const limitationLine = (id) => {
+    const claim = claims.get(id);
+    const refs = claim.sources.map((sourceId) => `[${sourceNumbers.get(sourceId)}](${sources.get(sourceId).url})`).join(', ');
+    return `**Claim ${id}:** ${claim.text} **Limitation:** ${claim.limitation} (${refs})`;
   };
   const headings = { background: 'Background', methods: 'Methods', results: 'Results', interpretation: 'Interpretation', limitations: 'Limitations', next_steps: 'Next research steps' };
   const lines = [
@@ -126,7 +131,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   for (const section of sections) {
     lines.push(`## ${headings[section]}`, '');
     for (const id of spec.sections[section]) {
-      lines.push(claimLine(id), '');
+      lines.push(section === 'limitations' ? limitationLine(id) : claimLine(id, true, section === 'results' || section === 'interpretation'), '');
     }
   }
   lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums.${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook and records hashes for result files written during its fresh-kernel run.${executionReceipt.environment?.package_versions ? ' It records the Python version and installed package versions.' : ' This older receipt does not record installed-package versions.'}` : ''} Notebook execution does not independently validate scientific interpretation.`, '', '## References', '');

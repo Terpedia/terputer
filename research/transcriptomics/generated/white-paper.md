@@ -22,17 +22,17 @@ The notebook computes treatment-to-control mean FPKM log2 ratios with a 0.1 pseu
 
 ## Results
 
-In the processed GSE138291 matrix, 1,8-cineole and terpinen-4-ol contrasts have Spearman correlation 0.433 and 64.8% sign agreement across 9,000 control-expressed features. (claim C03; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse138291_arm_similarity.tsv](../results/gse138291_arm_similarity.tsv).
+In the processed GSE138291 matrix, 1,8-cineole and terpinen-4-ol contrasts have Spearman correlation 0.433 and 64.8% sign agreement across 9,000 control-expressed features. (claim C03; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse138291_arm_similarity.tsv](../results/gse138291_arm_similarity.tsv). **Limitation:** Both contrasts share untreated controls; the numbers are not independent replication or a pathway result.
 
-The GSE136998 processed matrix contains 2,976 analyzed feature rows, with 1,955 positive, 1,011 negative, and 10 zero descriptive treatment-to-control ratios. (claim C04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse136998_descriptive_effects.tsv](../results/gse136998_descriptive_effects.tsv).
+The GSE136998 processed matrix contains 2,976 analyzed feature rows, with 1,955 positive, 1,011 negative, and 10 zero descriptive treatment-to-control ratios. (claim C04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse136998_descriptive_effects.tsv](../results/gse136998_descriptive_effects.tsv). **Limitation:** Direction counts are not statistically significant gene calls; feature annotation remains incomplete.
 
 ## Interpretation
 
-No analyzed result yet identifies a replicated metabolic or signaling pathway, a terpene-by-context interaction, or a specific target dependency. (claim C05; [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+No analyzed result yet identifies a replicated metabolic or signaling pathway, a terpene-by-context interaction, or a specific target dependency. (claim C05; [4](https://terpedia.github.io/research/terpene-transcriptomics/)) **Limitation:** This is a status assessment of the analyzed evidence, not proof that such effects do not exist.
 
 ## Limitations
 
-The fungal arm similarity shares an untreated denominator, and processed FPKM lacks the replicate-level uncertainty required for inferential comparison. (claim C06; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+**Claim C06:** The fungal arm similarity shares an untreated denominator, and processed FPKM lacks the replicate-level uncertainty required for inferential comparison. **Limitation:** The current sensitivity calculations do not remove shared-control covariance. ([2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
 
 ## Next research steps
 
@@ -42,7 +42,7 @@ The fungal arm similarity shares an untreated denominator, and processed FPKM la
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `56bec84a24912c587c79ba517aef387f484351789d080191990979ec1ca4cb10`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. An executed notebook confirms that some cells ran; it does not independently validate every scientific interpretation.
+The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `56bec84a24912c587c79ba517aef387f484351789d080191990979ec1ca4cb10`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 

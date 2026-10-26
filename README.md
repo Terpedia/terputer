@@ -89,6 +89,8 @@ After connecting GitHub, ask Terputer to publish a completed report. The local `
 
 New notebook execution receipts include the Python version, operating-system family, machine architecture, and installed package versions at run completion. The generation receipt hashes the full execution receipt. These records help reproduce analyses; they do not replace pinned input data, source checksums, or independent biological replicates.
 
+The report generator prints each claim's declared limitation beside results and interpretation and preserves the claim context in the limitations section. The claim ledger remains the structured source of every claim, evidence class, artifact, and caveat.
+
 When publication runs with a linked GitHub session, Terpedia also commits the project as `projects/<slug>` in the user's report fork. The result reports whether that attachment succeeded and supplies the pinned report fork commit. Pull and initialize the submodule before continuing in Codespaces. Without a linked session, standalone local MCP use stages the pointer for review and push.
 
 When GitHub OAuth returns to a Codespace address, Terpedia displays that destination before transferring the signed session. Confirm that it is your Codespace before continuing.

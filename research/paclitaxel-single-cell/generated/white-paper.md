@@ -24,17 +24,17 @@ After the prespecified cell QC, 1,106 and 788 cells remained in the 24-hour DMSO
 
 ## Results
 
-The treated-minus-control median interferon marker score was +0.218 at 24 hours and +0.510 at 72 hours; the selected cell-cycle score was -0.251 and -0.049, respectively. (claim P03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/module_contrasts.tsv](../../transcriptomics/gse266934/results/module_contrasts.tsv).
+The treated-minus-control median interferon marker score was +0.218 at 24 hours and +0.510 at 72 hours; the selected cell-cycle score was -0.251 and -0.049, respectively. (claim P03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/module_contrasts.tsv](../../transcriptomics/gse266934/results/module_contrasts.tsv). **Limitation:** Scores summarize prespecified markers and are descriptive; they are not pathway activity estimates or statistical tests.
 
-Marker-level CPM ratios are heterogeneous: at both time points CCNB1 and UBE2C are higher in the paclitaxel library, whereas MKI67, TOP2A, and CENPF are lower. (claim P04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/marker_cpm_ratios.tsv](../../transcriptomics/gse266934/results/marker_cpm_ratios.tsv).
+Marker-level CPM ratios are heterogeneous: at both time points CCNB1 and UBE2C are higher in the paclitaxel library, whereas MKI67, TOP2A, and CENPF are lower. (claim P04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/marker_cpm_ratios.tsv](../../transcriptomics/gse266934/results/marker_cpm_ratios.tsv). **Limitation:** Pooled-library CPM can shift with cell composition, survival, and library effects.
 
 ## Interpretation
 
-The treated-minus-control median interferon marker score was +0.218 at 24 hours and +0.510 at 72 hours; the selected cell-cycle score was -0.251 and -0.049, respectively. (claim P03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/module_contrasts.tsv](../../transcriptomics/gse266934/results/module_contrasts.tsv).
+The treated-minus-control median interferon marker score was +0.218 at 24 hours and +0.510 at 72 hours; the selected cell-cycle score was -0.251 and -0.049, respectively. (claim P03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934)) Artifacts: [research/transcriptomics/gse266934/results/module_contrasts.tsv](../../transcriptomics/gse266934/results/module_contrasts.tsv). **Limitation:** Scores summarize prespecified markers and are descriptive; they are not pathway activity estimates or statistical tests.
 
 ## Limitations
 
-This four-library design has one library per treatment and time point, so it cannot establish biological reproducibility, cross-context transfer, or target dependence. (claim P05; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [2](https://doi.org/10.1038/s41598-024-82218-9))
+**Claim P05:** This four-library design has one library per treatment and time point, so it cannot establish biological reproducibility, cross-context transfer, or target dependence. **Limitation:** The conclusion concerns evidence available from this particular design. ([1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [2](https://doi.org/10.1038/s41598-024-82218-9))
 
 ## Next research steps
 
@@ -42,7 +42,7 @@ This four-library design has one library per treatment and time point, so it can
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/gse266934/report-spec.json` (SHA-256 `4188643ffdbeb46522a11dfad348a017f9219d054589002a4f22954efba1173c`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. The [notebook execution receipt](../../execution-receipts/terputer-paclitaxel-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/gse266934/report-spec.json` (SHA-256 `4188643ffdbeb46522a11dfad348a017f9219d054589002a4f22954efba1173c`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. The [notebook execution receipt](../../execution-receipts/terputer-paclitaxel-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. This older receipt does not record installed-package versions. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 
