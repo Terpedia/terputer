@@ -17,7 +17,7 @@
   },
   "claim_count": 6,
   "observed_claim_count": 3,
-  "report_sha256": "bf09e951f522d301861a5a82e5bceaaa49b2002bbaf6dd13263de847d20a7ffb",
+  "report_sha256": "7513eb6508d642bdfb0f9db920498cf358b09cc4a0649484d27a0d25c86cfd6f",
   "ledger_sha256": "1c6bbc5f171973b3159d1a4daddf8de59dc8912fb951d755fc08ad21401b9b61",
   "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth."
 }

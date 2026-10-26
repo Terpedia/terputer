@@ -26,21 +26,21 @@ The quality-filtered processed matrix has 9,664 feature rows and 338 cell column
 
 ## Results
 
-Among 9,276 features detected in at least 20% of control cells, 69.8% and 64.3% have lower medians at 16 and 48 hours, respectively, than control. (claim A07; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/background_descriptive.tsv](../../transcriptomics/gse162256/results/background_descriptive.tsv).
+Among 9,276 features detected in at least 20% of control cells, 69.8% and 64.3% have lower medians at 16 and 48 hours, respectively, than control. (claim A07; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/background_descriptive.tsv](../../transcriptomics/gse162256/results/background_descriptive.tsv). **Limitation:** This is a descriptive feature-wide background in processed E-value units; feature dependence and cell-level sampling preclude an inferential gene-set test.
 
-All six predeclared cell-cycle markers have lower median reported values at both paclitaxel times than in control cells. (claim A03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/marker_descriptive.tsv](../../transcriptomics/gse162256/results/marker_descriptive.tsv).
+All six predeclared cell-cycle markers have lower median reported values at both paclitaxel times than in control cells. (claim A03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/marker_descriptive.tsv](../../transcriptomics/gse162256/results/marker_descriptive.tsv). **Limitation:** The overall processed matrix also shifts lower, so marker direction alone is not cell-cycle-specific or a count-based differential-expression estimate.
 
-Three of seven predeclared interferon markers (IFIT3, MX1, OAS1) are absent from the processed A2780 matrix, and the available markers do not show a uniformly higher median after paclitaxel. (claim A04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/marker_descriptive.tsv](../../transcriptomics/gse162256/results/marker_descriptive.tsv).
+Three of seven predeclared interferon markers (IFIT3, MX1, OAS1) are absent from the processed A2780 matrix, and the available markers do not show a uniformly higher median after paclitaxel. (claim A04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/marker_descriptive.tsv](../../transcriptomics/gse162256/results/marker_descriptive.tsv). **Limitation:** Missing features and zero-heavy expression make this panel inconclusive for cross-context pathway comparison.
 
 ## Interpretation
 
-The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect. (claim A05; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [3](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [4](https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md))
+The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect. (claim A05; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [3](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [4](https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md)) **Limitation:** No matched factorial treatment-by-cell-line analysis or independent-culture effect estimate was performed.
 
 ## Limitations
 
-The quality-filtered processed matrix has 9,664 feature rows and 338 cell columns, including 46 control, 56 paclitaxel 16-hour, and 53 paclitaxel 48-hour cells. (claim A02; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/analysis_summary.json](../../transcriptomics/gse162256/results/analysis_summary.json).
+**Claim A02:** The quality-filtered processed matrix has 9,664 feature rows and 338 cell columns, including 46 control, 56 paclitaxel 16-hour, and 53 paclitaxel 48-hour cells. **Limitation:** Cell counts do not establish independent biological culture replication. ([1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256))
 
-The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect. (claim A05; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [3](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [4](https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md))
+**Claim A05:** The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect. **Limitation:** No matched factorial treatment-by-cell-line analysis or independent-culture effect estimate was performed. ([1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [3](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [4](https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md))
 
 ## Next research steps
 
@@ -48,7 +48,7 @@ The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose,
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/gse162256/report-spec.json` (SHA-256 `b0bb565abb801455b458e19403d0b0dcbde6ad474586581660b97af90767ad36`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. The [notebook execution receipt](../../execution-receipts/terputer-gse162256-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/gse162256/report-spec.json` (SHA-256 `b0bb565abb801455b458e19403d0b0dcbde6ad474586581660b97af90767ad36`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. The [notebook execution receipt](../../execution-receipts/terputer-gse162256-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. This older receipt does not record installed-package versions. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 
