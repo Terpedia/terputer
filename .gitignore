@@ -8,3 +8,4 @@ node_modules/
 notebooks/.ipynb_checkpoints/
 dist/
 research/penicillium-limonene-supplement/data/*.xlsx
+research/fusarium-proliferatum-dlimonene-supplement/data/*.xlsx

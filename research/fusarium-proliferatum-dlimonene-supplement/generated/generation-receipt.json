@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/fusarium-proliferatum-dlimonene-supplement/report-spec.json",
+  "manifest_sha256": "27111111eaea59085daf0b97b8ba74ff8adef5cad49c42b5b1773448c3c43a6d",
+  "notebook": "notebooks/terputer-fusarium-proliferatum-dlimonene-supplement.ipynb",
+  "notebook_sha256": "f6d6a0d963ac6dff57ea464ec860c3fa8f3a1acd70e2be5f55a0a4da7789bc9c",
+  "executed_code_cells": 3,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-fusarium-proliferatum-dlimonene-supplement.json",
+  "notebook_execution_receipt_sha256": "87b2edfda6225bb8d2ee003dae0eb59116e97d7e308b5a764db9c29c5dc5f821",
+  "artifact_sha256": {
+    "research/fusarium-proliferatum-dlimonene-supplement/results/acetylation_pathways.tsv": "dc76c984074db5fe3a2b0b80fb631b0992f6d41ee139628f98be07fc93511617",
+    "research/fusarium-proliferatum-dlimonene-supplement/results/analysis_summary.json": "eda42838452d005c68b4acf72b1c227fe633aa269bd45b2c78a44c658e70c51a",
+    "research/fusarium-proliferatum-dlimonene-supplement/results/published_degs.tsv": "a13896504b98e0fe2efba97bdc7085f6fdb6fd2d2f51b7751241964575820e65",
+    "research/fusarium-proliferatum-dlimonene-supplement/results/sample_qc.tsv": "398652f56f92a457df2087e9a9f8621ec182be85a358f1c068c0ab2c92fd8c81"
+  },
+  "input_sha256": {
+    "research/fusarium-proliferatum-dlimonene-supplement/data/12864_2025_12389_MOESM2_ESM.xlsx": "bfedef70fb595d62d0c8080b3dfe67f9d8b8291fcb43af2b5642ce6d89489212"
+  },
+  "external_data_inputs": [
+    {
+      "path": "research/fusarium-proliferatum-dlimonene-supplement/data/12864_2025_12389_MOESM2_ESM.xlsx",
+      "url": "https://static-content.springer.com/esm/art%3A10.1186%2Fs12864-025-12389-w/MediaObjects/12864_2025_12389_MOESM2_ESM.xlsx",
+      "sha256": "bfedef70fb595d62d0c8080b3dfe67f9d8b8291fcb43af2b5642ce6d89489212"
+    }
+  ],
+  "claim_count": 8,
+  "observed_claim_count": 4,
+  "report_sha256": "67c6b886538cad8d52ba7d5769412604ce623b8c3b21ef5910f753758740f1d1",
+  "ledger_sha256": "f04c8b77b80330093d0f63137a96464e8f8bb8e1cbd23fedf75a280b67439e2a",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth."
+}
