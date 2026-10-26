@@ -12,6 +12,19 @@ const kbBase = (process.env.TERPEDIA_KB_API_URL || 'https://terpedia-knowledge-n
 const chatBase = (process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
 
+async function terpediaKeyValid() {
+  const key = process.env.TERPEDIA_API_KEY;
+  if (!key) return false;
+  try {
+    const response = await fetch(`${chatBase}/api/terputer/keys/introspect`, {
+      method: 'POST', headers: { 'x-api-key': key }, signal: AbortSignal.timeout(8000)
+    });
+    if (!response.ok) return false;
+    const result = await response.json();
+    return result.valid === true && Array.isArray(result.scopes) && result.scopes.includes('terputer:research');
+  } catch { return false; }
+}
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const setJson = (status, data) => { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(data)); };
@@ -65,6 +78,7 @@ const server = createServer(async (req, res) => {
   if (url.pathname === '/api/notebook/load' && req.method === 'GET') { try { const slug = url.searchParams.get('slug') || ''; if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(slug)) { setJson(400, { error: 'Invalid notebook name.' }); return; } const content = await readFile(join(root, 'notebooks', `${slug}.ipynb`), 'utf8'); const notebook = JSON.parse(content); if (notebook.nbformat !== 4 || !Array.isArray(notebook.cells)) { setJson(400, { error: 'File is not a supported Jupyter notebook.' }); return; } setJson(200, { notebook }); } catch { setJson(404, { error: 'Notebook was not found in this Codespace repository.' }); } return; }
   if (url.pathname === '/api/notebook/save' && req.method === 'PUT') { try { let body = ''; for await (const chunk of req) { body += chunk; if (body.length > 5_000_000) { setJson(413, { error: 'Notebook exceeds 5 MB.' }); return; } } const input = JSON.parse(body); const slug = String(input.slug || 'research-notebook'); const valid = /^[a-z0-9][a-z0-9-]{0,79}$/.test(slug); const notebook = input.notebook; if (!valid || notebook?.nbformat !== 4 || !Array.isArray(notebook.cells)) { setJson(400, { error: 'Provide a valid notebook and lowercase notebook slug.' }); return; } const dir = join(root, 'notebooks'); await mkdir(dir, { recursive: true }); const path = join(dir, `${slug}.ipynb`); await writeFile(path, JSON.stringify(notebook, null, 2), { mode: 0o600 }); setJson(200, { path: `notebooks/${slug}.ipynb`, saved: true }); } catch (error) { setJson(400, { error: error instanceof Error ? error.message : 'Notebook save failed.' }); } return; }
   if (url.pathname === '/api/kb/search' && req.method === 'POST') {
+    if (!(await terpediaKeyValid())) { setJson(401, { error: 'Set a valid TERPEDIA_API_KEY as a Codespaces secret.' }); return; }
     const key = process.env.TERPEDIA_KNOWLEDGE_API_KEY;
     if (!key) { res.writeHead(503, { 'content-type': 'application/json' }); res.end(JSON.stringify({ error: 'Set TERPEDIA_KNOWLEDGE_API_KEY in the server environment.' })); return; }
     try {
