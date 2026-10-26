@@ -18,6 +18,7 @@ const privateTools = [
   tool('search_terpedia_bigquery', 'Search Terpedia BigQuery-backed knowledge records with source provenance.', { query: { type: 'string', minLength: 2, maxLength: 500 }, source: { type: 'string', default: 'all' }, limit: count(20, 8) }, ['query']),
   tool('search_transcriptomic_studies', 'Search curated transcriptomic studies in Terpedia BigQuery.', { query: { type: 'string', minLength: 2, maxLength: 200 }, limit: count(30, 10) }, ['query']),
   tool('get_transcriptomic_samples', 'List curated sample metadata for a study accession from Terpedia BigQuery.', { accession: { type: 'string', minLength: 4, maxLength: 30 } }, ['accession']),
+  tool('get_transcriptomic_evidence', 'Get curated contrasts and evidence-graded observations for a study accession from Terpedia BigQuery, including provenance and limitations.', { accession: { type: 'string', minLength: 4, maxLength: 30 } }, ['accession']),
 ];
 
 export const allTools = [...publicTools, ...privateTools];
