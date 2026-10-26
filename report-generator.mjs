@@ -156,13 +156,17 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
       const file = workspacePath(value, ['research']);
       return `[${file.name}](${relative(outputDir, file.path).split(sep).join('/')})`;
     }) : [];
-    const prefix = claim.class === 'proposed' ? '**Proposed:** ' : '';
+    const prefix = {
+      observed: '**Observed in notebook:** ',
+      'source-reported': '**Source-reported:** ',
+      proposed: '**Proposed:** ',
+    }[claim.class];
     return `${prefix}${claim.text} (claim ${id}; ${refs})${artifactLinks.length ? ` Artifacts: ${artifactLinks.join(', ')}.` : ''}${includeLimitation ? ` **Limitation:** ${claim.limitation}` : ''}`;
   };
   const limitationLine = (id) => {
     const claim = claims.get(id);
     const refs = claim.sources.map((sourceId) => `[${sourceNumbers.get(sourceId)}](${sources.get(sourceId).url})`).join(', ');
-    return `**Claim ${id}:** ${claim.text} **Limitation:** ${claim.limitation} (${refs})`;
+    return `**Claim ${id} (${claim.class}):** ${claim.text} **Limitation:** ${claim.limitation} (${refs})`;
   };
   const headings = { background: 'Background', methods: 'Methods', results: 'Results', interpretation: 'Interpretation', limitations: 'Limitations', next_steps: 'Next research steps' };
   const lines = [
