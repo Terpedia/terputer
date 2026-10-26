@@ -1,0 +1,9 @@
+study	accession	matrix_column	sex	strain	tissue	group_from_title	treatment_protocol_field	label_status
+GSE230454	GSM7224065	ConF_1	female	SW	DRG	control	saline	consistent
+GSE230454	GSM7224066	ConF_2	female	SW	DRG	control	saline	consistent
+GSE230454	GSM7224067	ConF_3	female	SW	DRG	control	saline	consistent
+GSE230454	GSM7224068	ConF_4	female	SW	DRG	control	saline	consistent
+GSE230459	GSM7224087	PacF_1	female	SW	DRG	paclitaxel	saline	conflict
+GSE230459	GSM7224088	PacF_2	female	SW	DRG	paclitaxel	saline	conflict
+GSE230459	GSM7224089	PacF_3	female	SW	DRG	paclitaxel	saline	conflict
+GSE230459	GSM7224090	PacF_4	female	SW	DRG	paclitaxel	saline	conflict

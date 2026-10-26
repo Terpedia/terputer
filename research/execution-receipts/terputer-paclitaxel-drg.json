@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "runner": "terputer-notebook-runner-v1",
+  "notebook": "notebooks/terputer-paclitaxel-drg.ipynb",
+  "source_notebook_sha256": "f6cfaeb3437ba2a4e926f1e7179a74e61ed25701134a0b0921049ffcc89857f9",
+  "notebook_sha256": "05a492a24448308326d229464b1e485dd3513bf229bc806060be07b76c26b6dd",
+  "executed_code_cells": 2,
+  "artifacts_written": {
+    "research/transcriptomics/gse230454-459/results/sample_qc.tsv": "f0b40cbead279d737bca73ee60668315eeb642f8cfc960dc25310ecd89ca5714",
+    "research/transcriptomics/gse230454-459/results/background_summary.json": "f6d5423867596b2f116ff92a37a79d138bd6c3c2df9c45e0c946accaa7ba34c9",
+    "research/transcriptomics/gse230454-459/results/marker_descriptive.tsv": "8ae43f5ec475b8927a7ec3266f39d19435bc3d3a6d83cb1bd4beb883e9da7910",
+    "research/transcriptomics/gse230454-459/results/analysis_summary.json": "029912c4f0cd504f0f72d3c7c94988d251e4b9c246a1102c711f3a33442fbb60"
+  },
+  "python_version": "3.11.13",
+  "completed_at_utc": "2026-10-26T15:46:38.829369+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "study": "GSE230454 control versus GSE230459 paclitaxel",
+  "organism": "Mus musculus",
+  "tissue": "female SW mouse dorsal root ganglia",
+  "samples_per_arm": 4,
+  "feature_rows": 48431,
+  "source_sha256": {
+    "control": "f982c3e9066d2608e62e0527f1d6386fd76767ce446f677fa3012c05c4dd5f47",
+    "paclitaxel": "f89bbdd95fda8eccd9d735bac7217e2acc6b83808b840af87f0e7dbeb8a1cbdb"
+  },
+  "metadata_conflict": "GSE230459 sample titles say Pax; their treatment_protocol fields say saline. Source paper describes paclitaxel dosing. Treat exposure labels as provisional until reconciled with submitter/raw metadata.",
+  "interpretation": "Processed TPM descriptive contrast; no count-aware differential expression, pathway enrichment, or target inference."
+}
