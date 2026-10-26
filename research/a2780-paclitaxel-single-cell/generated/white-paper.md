@@ -4,13 +4,15 @@
 
 **Research question:** Which predeclared response markers change after paclitaxel exposure in A2780 cells, and what can be compared with HCC1143?
 
-**Notebook:** `notebooks/terputer-gse162256-single-cell.ipynb` · SHA-256 `9dad041e6ae95b51fd1ff26f5aca8004fb35c5ae5459714b3be96a408fa52d1f` · 2 executed code cells
+**Notebook:** `notebooks/terputer-gse162256-single-cell.ipynb` · SHA-256 `3591e9f4027d6ac96427e0eff4eb2aee0a648cb75e7b79a4157436b7e2fc575a` · 2 executed code cells
 
 ## Abstract
 
 GSE162256 profiles A2780 cells after paclitaxel, celecoxib, their combination, or control; the paclitaxel arms used here are 5 nM at 16 and 48 hours. (claim A01; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [2](https://pmc.ncbi.nlm.nih.gov/articles/PMC8210883/))
 
 All six predeclared cell-cycle markers have lower median reported values at both paclitaxel times than in control cells. (claim A03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256))
+
+Among 9,276 features detected in at least 20% of control cells, 69.8% and 64.3% have lower medians at 16 and 48 hours, respectively, than control. (claim A07; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256))
 
 The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose, exposure time, assay, and processing; marker-direction disagreement does not isolate a cell-context effect. (claim A05; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), [3](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934), [4](https://github.com/Terpedia/terputer/blob/e7a775db7c4354db4466e885a3aa97de8ba180cd/research/transcriptomics/white-paper.md))
 
@@ -23,6 +25,8 @@ GSE162256 profiles A2780 cells after paclitaxel, celecoxib, their combination, o
 The quality-filtered processed matrix has 9,664 feature rows and 338 cell columns, including 46 control, 56 paclitaxel 16-hour, and 53 paclitaxel 48-hour cells. (claim A02; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/analysis_summary.json](../../transcriptomics/gse162256/results/analysis_summary.json).
 
 ## Results
+
+Among 9,276 features detected in at least 20% of control cells, 69.8% and 64.3% have lower medians at 16 and 48 hours, respectively, than control. (claim A07; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/background_descriptive.tsv](../../transcriptomics/gse162256/results/background_descriptive.tsv).
 
 All six predeclared cell-cycle markers have lower median reported values at both paclitaxel times than in control cells. (claim A03; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256)) Artifacts: [research/transcriptomics/gse162256/results/marker_descriptive.tsv](../../transcriptomics/gse162256/results/marker_descriptive.tsv).
 
@@ -44,7 +48,7 @@ The A2780 and HCC1143 single-cell examples differ in cell line, paclitaxel dose,
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/gse162256/report-spec.json` (SHA-256 `2fe5f6cd7093a2853412b2376ccc40e4a5886fea148fe8cfd57c5a7aa9ef2562`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. The [notebook execution receipt](../../execution-receipts/terputer-gse162256-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/gse162256/report-spec.json` (SHA-256 `b0bb565abb801455b458e19403d0b0dcbde6ad474586581660b97af90767ad36`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. The [notebook execution receipt](../../execution-receipts/terputer-gse162256-single-cell.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 

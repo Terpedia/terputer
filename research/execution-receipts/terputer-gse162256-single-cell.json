@@ -2,13 +2,14 @@
   "schema_version": 2,
   "runner": "terputer-notebook-runner-v1",
   "notebook": "notebooks/terputer-gse162256-single-cell.ipynb",
-  "source_notebook_sha256": "e855215ca82dd646f60cc017fc34c2726e4c7b798e275324bfe7d1352e5f00e1",
-  "notebook_sha256": "9dad041e6ae95b51fd1ff26f5aca8004fb35c5ae5459714b3be96a408fa52d1f",
+  "source_notebook_sha256": "f89720d63bdd57ae2ec2b57d7d00732a9f003aeba7cb15f83dfceb5f0879bcd4",
+  "notebook_sha256": "3591e9f4027d6ac96427e0eff4eb2aee0a648cb75e7b79a4157436b7e2fc575a",
   "executed_code_cells": 2,
   "artifacts_written": {
-    "research/transcriptomics/gse162256/results/marker_descriptive.tsv": "6c542b43d3c825ed0adc622a4537f1eeece7a78c2ce9ec5f6b6164a88abd43e5",
-    "research/transcriptomics/gse162256/results/analysis_summary.json": "7ed6b62f42d13f7614492a294549db6fb7a5262f9345783c008167c95b2a03c5"
+    "research/transcriptomics/gse162256/results/marker_descriptive.tsv": "457e4dbdc03623d6b9a14c9120504fc6484822d3fc9e5e9fa037af4760def38e",
+    "research/transcriptomics/gse162256/results/analysis_summary.json": "7ed6b62f42d13f7614492a294549db6fb7a5262f9345783c008167c95b2a03c5",
+    "research/transcriptomics/gse162256/results/background_descriptive.tsv": "3014e6aebce6b556291e9c4a606caa124b48465d9c3105533852054e06fce5d1"
   },
   "python_version": "3.11.13",
-  "completed_at_utc": "2026-10-26T15:27:50.413626+00:00"
+  "completed_at_utc": "2026-10-26T15:32:51.447745+00:00"
 }
