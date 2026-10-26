@@ -2,6 +2,8 @@
 
 Terputer is a repo-backed, Codespaces-native bioinformatics workspace. It combines Terpedia research chat with editable Jupyter notebook cells and a Python kernel inside the user's own GitHub Codespace.
 
+The public [Terputer Codespace example](https://terputer.terpedia.com) opens a ready-to-run transcriptomics workspace. Its [example repository](https://github.com/Terpedia/terpedia-transcriptomics-demo) includes the executed notebook, white paper, critical review, and pinned data. The [example overview](https://terputer.terpedia.com/about) links to each artifact.
+
 ## User workflow
 
 1. Push this repository to GitHub.

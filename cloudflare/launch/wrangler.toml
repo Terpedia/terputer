@@ -1,0 +1,9 @@
+name = "terputer-codespace-launch"
+account_id = "d23f8be6287f2159b130013d4e2d9c30"
+main = "worker.mjs"
+compatibility_date = "2026-10-26"
+workers_dev = true
+
+[[routes]]
+pattern = "terputer.terpedia.com"
+custom_domain = true
