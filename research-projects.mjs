@@ -98,12 +98,13 @@ async function attachWithLinkedGithub(slug, commit, repository, session) {
   return { ...result, attachedRemotely: true, localSyncRequired: true };
 }
 
-export async function addResearchProjectSubmodule({ slug, repository, commit }, session = process.env.TERPUTER_GITHUB_SESSION) {
+export async function addResearchProjectSubmodule({ slug, repository, commit: requestedCommit }, session = process.env.TERPUTER_GITHUB_SESSION) {
   if (session) {
-    return attachWithLinkedGithub(slug, commit, repository, session);
+    return attachWithLinkedGithub(slug, requestedCommit, repository, session);
   }
   const user = await reportRepository();
   if (!slugPattern.test(slug || '')) throw new Error('Use a lowercase project slug with letters, numbers, and hyphens.');
+  if (requestedCommit != null && !/^[a-f0-9]{40}$/.test(String(requestedCommit))) throw new Error('Invalid project commit SHA.');
   const expected = `https://github.com/${user}/terpedia-${slug}`;
   if (repository && repository.replace(/\.git$/, '').toLowerCase() !== expected.toLowerCase()) {
     throw new Error(`The project repository must be ${expected}.`);
@@ -114,7 +115,18 @@ export async function addResearchProjectSubmodule({ slug, repository, commit }, 
     const url = registered.stdout.trim().replace(/\.git$/, '');
     if (url.toLowerCase() !== expected.toLowerCase()) throw new Error(`${path} already points to a different repository.`);
     await command('git', ['submodule', 'update', '--init', '--', path]);
-    return { path, repository: expected, commit: await command('git', ['-C', path, 'rev-parse', 'HEAD']), staged: false, alreadyAttached: true };
+    const currentCommit = await command('git', ['-C', path, 'rev-parse', 'HEAD']);
+    if (!requestedCommit || requestedCommit === currentCommit) {
+      return { path, repository: expected, commit: currentCommit, staged: false, alreadyAttached: true };
+    }
+    if (await command('git', ['-C', path, 'status', '--porcelain'])) {
+      throw new Error(`${path} has local changes; commit or stash them before changing its pinned revision.`);
+    }
+    await command('git', ['-C', path, 'fetch', 'origin']);
+    await command('git', ['-C', path, 'cat-file', '-e', `${requestedCommit}^{commit}`]);
+    await command('git', ['-C', path, 'checkout', '--detach', requestedCommit]);
+    await command('git', ['add', '--', path]);
+    return { path, repository: expected, commit: requestedCommit, staged: true, alreadyAttached: true, next: 'Review and commit the staged submodule pointer, then push your report repository.' };
   }
   await access(join(root, path)).then(() => { throw new Error(`${path} already exists.`); }).catch((error) => {
     if (error.code !== 'ENOENT') throw error;
@@ -122,9 +134,14 @@ export async function addResearchProjectSubmodule({ slug, repository, commit }, 
   const repo = JSON.parse(await command('gh', ['api', `repos/${user}/terpedia-${slug}`]));
   if (repo.owner?.login?.toLowerCase() !== user.toLowerCase()) throw new Error('Project repository is not owned by the authenticated user.');
   await command('git', ['submodule', 'add', repo.clone_url, path]);
+  if (requestedCommit) {
+    await command('git', ['-C', path, 'fetch', 'origin']);
+    await command('git', ['-C', path, 'cat-file', '-e', `${requestedCommit}^{commit}`]);
+    await command('git', ['-C', path, 'checkout', '--detach', requestedCommit]);
+  }
   await command('git', ['add', '--', '.gitmodules', path]);
-  const commit = await command('git', ['-C', path, 'rev-parse', 'HEAD']);
-  return { path, repository: repo.html_url, commit, staged: true, next: 'Review and commit the staged .gitmodules and submodule pointer, then push your report repository.' };
+  const pinnedCommit = await command('git', ['-C', path, 'rev-parse', 'HEAD']);
+  return { path, repository: repo.html_url, commit: pinnedCommit, staged: true, next: 'Review and commit the staged .gitmodules and submodule pointer, then push your report repository.' };
 }
 
 export async function updateResearchProjectSubmodule({ slug }, session = process.env.TERPUTER_GITHUB_SESSION) {
