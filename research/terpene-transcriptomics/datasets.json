@@ -1,0 +1,192 @@
+{
+  "project": "terpene-transcriptomics",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "discovery_date": "2026-10-26",
+  "status": "three_priority_studies_selected_sample_manifest_verified_metadata_only",
+  "candidates": [
+    {
+      "id": "GSE138291",
+      "accessions": {
+        "geo": "GSE138291",
+        "bioproject": "PRJNA575349"
+      },
+      "title": "Transcriptome analysis of Botrytis cinerea in response to tea tree oil and its two characteristic components",
+      "organism": {
+        "name": "Botrytis cinerea",
+        "taxid": 40559
+      },
+      "assay": "bulk RNA-seq",
+      "design": {
+        "replicates": 3,
+        "arms_reported": [
+          "tea tree oil",
+          "terpinen-4-ol",
+          "1,8-cineole",
+          "untreated control"
+        ],
+        "time": "2 h at 25 C",
+        "dose": "0.5 uL/mL for each treatment arm",
+        "strain": "B05.10",
+        "samples_per_arm": 3
+      },
+      "compounds": [
+        "terpinen-4-ol",
+        "1,8-cineole",
+        "tea tree oil mixture"
+      ],
+      "priority": "high",
+      "use": "Pure-compound arms for fungal exposure comparisons; preserve essential-oil mixture as a separate treatment entity.",
+      "notes": "GEO family SOFT maps 15 samples to five arms (three each); raw reads in SRA SRP223939 and processed FPKM/GFF on GEO. No-treatment control lacks a matching solvent-only arm in the deposited metadata. Pure compounds and both mixtures remain distinct.",
+      "sources": [
+        "https://www.ncbi.nlm.nih.gov/bioproject/575349",
+        "https://doi.org/10.3389/fmicb.2019.01253"
+      ]
+    },
+    {
+      "id": "P_digitatum_limonene_2020",
+      "accessions": {
+        "publication": "https://doi.org/10.3389/fmicb.2020.00744",
+        "bioproject_rnaseq": "PRJNA608617",
+        "bioproject_genome": "PRJNA608770"
+      },
+      "title": "Genomic and Transcriptomic Study for Screening Genes Involved in the Limonene Biotransformation of Penicillium digitatum DSM 62840",
+      "organism": {
+        "name": "Penicillium digitatum DSM 62840"
+      },
+      "assay": "bulk RNA-seq",
+      "design": {
+        "replicates": 2,
+        "arms_reported": [
+          "0 h untreated",
+          "12 h untreated",
+          "12 h limonene, 840 mg/L"
+        ]
+      },
+      "compounds": [
+        "R-(+)-limonene"
+      ],
+      "priority": "medium",
+      "use": "Biotransformation/metabolic response; model treated-vs-time-matched control as primary contrast and 0 h as a separate time contrast.",
+      "notes": "ENA BioSample titles map six paired-end runs to 0 h untreated (2), 12 h untreated (2), and 12 h R-(+)-limonene (2). Raw reads are available; no GEO processed count matrix identified. Use the time-matched contrast. Two replicates constrain variance estimation.",
+      "sources": [
+        "https://doi.org/10.3389/fmicb.2020.00744"
+      ]
+    },
+    {
+      "id": "PRJNA913446",
+      "accessions": {
+        "bioproject": "PRJNA913446",
+        "publication": "https://doi.org/10.3390/ijms24010458",
+        "proteomics": "PXD038942"
+      },
+      "title": "Linalool antifungal response in Fusarium oxysporum f. sp. radicis-lycopersici",
+      "organism": {
+        "name": "Fusarium oxysporum f. sp. radicis-lycopersici"
+      },
+      "assay": "bulk RNA-seq; paired-end raw reads; associated proteomics",
+      "design": {
+        "replicates_per_arm": 3,
+        "arms": [
+          "0.1% Tween80 vehicle control",
+          "0.8 mL/L linalool in 0.1% Tween80"
+        ],
+        "duration": "6 days",
+        "temperature": "25 C"
+      },
+      "compounds": [
+        "linalool; stereochemistry not resolved in checked source"
+      ],
+      "priority": "high",
+      "use": "Defined linalool-versus-vehicle fungal contrast; compare with bacterial linalool only at broad process level until orthology and toxicity context are resolved.",
+      "notes": "ENA run report maps CK_1-3 and L800_1-3 to six paired-end runs. Long inhibitory exposure may capture secondary growth effects. Host tomato qPCR claims in the paper are separate from fungal RNA-seq.",
+      "sources": [
+        "https://www.ebi.ac.uk/ena/browser/view/PRJNA913446",
+        "https://doi.org/10.3390/ijms24010458"
+      ]
+    },
+    {
+      "id": "GSE136998",
+      "accessions": {
+        "geo": "GSE136998"
+      },
+      "title": "Anti-listeria Activities of Linalool and Its Mechanism Revealed by Comparative Transcriptome Analysis",
+      "organism": {
+        "name": "Listeria monocytogenes ATCC 19115"
+      },
+      "assay": "bulk RNA-seq",
+      "design": {
+        "deposited_timepoint_hours": [
+          8
+        ],
+        "paper_describes_timepoints_hours": [
+          4,
+          8,
+          12
+        ],
+        "dose": "1x MIC; 0.5% v/v or 4.35 mg/mL",
+        "control": "untreated control; vehicle handling to verify",
+        "replicates": 3
+      },
+      "compounds": [
+        "linalool; source reports 95% material, stereochemistry not resolved in current evidence"
+      ],
+      "priority": "high",
+      "use": "Existing descriptive bacterial pilot. Retain as a separate kingdom/context stratum; do not call comparison with fungal linalool studies a direct replication.",
+      "notes": "GEO series record documents only the 8 h contrast at 1x MIC; the article describes sampling at 4, 8 and 12 h, so do not assume all timepoints are deposited. GEO sample names show three replicates for each of the documented control (LM-DZ1-3) and treated (LM-FZC1-3) groups. Treatment at MIC may contain late/terminal stress effects.",
+      "sources": [
+        "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998",
+        "https://doi.org/10.3389/fmicb.2019.02947"
+      ]
+    },
+    {
+      "id": "B_cinerea_linalool_2019",
+      "accessions": {
+        "publication": "https://doi.org/10.1021/acs.jafc.9b03103"
+      },
+      "title": "Unveiling the Mechanisms for the Plant Volatile Organic Compound Linalool To Control Gray Mold on Strawberry Fruits",
+      "organism": {
+        "name": "Botrytis cinerea"
+      },
+      "assay": "RNA-seq, proteomics, biochemical assays",
+      "design": {
+        "timepoints_minutes": [
+          30,
+          120
+        ],
+        "replicates": "verify in paper/supplement"
+      },
+      "compounds": [
+        "linalool; confirm stereochemistry and fumigation dose from methods"
+      ],
+      "priority": "medium",
+      "use": "Potential within-species linalool time-course comparator; rich orthogonal phenotype evidence.",
+      "notes": "Publication reports RNA-seq, proteome, ergosterol/membrane, mitochondrial potential, ATP and ROS results. Confirm public accession and raw data availability before ingestion.",
+      "sources": [
+        "https://doi.org/10.1021/acs.jafc.9b03103",
+        "https://pubmed.ncbi.nlm.nih.gov/31361479/"
+      ]
+    },
+    {
+      "id": "PerturbSeqr_catalog",
+      "accessions": {
+        "catalog": "PerturbSeqr"
+      },
+      "title": "PerturbSeqr signature catalog",
+      "organism": "multiple",
+      "assay": "processed compound and genetic perturbation signatures from multiple resources",
+      "priority": "discovery_only",
+      "use": "Search for cell-context-matched genetic perturbations of candidate signaling targets/pathway genes after target nomination. Not a terpene-exposure dataset and not a substitute for source-level validation.",
+      "notes": "Catalog includes LINCS, Sci-Plex, Tahoe, RummaGEO, PerturbAtlas, CM4AI and other datasets. Inspect compound identity and underlying accession at signature level.",
+      "sources": [
+        "https://perturbseqr.maayanlab.cloud/download"
+      ]
+    }
+  ],
+  "exclusion_rules": [
+    "Do not treat terpene biosynthesis/chemotype/developmental expression datasets as exogenous terpene exposure.",
+    "Do not pool essential oils or plant extracts with pure-compound arms.",
+    "Do not treat non-terpene volatile organic compounds as terpene exposures.",
+    "Do not generalize fungal/bacterial exposure signatures to mammalian cell signaling.",
+    "Do not call pathway enrichment or a Perturb-seq signature proof of direct molecular target engagement."
+  ]
+}

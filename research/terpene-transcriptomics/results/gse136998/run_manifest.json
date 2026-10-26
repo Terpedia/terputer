@@ -1,0 +1,26 @@
+{
+  "accession": "GSE136998",
+  "source_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE136nnn/GSE136998/suppl/GSE136998_rsem.genes.fpkm.table.txt.gz",
+  "source_sha256": "f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811",
+  "source_last_modified": "Fri, 06 Sep 2019 11:54:46 GMT",
+  "retrieved_at_utc": "2026-10-26T12:00:33.450713+00:00",
+  "expression_measure": "RSEM FPKM, GEO supplementary matrix",
+  "samples": {
+    "LM-DZ1": "control",
+    "LM-DZ2": "control",
+    "LM-DZ3": "control",
+    "LM-FZC1": "linalool_8h_1xMIC",
+    "LM-FZC2": "linalool_8h_1xMIC",
+    "LM-FZC3": "linalool_8h_1xMIC"
+  },
+  "contrast": "linalool 8 h at 1x MIC vs untreated control",
+  "method": "arithmetic mean FPKM by group and log2 ratio with 0.1 pseudocount",
+  "limitations": [
+    "Descriptive screen only; no p-values or false-discovery estimates.",
+    "FPKM is not an appropriate input for count-based DE inference.",
+    "Gene IDs are GEO geneN identifiers; annotation crosswalk is required.",
+    "Three replicates per group; exposure is at the reported MIC."
+  ],
+  "gene_rows": 2976,
+  "output": "descriptive_gene_effects.tsv"
+}
