@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "slug": "hepg2-bcp-rsem",
+  "title": "β-Caryophyllene exposure in HepG2: an executed processed-count audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-hepg2-bcp-rsem.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-hepg2-bcp-rsem.json",
+  "data_inputs": [
+    {
+      "path": "research/hepg2-bcp-rsem/data/GSE276099_readCounts.csv.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE276nnn/GSE276099/suppl/GSE276099_readCounts.csv.gz",
+      "sha256": "0b9c79088d962c49b0bbd3832a98646daba23985c51f4153cc4f938151c98aeb"
+    }
+  ],
+  "sources": [
+    {"id": "geo", "title": "GEO GSE276099 series and six sample records", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE276099"},
+    {"id": "matrix", "title": "GSE276099 supplementary readCounts matrix", "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE276nnn/GSE276099/suppl/GSE276099_readCounts.csv.gz"},
+    {"id": "paper", "title": "Basheer et al., β-caryophyllene and MAPK signaling in HCC (2024)", "url": "https://doi.org/10.3389/fphar.2024.1492670"}
+  ],
+  "claims": [
+    {
+      "id": "C01", "class": "source-reported",
+      "text": "GSE276099 contains three HepG2 ethanol-vehicle and three β-caryophyllene bulk RNA-seq libraries. The common sample protocol says 150 µM for 24 hours, whereas the per-sample treatment fields show 150, 151, and 152 µM in replicate order for both arms.",
+      "sources": ["geo"],
+      "limitation": "The archive does not explain the replicate dose-field discrepancy; do not infer a deliberate dose series."
+    },
+    {
+      "id": "C02", "class": "observed",
+      "text": "The pinned supplementary file has 17,054 rows; 17,034 rows have numeric gene IDs and six complete nonnegative columns. Twenty gene-set-like rows have all six count cells blank, and 75,830 retained numeric entries are fractional.",
+      "sources": ["matrix", "geo"],
+      "artifacts": ["research/hepg2-bcp-rsem/results/analysis_summary.json", "research/hepg2-bcp-rsem/results/sample_qc.tsv"],
+      "limitation": "The deposited file is described as read counts, but its fractional values are processed estimates, not independent evidence of integer raw counts."
+    },
+    {
+      "id": "C03", "class": "observed",
+      "text": "Across the 17,034 retained genes, median pairwise Pearson correlations of log1p(CPM) are 0.994 within controls, 0.998 within treated libraries, and 0.994 between arms.",
+      "sources": ["matrix"],
+      "artifacts": ["research/hepg2-bcp-rsem/results/analysis_summary.json", "research/hepg2-bcp-rsem/results/sample_correlations.tsv"],
+      "limitation": "CPM is scaled from the retained gene rows. High correlations neither establish biological replication nor exclude treatment effects."
+    },
+    {
+      "id": "C04", "class": "observed",
+      "text": "Among 12,321 genes with mean CPM at least 1 in either arm, descriptive group-mean ratios with a 0.1 CPM pseudocount place 74 at least twofold higher and 146 at least twofold lower after exposure; a 1.0 CPM pseudocount gives 34 higher and 79 lower.",
+      "sources": ["matrix"],
+      "artifacts": ["research/hepg2-bcp-rsem/results/analysis_summary.json", "research/hepg2-bcp-rsem/results/descriptive_effects.tsv"],
+      "limitation": "These pseudocount-sensitive counts are not differentially expressed gene calls and have no fitted variance or adjusted p-values."
+    },
+    {
+      "id": "C05", "class": "observed",
+      "text": "PGF mean CPM is 1.924 in vehicle and 0.760 after β-caryophyllene, a descriptive log2 ratio of -1.235 with a 0.1 CPM pseudocount. NR4A1 and CSF1R trend higher, while ARTN and CACNA1E trend lower in the same matrix.",
+      "sources": ["matrix", "paper"],
+      "artifacts": ["research/hepg2-bcp-rsem/results/analysis_summary.json", "research/hepg2-bcp-rsem/results/descriptive_effects.tsv"],
+      "limitation": "This confirms only direction in the deposited matrix, not statistical significance, MAPK pathway activity, direct molecular binding, or the paper's PGF rescue experiment."
+    },
+    {
+      "id": "C06", "class": "source-reported",
+      "text": "The source article reports 433 protein-coding DEGs and a PGF/MAPK-related response, including a PGF overexpression experiment that changed β-caryophyllene sensitivity.",
+      "sources": ["paper", "geo"],
+      "limitation": "The notebook does not reproduce the original differential-expression model, pathway analysis, or functional experiment. The reported response does not establish direct ligand binding to PGF."
+    },
+    {
+      "id": "C07", "class": "proposed",
+      "text": "Obtain the six original sequencing runs and a pinned human annotation, clarify dose metadata, and fit a prespecified count model with biological-replicate uncertainty. Compare the inferred effect with the deposited matrix and reported 433-DEG list.",
+      "sources": ["geo", "paper"],
+      "limitation": "Raw-read reprocessing and inferential comparison have not been executed in this project."
+    },
+    {
+      "id": "C08", "class": "proposed",
+      "text": "Study β-caryophyllene in additional cell types or states with matched vehicle controls and target perturbations before calling the PGF/MAPK response reproducible or target-dependent across cellular contexts.",
+      "sources": ["geo", "paper"],
+      "limitation": "This cohort contains one human cell line, one treatment condition, and no genetic Perturb-seq contrast."
+    }
+  ],
+  "abstract": ["C02", "C04", "C05"],
+  "sections": {
+    "background": ["C01", "C06"],
+    "methods": ["C02", "C03", "C04"],
+    "results": ["C03", "C04", "C05"],
+    "interpretation": ["C05", "C06"],
+    "limitations": ["C01", "C02", "C04", "C08"],
+    "next_steps": ["C07", "C08"]
+  }
+}
