@@ -30,7 +30,7 @@ export async function generateResearchReport(manifestPath) {
   const manifestFile = workspacePath(manifestPath, ['research']);
   const manifestBytes = await readFile(manifestFile.path);
   const spec = JSON.parse(manifestBytes.toString('utf8'));
-  if (spec.schema_version !== 1) throw new Error('Report specification requires schema_version 1');
+  if (![1, 2].includes(spec.schema_version)) throw new Error('Report specification requires schema_version 1 or 2');
   const title = text(spec.title, 'Title');
   const question = text(spec.question, 'Research question');
   const slug = text(spec.slug, 'Slug');
@@ -44,6 +44,19 @@ export async function generateResearchReport(manifestPath) {
   const executedCells = codeCells.filter((cell) => Number.isInteger(cell.execution_count) && cell.execution_count > 0).length;
   if (codeCells.some((cell) => cell.outputs?.some((output) => output.output_type === 'error'))) throw new Error('Notebook contains an error output');
   if (codeCells.length && executedCells !== codeCells.length) throw new Error('Every notebook code cell must have an execution count');
+  let executionReceipt = null;
+  let executionReceiptFile = null;
+  let executionReceiptBytes = null;
+  if (spec.schema_version === 2) {
+    executionReceiptFile = workspacePath(spec.execution_receipt, ['research']);
+    executionReceiptBytes = await readFile(executionReceiptFile.path);
+    executionReceipt = JSON.parse(executionReceiptBytes.toString('utf8'));
+    if (executionReceipt.schema_version !== 1 || executionReceipt.runner !== 'terputer-notebook-runner-v1'
+        || executionReceipt.notebook !== notebookFile.name || executionReceipt.notebook_sha256 !== sha256(notebookBytes)
+        || executionReceipt.executed_code_cells !== executedCells) {
+      throw new Error('Notebook execution receipt does not match this executed notebook');
+    }
+  }
 
   if (!Array.isArray(spec.sources) || !spec.sources.length) throw new Error('At least one source is required');
   const sources = new Map();
@@ -111,7 +124,7 @@ export async function generateResearchReport(manifestPath) {
       lines.push(claimLine(id), '');
     }
   }
-  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. An executed notebook confirms that some cells ran; it does not independently validate every scientific interpretation.`, '', '## References', '');
+  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used.${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook SHA-256 and records the fresh-kernel run.` : ''} Notebook execution does not independently validate scientific interpretation.`, '', '## References', '');
   for (const [id, source] of sources) lines.push(`[${sourceNumbers.get(id)}] ${source.title}. ${source.url}`);
   lines.push('');
   const ledger = ['claim_id\tevidence_class\tclaim\tsource_ids\tsource_urls\tartifacts\tlimitation'];
@@ -120,13 +133,14 @@ export async function generateResearchReport(manifestPath) {
   const report = lines.join('\n');
   const ledgerText = `${ledger.join('\n')}\n`;
   const receipt = {
-    schema_version: 1, generator: 'terputer-report-generator-v1',
+    schema_version: 1, generator: 'terputer-report-generator-v2', specification_schema_version: spec.schema_version,
     manifest: manifestFile.name, manifest_sha256: sha256(manifestBytes),
     notebook: notebookFile.name, notebook_sha256: sha256(notebookBytes), executed_code_cells: executedCells,
+    ...(executionReceiptFile ? { notebook_execution_receipt: executionReceiptFile.name, notebook_execution_receipt_sha256: sha256(executionReceiptBytes) } : {}),
     artifact_sha256: Object.fromEntries([...artifacts].sort(([a], [b]) => a.localeCompare(b))),
     claim_count: claims.size, observed_claim_count: [...claims.values()].filter((claim) => claim.class === 'observed').length,
     report_sha256: sha256(report), ledger_sha256: sha256(ledgerText),
-    limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; does not verify live URL reachability, biological replication, or claim truth.'
+    limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook hash. Does not verify live URL reachability, biological replication, or claim truth.'
   };
   await writeFile(join(outputDir, 'white-paper.md'), report);
   await writeFile(join(outputDir, 'claim-ledger.tsv'), ledgerText);

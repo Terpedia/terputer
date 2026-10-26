@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "runner": "terputer-notebook-runner-v1",
+  "notebook": "notebooks/terputer-paclitaxel-single-cell.ipynb",
+  "source_notebook_sha256": "022873fa0dccb9d5a98c66775813fef1879425e44cad97b026d1dec27b82101c",
+  "notebook_sha256": "7b6590dd43ca693c6fdca65165e2e8df9da07c83835de8f0647750f0d8a9f9ed",
+  "executed_code_cells": 4,
+  "python_version": "3.12.11",
+  "completed_at_utc": "2026-10-26T14:28:10.358080+00:00"
+}

@@ -4,7 +4,7 @@
 
 **Research question:** Which cellular responses to a terpene-derived compound appear at 24 and 72 hours in one public single-cell experiment?
 
-**Notebook:** `notebooks/terputer-paclitaxel-single-cell.ipynb` · SHA-256 `022873fa0dccb9d5a98c66775813fef1879425e44cad97b026d1dec27b82101c` · 4 executed code cells
+**Notebook:** `notebooks/terputer-paclitaxel-single-cell.ipynb` · SHA-256 `7b6590dd43ca693c6fdca65165e2e8df9da07c83835de8f0647750f0d8a9f9ed` · 4 executed code cells
 
 ## Abstract
 
@@ -42,7 +42,7 @@ This four-library design has one library per treatment and time point, so it can
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/gse266934/report-spec.json` (SHA-256 `a5e7451acebdf1ba31142cfcf3dd717e8603494d85a30c1c5a2bd024817e59e2`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. An executed notebook confirms that some cells ran; it does not independently validate every scientific interpretation.
+The source specification is `research/transcriptomics/gse266934/report-spec.json` (SHA-256 `4188643ffdbeb46522a11dfad348a017f9219d054589002a4f22954efba1173c`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. The [notebook execution receipt](../../execution-receipts/terputer-paclitaxel-single-cell.json) matches the saved notebook SHA-256 and records the fresh-kernel run. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 

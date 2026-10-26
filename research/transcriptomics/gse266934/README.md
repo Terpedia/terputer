@@ -6,7 +6,7 @@ The [executed notebook](../../../notebooks/terputer-paclitaxel-single-cell.ipynb
 
 ```sh
 python -m pip install -r requirements.txt
-python research/transcriptomics/gse266934/analysis.py
+python notebook-runner.py notebooks/terputer-paclitaxel-single-cell.ipynb . 300
 node report-generator.mjs research/transcriptomics/gse266934/report-spec.json
 ```
 

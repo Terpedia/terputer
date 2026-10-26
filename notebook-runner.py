@@ -7,6 +7,7 @@ import json
 import os
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import nbformat
@@ -24,6 +25,7 @@ def main() -> None:
     if notebook_path.suffix != ".ipynb" or not 1 <= cell_timeout <= 600:
         raise ValueError("Expected an .ipynb notebook and a 1–600 second cell timeout")
 
+    source_sha256 = hashlib.sha256(notebook_path.read_bytes()).hexdigest()
     notebook = nbformat.read(notebook_path, as_version=4)
     with tempfile.TemporaryDirectory(prefix="terputer-kernel-") as kernel_root:
         kernel_path = Path(kernel_root) / "kernels" / "terputer-runner"
@@ -74,8 +76,30 @@ def main() -> None:
     finally:
         temporary_path.unlink(missing_ok=True)
     content = notebook_path.read_bytes()
+    notebook_sha256 = hashlib.sha256(content).hexdigest()
+    receipt_path = workspace / "research" / "execution-receipts" / f"{notebook_path.stem}.json"
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt = {
+        "schema_version": 1,
+        "runner": "terputer-notebook-runner-v1",
+        "notebook": str(notebook_path.relative_to(workspace)),
+        "source_notebook_sha256": source_sha256,
+        "notebook_sha256": notebook_sha256,
+        "executed_code_cells": executed,
+        "python_version": sys.version.split()[0],
+        "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", prefix=".terputer-", dir=receipt_path.parent, delete=False) as output:
+        receipt_temporary_path = Path(output.name)
+        json.dump(receipt, output, indent=2)
+        output.write("\n")
+    try:
+        os.replace(receipt_temporary_path, receipt_path)
+    finally:
+        receipt_temporary_path.unlink(missing_ok=True)
     print(json.dumps({"path": str(notebook_path.relative_to(workspace)), "executed_code_cells": executed,
-                      "sha256": hashlib.sha256(content).hexdigest(), "saved": True,
+                      "sha256": notebook_sha256, "execution_receipt": str(receipt_path.relative_to(workspace)),
+                      "saved": True,
                       "text_outputs": output_summaries[:10]}))
 
 

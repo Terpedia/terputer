@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "slug": "paclitaxel-single-cell",
   "title": "Paclitaxel exposure in HCC1143: a compact single-cell evidence brief",
   "question": "Which cellular responses to a terpene-derived compound appear at 24 and 72 hours in one public single-cell experiment?",
   "notebook": "notebooks/terputer-paclitaxel-single-cell.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-paclitaxel-single-cell.json",
   "sources": [
     {"id":"geo","title":"GEO GSE266934","url":"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934"},
     {"id":"paper","title":"Primary study article","url":"https://doi.org/10.1038/s41598-024-82218-9"},
