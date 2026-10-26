@@ -1,0 +1,10 @@
+matrix_column	geo_accession	sample_title	arm	dose	time	oxygen	vehicle	duplicate_of	source_url
+CF-02-UFH001-DMSO-H-1_S2_0	GSM3576244	Control_1	vehicle	0	16 h	1% O2	DMSO	GSM3514416	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576244
+CF-03-UFH001-20uMCARYOPHYLLENE-H-1_S3_0	GSM3576245	BCP20_1	bcp20	20 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576245
+CF-04-UFH001-200uMCARYOPHYLLENE-H-1_S4_0	GSM3576246	BCP200_1	bcp200	200 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576246
+CF-06-UFH001-DMSO-H-2_S6_0	GSM3576247	Control_2	vehicle	0	16 h	1% O2	DMSO	GSM3514418	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576247
+CF-07-UFH001-20uMCARYOPHYLLENE-H-2_S7_0	GSM3576248	BCP20_2	bcp20	20 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576248
+CF-08-UFH001-200uMCARYOPHYLLENE-H-2_S8_0	GSM3576249	BCP200_2	bcp200	200 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576249
+CF-10-UFH001-DMSO-H-3_S10_0	GSM3576250	Control_3	vehicle	0	16 h	1% O2	DMSO	GSM3514420	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576250
+CF-11-UFH001-20uMCARYOPHYLLENE-H-3_S11_0	GSM3576251	BCP20_3	bcp20	20 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576251
+CF-12-UFH001-200uMCARYOPHYLLENE-H-3_S12_0	GSM3576252	BCP200_3	bcp200	200 µM	16 h	1% O2	DMSO		https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM3576252
