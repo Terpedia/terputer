@@ -26,7 +26,7 @@ The draft is a credible **methods demonstration** with unusually clear caveats. 
 | Two pure compounds have partly aligned fungal response vectors | Descriptive within-study observation; shared-control dependency limits interpretation. |
 | Linalool induces a specific metabolic or signaling program | Unsupported by the processed matrix analysis. |
 | Terpene responses reproduce across contexts | Not tested. |
-| Any response depends on a specific chemical target | Not tested; PIE genetic perturbations are not terpene exposure or binding data. |
+| Any response depends on a specific chemical target | Not established by the analyzed data. A beetle article reports higher terpinen-4-ol mortality after CYP9Z6 or GSTs7 RNAi, but the phenotype has not been independently audited here and does not prove direct binding; its public RNA-seq archive currently exposes only treated runs. |
 | Terpedia BigQuery serves curated transcriptomics evidence | The last verified adapter response covered four studies, 33 samples, and two descriptive observations, with no contrasts. Six-study expanded records remain staged locally; the Worker also has a pinned public snapshot. |
 
 ## Publication recommendation
