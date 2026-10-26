@@ -161,7 +161,8 @@ export async function callResearchTool(name, args = {}, context = {}) {
       files.push({ path, content_base64: bytes.toString('base64') });
     }
     const artifactPaths = Object.keys(generated.artifact_sha256);
-    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nThe runner, report generator, and requirements file were copied from the Terputer workspace into this project at publication time. Review code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
+    const inputPaths = Object.keys(generated.input_sha256 || {});
+    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nThe runner, report generator, and requirements file were copied from the Terputer workspace into this project at publication time. Declared local inputs are included in this repository. The notebook may also use external data that must be restored from the source manifests and checked against their recorded SHA-256 values. Review code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}' '${JSON.stringify(inputPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
     bytesTotal += Buffer.byteLength(readme);
     if (bytesTotal > 7_000_000) throw new Error('Report bundle exceeds 7 MB.');
     files.push({ path: 'README.md', content_base64: Buffer.from(readme).toString('base64') });

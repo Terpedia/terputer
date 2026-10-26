@@ -24,6 +24,8 @@ The Terputer source implements a chat tool loop through its local Node server an
 
 The notebook [terputer-transcriptomics.ipynb](../../notebooks/terputer-transcriptomics.ipynb) records code, source checksums, source revision, inclusion rules, results, and interpretation. `research/transcriptomics/data/run_manifest.json` pins GSE136998 (SHA-256 `f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811`). `jiang_sources.json` pins PIE revision `d0519f67452a0662c2db30c3831900b38aa3c017` and its Parquet checksums. The GSE138291 processed matrix SHA-256 is `2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0`. The 27-sample candidate-cohort manifest is metadata; two of its cohorts have not been expression-analyzed.
 
+The [version 2 notebook execution receipt](../execution-receipts/terputer-transcriptomics.json) hashes five declared local inputs, the executed notebook, and eight result files. The two larger PIE Parquet inputs are not part of a report publication bundle; their revision-pinned download URLs and SHA-256 values are in `jiang_sources.json`, and the notebook checks their bytes during execution. This receipt binds the saved report to the declared files, but cannot prove that every declared file was read by each analysis step.
+
 ## Methods
 
 ### Study selection

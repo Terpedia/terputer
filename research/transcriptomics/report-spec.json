@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "slug": "transcriptomics",
   "title": "Terpene transcriptomics: a bounded evidence brief",
   "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
   "notebook": "notebooks/terputer-transcriptomics.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-transcriptomics.json",
   "sources": [
     {
       "id": "gse136998",

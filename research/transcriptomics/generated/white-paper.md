@@ -4,7 +4,7 @@
 
 **Research question:** Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?
 
-**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `3522bccb9c65223f50f1806a869ef1872affef5220eef3845dd7d0b803196b73` · 5 executed code cells
+**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22` · 5 executed code cells
 
 ## Abstract
 
@@ -42,7 +42,7 @@ No analyzed result yet identifies a replicated metabolic or signaling pathway, a
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `a00530b239e2fa9a6b162772eb1628a8761be177cbab74658f940dd6a182d03c`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `d773422f80ed8ebde6fb8f3317409d250d40f9d4a9806b0cb48f226d40fefe3d`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. The [notebook execution receipt](../../execution-receipts/terputer-transcriptomics.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. It also pins 5 declared local input files by SHA-256. It records the Python version and installed package versions. Notebook execution does not independently validate scientific interpretation.
 
 ## References
 
