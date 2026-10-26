@@ -1,0 +1,110 @@
+{
+  "schema_version": 2,
+  "slug": "mrsa-terpinen4ol-fpkm",
+  "title": "Terpinen-4-ol exposure in MRSA: an executed processed-expression audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-mrsa-terpinen4ol-fpkm.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-mrsa-terpinen4ol-fpkm.json",
+  "data_inputs": [
+    {
+      "path": "research/mrsa-terpinen4ol-fpkm/data/GSE157638_fpkm.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/suppl/GSE157638_fpkm.txt.gz",
+      "sha256": "e5a14d372c14398cf10d6831f6b8145157375c19cae1864004f39634e7d589fa"
+    },
+    {
+      "path": "research/mrsa-terpinen4ol-fpkm/data/GSE157638_series_matrix.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/matrix/GSE157638_series_matrix.txt.gz",
+      "sha256": "b711a75f71d429452c2f1bc7afd5b22eaaffacf2ac077b92f81f620c40275473"
+    }
+  ],
+  "sources": [
+    {
+      "id": "geo",
+      "title": "GEO GSE157638 sample metadata and processed FPKM",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157638"
+    },
+    {
+      "id": "matrix",
+      "title": "GEO GSE157638 FPKM supplementary matrix",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/suppl/GSE157638_fpkm.txt.gz"
+    },
+    {
+      "id": "series",
+      "title": "GEO GSE157638 series matrix sample mapping",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157638/matrix/GSE157638_series_matrix.txt.gz"
+    },
+    {
+      "id": "paper",
+      "title": "Cheng et al., MRSA exposed to terpinen-4-ol (2021)",
+      "url": "https://link.springer.com/article/10.1186/s12866-021-02348-2"
+    },
+    {
+      "id": "botrytis",
+      "title": "GEO GSE138291 fungal terpinen-4-ol and 1,8-cineole study",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "class": "source-reported",
+      "text": "GSE157638 samples MRSA ATCC43300 in three untreated and three terpinen-4-ol RNA-seq libraries. The source article reports a 0.08% v/v, two-hour exposure at half the minimum inhibitory concentration.",
+      "sources": ["geo", "series", "paper"],
+      "limitation": "The notebook checks archived sample labels, not independently verified culture or dosing records."
+    },
+    {
+      "id": "C02",
+      "class": "observed",
+      "text": "The pinned GEO FPKM matrix contains 2,925 unique nonnegative feature rows; 2,456 have mean control FPKM at least 1 and enter the descriptive ratio analysis.",
+      "sources": ["matrix", "series"],
+      "artifacts": ["research/mrsa-terpinen4ol-fpkm/results/analysis_summary.json", "research/mrsa-terpinen4ol-fpkm/results/sample_qc.tsv"],
+      "limitation": "Processed FPKM does not supply the integer counts needed for new differential-expression inference."
+    },
+    {
+      "id": "C03",
+      "class": "observed",
+      "text": "Across all 2,925 features, median pairwise Pearson correlations of log1p(FPKM) are 0.963 within controls, 0.953 within treated samples, and 0.936 between arms.",
+      "sources": ["matrix", "series"],
+      "artifacts": ["research/mrsa-terpinen4ol-fpkm/results/analysis_summary.json", "research/mrsa-terpinen4ol-fpkm/results/sample_correlations.tsv"],
+      "limitation": "High correlations can coexist with treatment effects and technical variation; these are sample descriptions, not significance tests."
+    },
+    {
+      "id": "C04",
+      "class": "observed",
+      "text": "Among the 2,456 control-expressed features, group-mean FPKM ratios with a 0.1 pseudocount place 248 at least twofold higher and 518 at least twofold lower after exposure. With a 1.0 pseudocount, the corresponding counts are 243 and 480.",
+      "sources": ["matrix", "series"],
+      "artifacts": ["research/mrsa-terpinen4ol-fpkm/results/analysis_summary.json", "research/mrsa-terpinen4ol-fpkm/results/descriptive_effects.tsv"],
+      "limitation": "These pseudocount-sensitive thresholds are not DEG counts, adjusted-p-value calls, or pathway estimates."
+    },
+    {
+      "id": "C05",
+      "class": "source-reported",
+      "text": "The article reports 304 differentially expressed genes and interprets purine and pyrimidine metabolism as affected by terpinen-4-ol in MRSA.",
+      "sources": ["paper", "geo"],
+      "limitation": "This notebook does not reproduce the author's count model, gene annotations, pathway test, or metabolomics analysis."
+    },
+    {
+      "id": "C06",
+      "class": "proposed",
+      "text": "Reprocess the GSE157638 raw reads against a pinned MRSA reference to obtain integer counts, model the three biological replicates per arm, and audit pathway mappings with adjusted uncertainty.",
+      "sources": ["geo", "paper"],
+      "limitation": "Raw-read reanalysis has not been executed in this project."
+    },
+    {
+      "id": "C07",
+      "class": "proposed",
+      "text": "Compare the MRSA terpinen-4-ol contrast with the GSE138291 Botrytis terpinen-4-ol arm only after independent count-based analyses, versioned orthology or pathway mapping, and explicit tests of between-study heterogeneity.",
+      "sources": ["geo", "botrytis"],
+      "limitation": "The current notebook provides neither a cross-species replicated pathway nor evidence of a direct molecular target."
+    }
+  ],
+  "abstract": ["C02", "C03", "C04"],
+  "sections": {
+    "background": ["C01", "C05"],
+    "methods": ["C02", "C03", "C04"],
+    "results": ["C02", "C03", "C04"],
+    "interpretation": ["C04", "C05"],
+    "limitations": ["C02", "C04"],
+    "next_steps": ["C06", "C07"]
+  }
+}
