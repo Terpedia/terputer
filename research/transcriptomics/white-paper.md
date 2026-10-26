@@ -2,7 +2,7 @@
 
 **Working white paper · 26 October 2026 · Methods and results from an executed Terputer notebook**
 
-For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [critically audited transcriptomics white paper v0.3](https://terpedia.github.io/research/terpene-transcriptomics/) and its [claim ledger](https://terpedia.github.io/research/terpene-transcriptomics/claim-ledger.html). This note focuses on the Terputer workspace and its executed example.
+For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [critically audited transcriptomics white paper](https://terpedia.github.io/research/terpene-transcriptomics/) and its [claim ledger](https://terpedia.github.io/research/terpene-transcriptomics/claim-ledger.html). This note focuses on the Terputer workspace and its executed examples. The A2780 paclitaxel extension below is local to this paper; the linked public page and claim ledger have not yet been updated with it.
 
 ## Abstract
 
@@ -43,8 +43,13 @@ For each processed FPKM feature, we computed `log2((mean treated FPKM + 0.1)/(me
 | GSE138291 other treatment-arm pairs | Spearman 0.324–0.506 across pairwise arms; sign agreement 59.4–68.1% | Treatment identity matters within this fungal experiment; mixture and whole oil cannot be treated as pure-compound replicates. |
 | PIE A549 context demonstration | Only BATF2 and PARP12 were shared perturbations in the selected IFN-β/IFN-γ summaries; feature-wise Spearman 0.069 and 0.038 | Low concordance in these selected processed summaries; small effects, filtering, and noise prevent a formal context-interaction conclusion. This does not measure terpene response or establish target specificity. |
 | PRJNA608617 / PRJNA913446 | Six selected sample records in each cohort, metadata only | Candidate independent datasets for raw-count analysis; no response result yet. |
+| GSE162256 A2780 single-cell paclitaxel | In the processed matrix (46 control, 56 paclitaxel 16 h, 53 paclitaxel 48 h cells), all six predeclared cell-cycle markers had lower median reported values at both exposure times; three of seven interferon markers were absent from the matrix | An independent cell-line context shows a descriptive cell-cycle pattern. Cells are observational subsamples, not biological replicates. The published E-values are not directly comparable with HCC1143 CPM. |
 
 The exact arm-comparison values and sensitivity outputs are in `gse138291_arm_similarity.tsv` and `gse138291_pure_compound_sensitivity.tsv`. The shared-control dependence remains even when varying pseudocount or removing one control. We therefore report an observed pattern, not statistical reproducibility.
+
+### Paclitaxel response across two single-cell contexts
+
+We added a [checksum-pinned A2780 analysis](gse162256/README.md) of [GSE162256](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256), with an [executed notebook](../../notebooks/terputer-gse162256-single-cell.ipynb) and [marker table](gse162256/results/marker_descriptive.tsv). Its 9,664-gene processed matrix contains 338 quality-filtered cells across control, paclitaxel, celecoxib, and combination arms. The analysis uses the control and pure paclitaxel arms only; it makes no p-value calculation from cells. All six predeclared cell-cycle genes (MKI67, TOP2A, CCNB1, UBE2C, CDK1, CENPF) have lower A2780 medians at both 16 and 48 hours than control. In the existing [HCC1143 GSE266934 marker table](gse266934/results/marker_cpm_ratios.tsv), MKI67, TOP2A, CDK1, and CENPF have negative descriptive ratios at 24 hours, whereas CCNB1 and UBE2C have positive ratios at both 24 and 72 hours. This is a **directional disagreement for two markers**, not a formal context interaction. HCC1143 used 1 nM paclitaxel at 24/72 hours; A2780 used 5 nM at 16/48 hours. Cell line, timing, dose, platform, and reported expression scale all differ. The interferon panel does not establish cross-context agreement: IFIT3, MX1, and OAS1 are absent from the A2780 processed matrix, and the remaining A2780 marker medians are mixed or zero-heavy.
 
 ## What can be answered now
 
