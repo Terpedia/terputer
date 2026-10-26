@@ -97,7 +97,12 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
       if (!/^[a-f0-9]{64}$/.test(expectedHash) || inputHashes.get(input.name) !== expectedHash) {
         throw new Error(`Data input does not match the notebook execution receipt: ${input.name}`);
       }
-      dataInputs.push({ path: input.name, url: publicUrl(entry.url), sha256: expectedHash });
+      const url = publicUrl(entry.url);
+      const parsedUrl = new URL(url);
+      if (parsedUrl.protocol !== 'https:' || parsedUrl.username || parsedUrl.password) {
+        throw new Error(`Data input requires an HTTPS download URL without credentials: ${input.name}`);
+      }
+      dataInputs.push({ path: input.name, url, sha256: expectedHash });
     }
   }
   const sources = new Map();
