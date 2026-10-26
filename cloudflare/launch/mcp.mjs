@@ -1,4 +1,4 @@
-import { handleTool } from '../worker.mjs';
+import { authorizeRequest, handleTool } from '../worker.mjs';
 
 const query = { type: 'string', minLength: 2, maxLength: 300 };
 const count = (maximum, fallback) => ({ type: 'integer', minimum: 1, maximum, default: fallback });
@@ -26,7 +26,6 @@ const privateNames = new Set(privateTools.map((entry) => entry.name));
 const headers = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
 const reply = (id, result, status = 200) => new Response(JSON.stringify({ jsonrpc: '2.0', id, result }), { status, headers });
 const rpcError = (id, code, message, status = 200) => new Response(JSON.stringify({ jsonrpc: '2.0', id, error: { code, message } }), { status, headers });
-const authorized = (request, env) => Boolean(env.TERPUTER_TOOL_TOKEN && request.headers.get('authorization') === `Bearer ${env.TERPUTER_TOOL_TOKEN}`);
 
 export async function handleMcp(request, env) {
   const origin = request.headers.get('origin');
@@ -49,16 +48,19 @@ export async function handleMcp(request, env) {
   if (method === 'initialize') {
     const requested = input.params?.protocolVersion;
     const protocolVersion = ['2025-11-25', '2025-06-18', '2025-03-26'].includes(requested) ? requested : '2025-11-25';
-    return reply(id, { protocolVersion, capabilities: { tools: {} }, serverInfo: { name: 'terputer-research', title: 'Terputer Research MCP', version: '0.1.0', websiteUrl: 'https://terputer.terpedia.com/about' }, instructions: 'Public tools search source metadata. Curated Terpedia BigQuery tools require a Terputer bearer token. Verify study design and provenance before interpreting results.' });
+    return reply(id, { protocolVersion, capabilities: { tools: {} }, serverInfo: { name: 'terputer-research', title: 'Terputer Research MCP', version: '0.1.0', websiteUrl: 'https://terputer.terpedia.com/about' }, instructions: 'Provide your Terpedia API key in the X-API-Key header to list or call research tools. Verify study design and provenance before interpreting results.' });
   }
   if (method === 'ping') return reply(id, {});
-  if (method === 'tools/list') return reply(id, { tools: authorized(request, env) ? allTools : publicTools });
+  if (method === 'tools/list') {
+    if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
+    return reply(id, { tools: allTools });
+  }
   if (method !== 'tools/call') return rpcError(id, -32601, 'Method not found');
   const name = input.params?.name;
   const args = input.params?.arguments ?? {};
   if (typeof name !== 'string' || !args || typeof args !== 'object' || Array.isArray(args)) return rpcError(id, -32602, 'Invalid tool arguments');
   if (!publicNames.has(name) && !privateNames.has(name)) return rpcError(id, -32602, 'Unknown tool');
-  if (privateNames.has(name) && !authorized(request, env)) return rpcError(id, -32001, 'Authentication required', 401);
+  if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
   try {
     const result = await handleTool(name, args, env);
     return reply(id, { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result, isError: false });

@@ -8,8 +8,8 @@ const SYSTEM = `You are Terputer's transcriptomics research assistant in a priva
 export async function runResearchAgent(input) {
   const projectSlug = input.project_slug == null || input.project_slug === '' ? null : String(input.project_slug);
   if (projectSlug) await resolveResearchWorkspace(projectSlug);
-  const apiKey = process.env.TERPUTER_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY;
-  if (!apiKey) throw Object.assign(new Error('Set TERPUTER_OPENROUTER_API_KEY in the Codespace to enable the Terputer research agent.'), { status: 503 });
+  const apiKey = process.env.TERPEDIA_API_KEY;
+  if (!apiKey) throw Object.assign(new Error('Set your TERPEDIA_API_KEY as a Codespaces secret to use Terputer research chat.'), { status: 401 });
   const model = process.env.TERPUTER_AGENT_MODEL || 'openai/gpt-4.1-mini';
   const history = (Array.isArray(input.messages) ? input.messages : []).slice(-16).filter((item) => ['user', 'assistant'].includes(item?.role) && typeof item.content === 'string').map((item) => ({ role: item.role, content: item.content.slice(0, 10000) }));
   if (!history.length || history.at(-1).role !== 'user') throw Object.assign(new Error('The last message must be a user request.'), { status: 400 });
@@ -25,14 +25,14 @@ export async function runResearchAgent(input) {
   const activity = [];
   let publication = null;
   for (let turn = 0; turn < 10; turn += 1) {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch(`${(process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '')}/api/terputer/research/completions`, {
       method: 'POST',
-      headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json', 'HTTP-Referer': 'https://github.com/Terpedia/terputer', 'X-Title': 'Terputer Research' },
+      headers: { 'x-api-key': apiKey, 'content-type': 'application/json' },
       body: JSON.stringify({ model, messages, tools, tool_choice: 'auto', temperature: 0.1, max_tokens: 2500 }),
       signal: AbortSignal.timeout(90000)
     });
     const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw Object.assign(new Error(payload.error?.message || `Research model returned HTTP ${response.status}`), { status: 502 });
+    if (!response.ok) throw Object.assign(new Error(payload.error?.message || payload.error || `Terpedia research returned HTTP ${response.status}`), { status: response.status });
     const answer = payload.choices?.[0]?.message;
     if (!answer) throw new Error('Research model returned no message.');
     messages.push({ role: 'assistant', content: answer.content || '', ...(answer.tool_calls?.length ? { tool_calls: answer.tool_calls } : {}) });

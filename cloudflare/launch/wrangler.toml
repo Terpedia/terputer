@@ -6,6 +6,7 @@ workers_dev = true
 
 [vars]
 TERPEDIA_KB_API_URL = "https://terpedia-knowledge-nanrsdlaoa-uc.a.run.app"
+TERPEDIA_CHAT_API_URL = "https://api.terpedia.com"
 TERPUTER_BIGQUERY_API_URL = "https://terputer-transcriptomics-api-715567218723.us-central1.run.app"
 
 [[routes]]

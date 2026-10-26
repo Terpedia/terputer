@@ -1,5 +1,21 @@
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
+export async function authorizeRequest(request, env) {
+  const bearer = request.headers.get('authorization') || '';
+  if (env.TERPUTER_TOOL_TOKEN && bearer === `Bearer ${env.TERPUTER_TOOL_TOKEN}`) return true;
+  const key = request.headers.get('x-api-key') || bearer.replace(/^Bearer /, '');
+  if (!/^tpd_[A-Za-z0-9_-]{43}$/.test(key)) return false;
+  const base = (env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
+  try {
+    const response = await fetch(`${base}/api/terputer/keys/introspect`, {
+      method: 'POST', headers: { 'x-api-key': key }, signal: AbortSignal.timeout(8000)
+    });
+    if (!response.ok) return false;
+    const result = await response.json();
+    return result.valid === true && Array.isArray(result.scopes) && result.scopes.includes('terputer:mcp');
+  } catch { return false; }
+}
+
 async function sourceJson(url) {
   const response = await fetch(url, { headers: { 'user-agent': 'Terputer research tools (https://github.com/Terpedia/terputer)' } });
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
@@ -72,7 +88,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === '/health' && request.method === 'GET') return json({ status: 'ok', service: 'terputer-research-tools' });
     if (url.pathname !== '/v1/tools/call' || request.method !== 'POST') return json({ error: 'Not found' }, 404);
-    if (!env.TERPUTER_TOOL_TOKEN || request.headers.get('authorization') !== `Bearer ${env.TERPUTER_TOOL_TOKEN}`) return json({ error: 'Unauthorized' }, 401);
+    if (!(await authorizeRequest(request, env))) return json({ error: 'A valid Terpedia API key is required.' }, 401);
     try {
       const body = await request.text();
       if (body.length > 16000) return json({ error: 'Request too large' }, 413);
