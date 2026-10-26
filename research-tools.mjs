@@ -36,7 +36,7 @@ export const toolDefinitions = [
   { name: 'list_research_projects', description: 'List the research project submodules and pinned commits in this user-owned terpedia-report checkout.', parameters: { type: 'object', properties: {} } },
   { name: 'add_research_project_submodule', description: 'Attach a user-owned terpedia-<slug> repository under projects/<slug>. A connected GitHub session commits the pointer to the report fork; standalone local MCP use stages it in the checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' }, commit: { type: 'string' } }, required: ['slug'] } },
   { name: 'update_research_project_submodule', description: 'Advance a project submodule pointer to the project’s latest default-branch commit. A connected GitHub session commits remotely; standalone local MCP use stages it locally.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
-  { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh Python kernel and save its outputs. Set project_slug for an attached project and declare research/ outputs for the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
+  { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh Python kernel and save its outputs. Set project_slug for an attached project; declare research/ outputs and local input files so the execution receipt hashes both.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 }, input_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the report workspace or an attached project submodule.', parameters: { type: 'object', properties: { project_slug: { type: 'string' } } } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path'] } },
   { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path', 'content'] } },
@@ -139,7 +139,8 @@ export async function callResearchTool(name, args = {}, context = {}) {
     const spec = JSON.parse(await readFile(workspacePath(args.manifest_path, activeRoot), 'utf8'));
     if (args.project_slug && spec.slug !== args.project_slug) throw new Error('Report slug must match the selected project submodule.');
     const required = [args.manifest_path, spec.notebook, spec.execution_receipt,
-      generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256)];
+      generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256),
+      ...Object.keys(generated.input_sha256 || {})];
     const extras = Array.isArray(args.extra_paths) ? args.extra_paths : [];
     if (extras.length > 20) throw new Error('At most 20 extra paths are allowed.');
     const runtimeFiles = new Set(['requirements.txt', 'notebook-runner.py', 'report-generator.mjs']);
@@ -189,8 +190,9 @@ export async function callResearchTool(name, args = {}, context = {}) {
     const timeout = Math.min(600, Math.max(1, Number(args.cell_timeout_seconds) || 120));
     try {
       const artifactPaths = Array.isArray(args.artifact_paths) ? args.artifact_paths : [];
+      const inputPaths = Array.isArray(args.input_paths) ? args.input_paths : [];
       const { stdout } = await execFileAsync(process.env.TERPUTER_PYTHON || 'python3',
-        [join(workspaceRoot, 'notebook-runner.py'), path, activeRoot, String(timeout), JSON.stringify(artifactPaths)],
+        [join(workspaceRoot, 'notebook-runner.py'), path, activeRoot, String(timeout), JSON.stringify(artifactPaths), JSON.stringify(inputPaths)],
         { cwd: activeRoot, timeout: 30 * 60 * 1000, maxBuffer: 1024 * 1024 });
       return JSON.parse(stdout.trim());
     } catch (error) {
