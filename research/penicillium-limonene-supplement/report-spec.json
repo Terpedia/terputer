@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "slug": "penicillium-limonene-supplement",
+  "title": "R-(+)-limonene response in Penicillium: a publisher-table audit",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-penicillium-limonene-supplement.ipynb",
+  "execution_receipt": "research/execution-receipts/terputer-penicillium-limonene-supplement.json",
+  "data_inputs": [
+    {
+      "path": "research/penicillium-limonene-supplement/data/Data_Sheet_1.xlsx",
+      "url": "https://public-pages-files-2025.frontiersin.org/articles/527643/file/Data_Sheet_1.xlsx/527643_supplementary-materials_datasheets_1_xlsx/1",
+      "sha256": "85fac5c96d733d35402a67f1f3af7ac364f4528c8ed37cd1292bc21da0639700"
+    }
+  ],
+  "sources": [
+    {
+      "id": "paper",
+      "title": "Zhang et al., R-(+)-limonene biotransformation by Penicillium digitatum (2020)",
+      "url": "https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2020.00744/full"
+    },
+    {
+      "id": "supplement",
+      "title": "Publisher Data Sheet 1, including Table S7",
+      "url": "https://public-pages-files-2025.frontiersin.org/articles/527643/file/Data_Sheet_1.xlsx/527643_supplementary-materials_datasheets_1_xlsx/1"
+    },
+    {
+      "id": "reads",
+      "title": "ENA PRJNA608617 raw-read study",
+      "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA608617"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "class": "source-reported",
+      "text": "The source study sampled Penicillium digitatum DSM 62840 after 12 hours with 840 mg/L R-(+)-limonene and compared it with an untreated 12-hour arm; it also sampled an untreated zero-hour arm.",
+      "sources": [
+        "paper",
+        "reads"
+      ],
+      "limitation": "The zero-hour arm is not time matched and should not substitute for the 12-hour untreated comparison."
+    },
+    {
+      "id": "C02",
+      "class": "observed",
+      "text": "The publisher workbook Table S7 has 58 unique nonblank gene rows. In the time-matched expression columns, 31 are higher and 27 lower after limonene exposure.",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/penicillium-limonene-supplement/results/analysis_summary.json",
+        "research/penicillium-limonene-supplement/results/table_s7_audit.tsv"
+      ],
+      "limitation": "These are directions in author-provided expression values, not independently estimated differential-expression calls."
+    },
+    {
+      "id": "C03",
+      "class": "observed",
+      "text": "Only 10 of the 58 rows have an explicit P450 or CYP label in either the supplied NR or KEGG annotation text (8 in NR, 6 in KEGG, with overlap).",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/penicillium-limonene-supplement/results/analysis_summary.json",
+        "research/penicillium-limonene-supplement/results/table_s7_audit.tsv"
+      ],
+      "limitation": "A text match neither proves P450 function for labeled genes nor excludes it for unlabeled genes; the table cannot identify a binding target."
+    },
+    {
+      "id": "C04",
+      "class": "observed",
+      "text": "Table S7 does not include per-gene adjusted p values or replicate-level measurements, so its reported candidate significance cannot be independently audited from this workbook.",
+      "sources": [
+        "supplement"
+      ],
+      "artifacts": [
+        "research/penicillium-limonene-supplement/results/analysis_summary.json"
+      ],
+      "limitation": "The paper describes a count-based differential-expression method, but the necessary per-gene statistics are absent from this supplementary table."
+    },
+    {
+      "id": "C05",
+      "class": "source-reported",
+      "text": "The article reports 4,148 DEGs for the limonene-treated versus untreated 12-hour comparison and discusses candidate P450 involvement in limonene biotransformation.",
+      "sources": [
+        "paper"
+      ],
+      "limitation": "The count is author reported; this notebook does not reproduce it from raw reads or establish a causal enzyme."
+    },
+    {
+      "id": "C06",
+      "class": "proposed",
+      "text": "Reprocess PRJNA608617 raw reads with pinned reference and gene annotation, inspect biological replicates and batch, and fit a count-based model for the time-matched contrast.",
+      "sources": [
+        "reads",
+        "paper"
+      ],
+      "limitation": "Raw-read reanalysis has not been run in this project."
+    },
+    {
+      "id": "C07",
+      "class": "proposed",
+      "text": "Investigate candidate enzymes through sequence/domain annotation and chemical-genetic or biochemical assays, then compare compatible pathway responses across independently processed terpene cohorts with explicit organism, dose, time, and chemical identity.",
+      "sources": [
+        "paper",
+        "reads"
+      ],
+      "limitation": "Current expression and annotation evidence does not demonstrate cross-study replication or target dependence."
+    }
+  ],
+  "abstract": [
+    "C02",
+    "C03",
+    "C04"
+  ],
+  "sections": {
+    "background": [
+      "C01",
+      "C05"
+    ],
+    "methods": [
+      "C02",
+      "C04"
+    ],
+    "results": [
+      "C02",
+      "C03",
+      "C04"
+    ],
+    "interpretation": [
+      "C03",
+      "C05"
+    ],
+    "limitations": [
+      "C04"
+    ],
+    "next_steps": [
+      "C06",
+      "C07"
+    ]
+  }
+}

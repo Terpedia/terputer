@@ -1,0 +1,59 @@
+gene_id	nr_annotation	kegg_annotation	fpkm_0h	fpkm_12h_control	fpkm_12h_limonene	log2_fpkm_ratio_12h	nr_p450_label	kegg_p450_label	any_explicit_p450_label
+PDIDSM_85260	hypothetical protein PDIG_38620	K09241//transcriptional regulatory protein GAL4	0.67	0.73	2379.36	11.485235	False	False	False
+PDIDSM_67430	Bifunctional P450:NADPH-P450 reductase	K14338//cytochrome P450 / NADPH-cytochrome P450 reductase [EC:1.14.14.1 1.6.2.4]	0.51	0.57	66.76	6.640838	True	True	True
+PDIDSM_122204	Peptidase S8/S53, subtilisin/kexin/sedolisin	K01279//tripeptidyl-peptidase I [EC:3.4.14.9]	26.03	24.09	1143.7	5.56328	False	False	False
+PDIDSM_67120	hypothetical protein PDIP_67120	K07375//tubulin beta; K15165//mediator of RNA polymerase II transcription subunit 13, fungi type	1.56	0.59	24.16	5.135839	False	False	False
+PDIDSM_672902	MFS multidrug transporter, putative	K08157//MFS transporter, DHA1 family, multidrug resistance protein	16.52	5.69	223.8	5.273147	False	False	False
+PDIDSM_62090	hypothetical protein PDIP_62090	K01952//phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]; K08197//MFS transporter, SIT family, siderophore-iron:H+ symporter; K13095//splicing factor 1;K10866//DNA repair protein RAD50 [EC:3.6.-.-]; K14708//solute carrier family 26 (sodium-independent sulfate anion transporter), member 11	22.61	21.03	536.95	4.667692	False	False	False
+PDIDSM_53580	hypothetical protein PDIP_53580	K00108//choline dehydrogenase [EC:1.1.99.1]	11.42	18.8	408.37	4.433772	False	False	False
+PDIDSM_39540	Dimethylaniline monooxygenase, N-oxide-forming; FAD dependent oxidoreductase, putative	K03448//MFS transporter, ACS family, pantothenate transporter	72.43	37.21	598.94	4.005018	False	False	False
+PDIDSM_577403	Benzoate 4-monooxygenase cytochrome P450	K17475//tryprostatin B 6-hydroxylase [EC:1.14.13.176]; K05658//ATP-binding cassette, subfamily B (MDR/TAP), member 1 [EC:3.6.3.44]; K07824//benzoate 4-monooxygenase [EC:1.14.13.12]; K11644//paired amphipathic helix protein Sin3a	10.31	5.5	78.51	3.811214	True	False	True
+PDIDSM_42610	hypothetical protein PDIP_42610	K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	1.88	1.98	23.15	3.482575	False	False	False
+PDIDSM_16800	hypothetical protein PDIP_16800	K03379//cyclohexanone monooxygenase [EC:1.14.13.22]	578.19	249.84	2611.03	3.385021	False	False	False
+PDIDSM_672903	MFS multidrug transporter, putative	K08157//MFS transporter, DHA1 family, multidrug resistance protein	3.99	3.73	37.77	3.305639	False	False	False
+PDIDSM_62110	Cytochrome P450 monooxygenase, putative	K17475//tryprostatin B 6-hydroxylase [EC:1.14.13.176]; K00668//fatty acid synthase subunit beta, fungi type [EC:2.3.1.86]; K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	9794.07	7759.43	77988.18	3.329216	True	False	True
+PDIDSM_08920	MFS drug transporter, putative	K01952//phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]; K16066//3-hydroxy acid dehydrogenase / malonic semialdehyde reductase [EC:1.1.1.381 1.1.1.-]; K22134//MFS transporter, DHA2 family, glioxin efflux transporter; K13095//splicing factor 1; K10866//DNA repair protein RAD50 [EC:3.6.-.-]; K14708//solute carrier family 26 (sodium-independent sulfate anion transporter), member 11	1478.19	1318.23	13128.05	3.31588	False	False	False
+PDIDSM_40020	hypothetical protein PDIP_40020	K01952//phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]; K16066//3-hydroxy acid dehydrogenase / malonic semialdehyde reductase [EC:1.1.1.381 1.1.1.-]; K13095//splicing factor 1;K22134//MFS transporter, DHA2 family, glioxin efflux transporter; K10866//DNA repair protein RAD50 [EC:3.6.-.-]; K14708//solute carrier family 26 (sodium-independent sulfate anion transporter), member 11	26.19	23.83	227.08	3.246944	False	False	False
+PDIDSM_09650	Class V chitinase, putative	K03859//phosphatidylinositol glycan, class C; K01183//chitinase [EC:3.2.1.14]	18.73	29.25	231.46	2.979954	False	False	False
+PDIDSM_12990	Cytochrome P450 monooxygenase, putative	K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	3.3	2.77	21.61	2.919237	True	False	True
+PDIDSM_23070	14-alpha sterol demethylase; hypothetical protein PDIP_23070	K14333//2,3-dihydroxybenzoate decarboxylase [EC:4.1.1.46]; K05917//sterol 14-demethylase [EC:1.14.13.70]	115.538	153.66	1105.35	2.845882	False	False	False
+PDIDSM_046902	DNA repair protein Pso2/Snm1, putative	K15340//DNA cross-link repair 1A protein	88.18	62.66	405.81	2.693243	False	False	False
+PDIDSM_86880	hypothetical protein PDIP_86880	K10438//3-hydroxyphenylacetate 6-hydroxylase [EC:1.14.13.63]; K00493//unspecific monooxygenase [EC:1.14.14.1]; K05607//methylglutaconyl-CoA hydratase [EC:4.2.1.18]; K17645//averantin hydroxylase [EC:1.14.13.174]; K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	126.8	192.94	1236.38	2.679267	False	False	False
+PDIDSM_42560	hypothetical protein PDIP_42560	K21293//cytochrome P450 family 619	50.087	95.24	607.43	2.671802	False	True	True
+PDIDSM_81650	Thioredoxin, putative	K03671//thioredoxin 1	806.21	521.32	2636.32	2.338062	False	False	False
+PDIDSM_63580	C6 transcription factor, putative	K10862//tyrosyl-DNA phosphodiesterase 1 [EC:3.1.4.-]	819.48	633.66	2227.31	1.813359	False	False	False
+PDIDSM_02410	hypothetical protein PDIP_02410	K17475//tryprostatin B 6-hydroxylase [EC:1.14.13.176]; K17645//averantin hydroxylase [EC:1.14.13.174]; K05658//ATP-binding cassette, subfamily B (MDR/TAP), member 1 [EC:3.6.3.44]	115.86	182.59	582.56	1.673257	False	False	False
+PDIDSM_69420	Mitochondrial translation initiation factor, putative	K02519//translation initiation factor IF-2	119.22	133.71	421.99	1.657365	False	False	False
+PDIDSM_04690	DNA repair protein Pso2/Snm1, putative	K15340//DNA cross-link repair 1A protein	102.99	124.41	384.45	1.62691	False	False	False
+PDIDSM_046903	DNA repair protein Pso2/Snm1, putative	K15340//DNA cross-link repair 1A protein	54.21	48.15	148.7	1.624774	False	False	False
+PDIDSM_0468015	Cytochrome P450, putative	K17475//tryprostatin B 6-hydroxylase [EC:1.14.13.176]; K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	45.75	40.25	117.42	1.542266	True	False	True
+PDIDSM_75470	Psi-producing oxygenase C	K17862//linoleate 10R-lipoxygenase [EC:1.13.11.62]	264.15	295.08	833.61	1.497951	False	False	False
+PDIDSM_79840	Major facilitator superfamily domain, general substrate transporter; MFS transporter, putative	K01952//phosphoribosylformylglycinamidine synthase [EC:6.3.5.3]; K08197//MFS transporter, SIT family, siderophore-iron:H+ symporter; K22134//MFS transporter, DHA2 family, glioxin efflux transporter; K13095//splicing factor 1; K10866//DNA repair protein RAD50 [EC:3.6.-.-]; K14708//solute carrier family 26 (sodium-independent sulfate anion transporter), member 11	56.51	68.62	168.79	1.297282	False	False	False
+PDIDSM_71200	DNA excision repair protein (Rad26L), putative	K20098//DNA excision repair protein ERCC-6-like 2 [EC:3.6.4.-]	249.86	309.9	642.52	1.051698	False	False	False
+PDIDSM_33150	hypothetical protein PDIP_33150	K17863//linoleate 8R-lipoxygenase / 9,12-octadecadienoate 8-hydroperoxide 8R-isomerase [EC:1.13.11.60 5.4.4.5]	601.54	870.9	286.23	-1.604994	False	False	False
+PDIDSM_220609	hypothetical protein; Amino acid/polyamine transporter I	K16261//yeast amino acid transporter	1436.09	944.07	291.31	-1.695996	False	False	False
+PDIDSM_747406	Aldehyde dehydrogenase, putative	K00128//aldehyde dehydrogenase (NAD+) [EC:1.2.1.3]	2722.21	1684.51	494.22	-1.768897	False	False	False
+PDIDSM_06160	RNase L inhibitor of the ABC superfamily, putative; ABC transporter, ABCE	K06174//ATP-binding cassette, sub-family E, member 1	947.18	1159.13	315.4	-1.877455	False	False	False
+PDIDSM_05810	hypothetical protein PDIP_05810	K16261//yeast amino acid transporter	3111.04	3442.96	894.66	-1.944119	False	False	False
+PDIDSM_22750	GPI mannosyltransferase 4; hypothetical protein ACN42_g8151	K08098//phosphatidylinositol glycan, class Z [EC:2.4.1.-]	341.94	548.85	128.86	-2.089751	False	False	False
+PDIDSM_45420	ABC transporter, integral membrane type 1	K05663//mitochondrial ABC transporter ATM	260.99	217.97	44.19	-2.299738	False	False	False
+PDIDSM_08220	P450 family fatty acid hydroxylase, putative	K14338// cypD_E, CYP102A2_3  cytochrome P450 / NADPH-cytochrome P450 reductase  1.14.14.1 1.6.2.4  Metabolism--Lipid metabolism--Fatty acid degradation|Metabolism--Amino acid metabolism--Tryptophan metabolism|Metabolism--Xenobiotics biodegradation and metabolism--Aminobenzoate degradation|Metabolism--Global and overview maps--Microbial metabolism in diverse environments	3770.25	5693.28	1117.83	-2.348456	True	True	True
+PDIDSM_62830	Glycosyl hydrolase, putative	K08257//mannan endo-1,6-alpha-mannosidase [EC:3.2.1.101]	1196.7	1140.52	219.9	-2.374243	False	False	False
+PDIDSM_66870	hypothetical protein PDIP_66870	K17732//mitochondrial-processing peptidase subunit beta [EC:3.4.24.64]	5283.49	5498.97	1017.86	-2.433507	False	False	False
+PDIDSM_01830	Calcium/calmodulin-dependent/calcium-dependent protein kinase; Cell-cycle checkpoint protein kinase, putative	K06641//serine/threonine-protein kinase Chk2 [EC:2.7.11.1];K05917//sterol 14-demethylase [EC:1.14.13.70]	1791.94	2824.09	506.9	-2.477779	False	False	False
+PDIDSM_809905	Isoamyl alcohol oxidase, putative	K01501//nitrilase [EC:3.5.5.1];K01166//ribonuclease T2 [EC:3.1.27.1]	97.98	116.84	20.41	-2.511369	False	False	False
+PDIDSM_80990	/Isoamyl alcohol oxidase, putative	K01501//nitrilase [EC:3.5.5.1];K01166//ribonuclease T2 [EC:3.1.27.1]	97.98	116.84	20.41	-2.511369	False	False	False
+PDIDSM_809903	Isoamyl alcohol oxidase, putative	K01501//nitrilase [EC:3.5.5.1];K01166//ribonuclease T2 [EC:3.1.27.1]	97.98	116.834	20.41	-2.511295	False	False	False
+PDIDSM_809904	Isoamyl alcohol oxidase, putative	K01501//nitrilase [EC:3.5.5.1];K01166//ribonuclease T2 [EC:3.1.27.1]	97.98	116.84	20.41	-2.511369	False	False	False
+PDIDSM_809902	Isoamyl alcohol oxidase, putative	K01501//nitrilase [EC:3.5.5.1];K01166//ribonuclease T2 [EC:3.1.27.1]	97.98	116.84	20.41	-2.511369	False	False	False
+PDIDSM_05480	hypothetical protein PDIP_05480	K01679//fumarate hydratase, class II [EC:4.2.1.2]	101.99	116.98	19.2	-2.600822	False	False	False
+PDIDSM_17060	Oxidoreductase (Msc7), putative	K00129//aldehyde dehydrogenase (NAD(P)+) [EC:1.2.1.5]; K00128//aldehyde dehydrogenase (NAD+) [EC:1.2.1.3]	318.44	319.38	50.84	-2.648855	False	False	False
+PDIDSM_89700	FACT complex subunit spt16	K01262//Xaa-Pro aminopeptidase [EC:3.4.11.9]	750.12	1180.61	161.91	-2.8655	False	False	False
+PDIDSM_67750	Cytochrome P450 monooxygenase, putative	K13950//para-aminobenzoate synthetase [EC:2.6.1.85]; K14338//cytochrome P450 / NADPH-cytochrome P450 reductase [EC:1.14.14.1 1.6.2.4]	331.71	240.34	27.76	-3.10941	True	True	True
+PDIDSM_03320	Fungal chitin synthase; hypothetical protein PDIP_03320	K17475//tryprostatin B 6-hydroxylase [EC:1.14.13.176]; K00698//chitin synthase [EC:2.4.1.16]; K17645//averantin hydroxylase [EC:1.14.13.174]	17087.19	15165.07	1306.43	-3.53695	False	False	False
+PDIDSM_01820	14-alpha sterol demethylase	K05917//sterol 14-demethylase [EC:1.14.13.70]	1175.15	2042.35	157.97	-3.691665	False	False	False
+PDIDSM_67660	Cytochrome P450 alkane hydroxylase, putative	K15388//cytochrome P450 monooxygenase;K00493//unspecific monooxygenase [EC:1.14.14.1]	161.9	217.82	16.84	-3.685293	True	True	True
+PDIDSM_42460	MFS peptide transporter, putative	K03305//proton-dependent oligopeptide transporter, POT family	1890.58	2292.91	114.35	-4.324453	False	False	False
+PDIDSM_27750	Alfa-L-arabinofuranosidase	K20844//non-reducing end alpha-L-arabinofuranosidase [EC:3.2.1.55]	305728.37	310853.54	13463.16	-4.529136	False	False	False
+PDIDSM_31870	O-methylsterigmatocystin oxidoreductase; hypothetical protein PENSOL_c034G05934	K17651//aflatoxin B synthase [EC:1.14.13.175]; K21295//multifunctional cytochrome P450 monooxygenase	23.24	39.25	1.49	-4.629265	False	True	True
+PDIDSM_046806	hypothetical protein PDIP_86910	K07824//benzoate 4-monooxygenase [EC:1.14.13.12]	357.43	188.05	0.86	-7.614633	False	False	False

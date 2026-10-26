@@ -1,0 +1,7 @@
+# Penicillium R-(+)-limonene publisher-table audit
+
+The [executed notebook](../../notebooks/terputer-penicillium-limonene-supplement.ipynb) audits Table S7 of the [publisher supplementary workbook](https://public-pages-files-2025.frontiersin.org/articles/527643/file/Data_Sheet_1.xlsx/527643_supplementary-materials_datasheets_1_xlsx/1) for the [Zhang et al. study](https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2020.00744/full). The [claim-linked white paper](generated/white-paper.md), [claim ledger](generated/claim-ledger.tsv), [result table](results/table_s7_audit.tsv), and [execution receipt](../execution-receipts/terputer-penicillium-limonene-supplement.json) travel with it.
+
+The workbook has 58 unique candidate rows. Time-matched expression values are higher in 31 and lower in 27 after R-(+)-limonene exposure. Only 10 rows have explicit P450/CYP text in the supplied NR or KEGG annotations. Table S7 has no per-gene adjusted p values or replicate measurements, so these are descriptive checks of an author-selected table, not a new DEG analysis or evidence of a direct enzyme target.
+
+The 2.96 MB publisher workbook is deliberately omitted from Git. Restore the exact file from the HTTPS URL and SHA-256 in [report-spec.json](report-spec.json) with `python restore-inputs.py research/penicillium-limonene-supplement/report-spec.json` before rerunning the notebook and report generator. The raw reads are deposited under [PRJNA608617](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617) but have not been reprocessed here.

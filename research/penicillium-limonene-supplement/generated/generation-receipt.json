@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/penicillium-limonene-supplement/report-spec.json",
+  "manifest_sha256": "5ed1a1d16832dd325fd25b88d47b7861254f0dd1825f2fab32b5603dcdfc5d3c",
+  "notebook": "notebooks/terputer-penicillium-limonene-supplement.ipynb",
+  "notebook_sha256": "bebb6b16c994c6604a255cf20145b756fa2c95e971a7c1f50770d30e99cc641c",
+  "executed_code_cells": 3,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-penicillium-limonene-supplement.json",
+  "notebook_execution_receipt_sha256": "ed2fc6eb49df256dec8f723a653d1458b401b6c36a9ef423ad6f885437ea96a3",
+  "artifact_sha256": {
+    "research/penicillium-limonene-supplement/results/analysis_summary.json": "9be0cd540624a143356e93d92068164805300003138001aa4ab7a719b152bb73",
+    "research/penicillium-limonene-supplement/results/table_s7_audit.tsv": "a4cf1cf6a61aedf95ff7164a01c9c2eb55a4e3048e1127867a6ffb4608518a63"
+  },
+  "input_sha256": {
+    "research/penicillium-limonene-supplement/data/Data_Sheet_1.xlsx": "85fac5c96d733d35402a67f1f3af7ac364f4528c8ed37cd1292bc21da0639700"
+  },
+  "external_data_inputs": [
+    {
+      "path": "research/penicillium-limonene-supplement/data/Data_Sheet_1.xlsx",
+      "url": "https://public-pages-files-2025.frontiersin.org/articles/527643/file/Data_Sheet_1.xlsx/527643_supplementary-materials_datasheets_1_xlsx/1",
+      "sha256": "85fac5c96d733d35402a67f1f3af7ac364f4528c8ed37cd1292bc21da0639700"
+    }
+  ],
+  "claim_count": 7,
+  "observed_claim_count": 3,
+  "report_sha256": "12d6a31ccede7430034106577523df06bda8885017c0dae937d6872233bab16c",
+  "ledger_sha256": "409c459e30137c23c7d9d2e091890938b0afbf62a922d19d1360ee358f9fb84b",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth."
+}
