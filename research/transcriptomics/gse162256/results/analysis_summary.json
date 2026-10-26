@@ -1,0 +1,34 @@
+{
+  "accession": "GSE162256",
+  "source_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE162nnn/GSE162256/suppl/GSE162256_Evalues.txt.gz",
+  "source_sha256": "c998a6d6034486a19fde2619a271f67de807cfc2e9d9af6b2007b8c5c0ea70ae",
+  "matrix_shape_genes_by_cells": [
+    9664,
+    338
+  ],
+  "group_cell_counts": {
+    "Cele_2h": 63,
+    "Cele_16h": 61,
+    "Pac_cele": 59,
+    "Pac_16h": 56,
+    "Pac_48h": 53,
+    "Controls": 46
+  },
+  "state_labels": {
+    "Cele16h_predict_as_Suppressive": 61,
+    "Pac+cele16h_predict_as_Activation": 58,
+    "Ctrl_predict_as_Control": 45,
+    "Cele2h_predict_as_Suppressive": 33,
+    "Pac16h_predict_as_Suppressive": 31,
+    "Pac48h_predict_as_Control": 28,
+    "Cele2h_predict_as_Control": 26,
+    "Pac48h_predict_as_Suppressive": 25,
+    "Pac16h_predict_as_Control": 23,
+    "Cele2h_predict_as_Activation": 4,
+    "Pac16h_predict_as_Activation": 2,
+    "Ctrl_predict_as_Suppressive": 1,
+    "Pac+cele16h_predict_as_Suppressive": 1
+  },
+  "missing_numeric_values": 0,
+  "interpretation": "Single-cell descriptive contrasts in reported E-value units; no biological replicate inference or cross-study scale comparison."
+}

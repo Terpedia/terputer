@@ -1,0 +1,24 @@
+panel	gene	contrast	status	n_control_cells	n_exposed_cells	median_control	median_exposed	median_difference_reported_units	detection_control	detection_exposed
+cell_cycle	MKI67	paclitaxel_16h_vs_control	descriptive	46.0	56.0	2.3555	1.4155	-0.9400000000000002	0.8913043478260869	0.7142857142857143
+cell_cycle	MKI67	paclitaxel_48h_vs_control	descriptive	46.0	53.0	2.3555	0.026	-2.3295000000000003	0.8913043478260869	0.5283018867924528
+cell_cycle	TOP2A	paclitaxel_16h_vs_control	descriptive	46.0	56.0	2.8064999999999998	1.858	-0.9484999999999997	0.9347826086956522	0.8214285714285714
+cell_cycle	TOP2A	paclitaxel_48h_vs_control	descriptive	46.0	53.0	2.8064999999999998	1.734	-1.0724999999999998	0.9347826086956522	0.7169811320754716
+cell_cycle	CCNB1	paclitaxel_16h_vs_control	descriptive	46.0	56.0	6.556	4.522	-2.034	1.0	0.9642857142857143
+cell_cycle	CCNB1	paclitaxel_48h_vs_control	descriptive	46.0	53.0	6.556	3.829	-2.727	1.0	0.8113207547169812
+cell_cycle	UBE2C	paclitaxel_16h_vs_control	descriptive	46.0	56.0	5.8425	4.2315000000000005	-1.6109999999999998	0.9565217391304348	0.8392857142857143
+cell_cycle	UBE2C	paclitaxel_48h_vs_control	descriptive	46.0	53.0	5.8425	3.653	-2.1895000000000002	0.9565217391304348	0.7169811320754716
+cell_cycle	CDK1	paclitaxel_16h_vs_control	descriptive	46.0	56.0	4.0515	2.9355	-1.1159999999999997	0.8478260869565217	0.75
+cell_cycle	CDK1	paclitaxel_48h_vs_control	descriptive	46.0	53.0	4.0515	0.188	-3.8634999999999997	0.8478260869565217	0.5094339622641509
+cell_cycle	CENPF	paclitaxel_16h_vs_control	descriptive	46.0	56.0	3.721	3.096	-0.625	1.0	0.9642857142857143
+cell_cycle	CENPF	paclitaxel_48h_vs_control	descriptive	46.0	53.0	3.721	2.544	-1.177	1.0	0.8867924528301887
+interferon	ISG15	paclitaxel_16h_vs_control	descriptive	46.0	56.0	6.4795	5.7895	-0.6899999999999995	1.0	1.0
+interferon	ISG15	paclitaxel_48h_vs_control	descriptive	46.0	53.0	6.4795	6.019	-0.4604999999999997	1.0	1.0
+interferon	IFI6	paclitaxel_16h_vs_control	descriptive	46.0	56.0	0.0	0.0	0.0	0.34782608695652173	0.26785714285714285
+interferon	IFI6	paclitaxel_48h_vs_control	descriptive	46.0	53.0	0.0	0.0	0.0	0.34782608695652173	0.41509433962264153
+interferon	IFIT1	paclitaxel_16h_vs_control	descriptive	46.0	56.0	0.0	0.0	0.0	0.06521739130434782	0.42857142857142855
+interferon	IFIT1	paclitaxel_48h_vs_control	descriptive	46.0	53.0	0.0	0.0	0.0	0.06521739130434782	0.11320754716981132
+interferon	IFIT3		0 matches							
+interferon	MX1		0 matches							
+interferon	OAS1		0 matches							
+interferon	STAT1	paclitaxel_16h_vs_control	descriptive	46.0	56.0	1.5190000000000001	0.0	-1.5190000000000001	0.7391304347826086	0.42857142857142855
+interferon	STAT1	paclitaxel_48h_vs_control	descriptive	46.0	53.0	1.5190000000000001	0.262	-1.2570000000000001	0.7391304347826086	0.5471698113207547

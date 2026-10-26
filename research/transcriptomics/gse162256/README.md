@@ -21,6 +21,6 @@ The published study reports a metabolism/inflammation module in a paclitaxel-exp
 
 ## Candidate status
 
-**Selected for follow-up analysis; not yet ingested into Terpedia or included as evidence in the white paper's claim ledger.** No biological conclusion is drawn from this metadata review.
+**Descriptive analysis complete; not yet ingested into Terpedia or included as evidence in the white paper's claim ledger.** The [executed notebook](../../../notebooks/terputer-gse162256-single-cell.ipynb), [analysis script](analysis.py), and [result table](results/marker_descriptive.tsv) show lower reported median values for all six predeclared cell-cycle markers at both paclitaxel times. The interferon panel is mixed or absent. These observations do not establish replicate-level differential expression or a shared pathway. The original processed matrix is downloaded on demand and verified by checksum; it is not committed to this repository.
 
 Source: [GEO series](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162256); [study article](https://pmc.ncbi.nlm.nih.gov/articles/PMC8210883/).
