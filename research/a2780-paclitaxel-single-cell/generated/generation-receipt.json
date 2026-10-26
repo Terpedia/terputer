@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v2",
+  "specification_schema_version": 2,
+  "manifest": "research/transcriptomics/gse162256/report-spec.json",
+  "manifest_sha256": "2fe5f6cd7093a2853412b2376ccc40e4a5886fea148fe8cfd57c5a7aa9ef2562",
+  "notebook": "notebooks/terputer-gse162256-single-cell.ipynb",
+  "notebook_sha256": "9dad041e6ae95b51fd1ff26f5aca8004fb35c5ae5459714b3be96a408fa52d1f",
+  "executed_code_cells": 2,
+  "notebook_execution_receipt": "research/execution-receipts/terputer-gse162256-single-cell.json",
+  "notebook_execution_receipt_sha256": "4bdfe3dea2c6bd7597de657d3302b58b69932ee82445199adfb9a3360c80ddf7",
+  "artifact_sha256": {
+    "research/transcriptomics/gse162256/results/analysis_summary.json": "7ed6b62f42d13f7614492a294549db6fb7a5262f9345783c008167c95b2a03c5",
+    "research/transcriptomics/gse162256/results/marker_descriptive.tsv": "6c542b43d3c825ed0adc622a4537f1eeece7a78c2ce9ec5f6b6164a88abd43e5"
+  },
+  "claim_count": 6,
+  "observed_claim_count": 3,
+  "report_sha256": "09debe3643f547f1ef6636c63045ed6c12e62451242312b0b14ae5146e4711ad",
+  "ledger_sha256": "aff152a7cdc1df2ed9e2c48ca1a72141030d2b345606a3bf5765e4e73e4db545",
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth."
+}
