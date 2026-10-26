@@ -63,6 +63,8 @@ const researchTools = [
   ['add_research_project_submodule', z.object({ slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/), repository: z.string().url().optional(), commit: z.string().regex(/^[a-f0-9]{40}$/).optional() })],
   ['update_research_project_submodule', z.object({ slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/) })],
   ['execute_notebook', z.object({ path: z.string().trim().min(1).max(300), project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional(), cell_timeout_seconds: z.number().int().min(1).max(600).default(120), artifact_paths: z.array(z.string().trim().min(1).max(300)).max(50).default([]), input_paths: z.array(z.string().trim().min(1).max(300)).max(50).default([]) })],
+  ['start_research_job', z.object({ script_path: z.string().trim().min(1).max(300), project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional(), arguments: z.array(z.string().max(300)).max(20).default([]), max_runtime_minutes: z.number().int().min(1).max(720).default(360) })],
+  ['get_research_job', z.object({ job_id: z.string().uuid(), project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional() })],
   ['list_notebooks', z.object({ project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional() })],
   ['read_workspace_file', z.object({ path: z.string().min(1).max(300), project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional() })],
   ['write_workspace_file', z.object({ path: z.string().min(1).max(300), content: z.string().max(2_000_000), project_slug: z.string().trim().regex(/^[a-z0-9][a-z0-9-]{0,79}$/).optional() })],
@@ -87,13 +89,15 @@ for (const [name, schema] of researchTools) {
       add_research_project_submodule: 'Attach a user-owned terpedia-* project as a Git submodule in projects/ using the linked GitHub session or local Git.',
       update_research_project_submodule: 'Advance a project submodule pointer to its latest project commit using the linked GitHub session or local Git.',
       execute_notebook: 'Execute and save a notebook in this workspace or an attached project using a fresh Python kernel; declare result artifacts and local inputs for hash provenance.',
+      start_research_job: 'Launch a long-running Python research script under research/ in this Codespace or an attached project; receive a job ID for polling.',
+      get_research_job: 'Read research job status, source hash, and recent logs for this Codespace or an attached project.',
       list_notebooks: 'List Jupyter notebooks in this workspace or an attached project.',
       read_workspace_file: 'Read a small research file or notebook in this workspace or an attached project.',
       write_workspace_file: 'Save a research file or notebook in this workspace or an attached project.',
       execute_python_cell: 'Run Python in this Codespace Jupyter kernel.'
     }[name],
     inputSchema: schema,
-    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'generate_research_report', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name) }
+    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'execute_notebook', 'start_research_job', 'generate_research_report', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell', 'execute_notebook', 'start_research_job', 'publish_research_report', 'fork_report_workspace', 'add_research_project_submodule', 'update_research_project_submodule'].includes(name) }
   }, async (args) => ({ content: [{ type: 'text', text: JSON.stringify(await callResearchTool(name, args)) }] }));
 }
 
