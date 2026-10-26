@@ -1,0 +1,13 @@
+{
+  "source_sha256": "85fac5c96d733d35402a67f1f3af7ac364f4528c8ed37cd1292bc21da0639700",
+  "sheet": "Table S7",
+  "unique_gene_rows": 58,
+  "higher_at_12h_exposed": 31,
+  "lower_at_12h_exposed": 27,
+  "equal_at_12h": 0,
+  "nr_explicit_p450_label": 8,
+  "kegg_explicit_p450_label": 6,
+  "either_explicit_p450_label": 10,
+  "per_gene_adjusted_p_values_available_in_s7": false,
+  "effect_class": "author-provided FPKM, descriptive ratio only"
+}
