@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
+import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule } from './research-projects.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const allowedRoots = ['notebooks', 'research'];
@@ -30,6 +31,10 @@ export const toolDefinitions = [
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
+  { name: 'fork_report_workspace', description: 'Fork public Terpedia/terputer to the authenticated GitHub user as terpedia-report and return its Codespace URL. Requires gh auth in this Codespace.', parameters: { type: 'object', properties: {} } },
+  { name: 'list_research_projects', description: 'List the research project submodules and pinned commits in this user-owned terpedia-report checkout.', parameters: { type: 'object', properties: {} } },
+  { name: 'add_research_project_submodule', description: 'Stage a user-owned terpedia-<slug> project repository under projects/<slug> in this terpedia-report checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' } }, required: ['slug'] } },
+  { name: 'update_research_project_submodule', description: 'Fetch the latest default-branch commit for an existing project submodule and stage its new pointer for review.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
   { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh workspace Python kernel and save its outputs. Declare research/ files expected to be written so their hashes are included in the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
@@ -38,6 +43,10 @@ export const toolDefinitions = [
 ];
 
 export async function callResearchTool(name, args = {}) {
+  if (name === 'fork_report_workspace') return forkReportWorkspace();
+  if (name === 'list_research_projects') return listResearchProjects();
+  if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args);
+  if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args);
   if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
