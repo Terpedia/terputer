@@ -20,6 +20,12 @@ The remote MCP has no access to a user's Codespace files or Python kernel. Those
 
 The `list_research_projects` tool shows each pinned project commit. `update_research_project_submodule` fetches the latest project revision and stages a new pointer for review. When cloning a report fork elsewhere, run `git submodule update --init --recursive`. Access to private project repositories requires the same GitHub account or explicit collaborator access. Each project remains its own repository; the report fork stores only its URL and pinned commit. These tools require an authenticated GitHub CLI in the Codespace and a checkout whose `origin` is the authenticated user's `terpedia-report` fork. They do not commit or push changes.
 
+## Curated study submodules and browser
+
+The `projects/` directory contains the public Terpedia research portfolio as 16 Git submodules. Each study is versioned in its own `Terpedia/terputer-*` repository and includes its notebook and white paper. Browse and search the catalog at [`/projects/`](https://terputer.terpedia.com/projects/), or use the Research library link in the workspace. The catalog maps studies to genomics, transcriptomics, proteomics, metabolomics, translational and clinical research, and research infrastructure.
+
+The Codespaces setup initializes these public submodules automatically. For a local clone, run `git submodule update --init --recursive`. The parent repository pins each study to a commit; to advance one study, run `git submodule update --remote projects/<slug>`, inspect the study checkout, then commit the changed submodule pointer in `terputer`. The browser reads `public/projects/catalog.json`, while the full repositories remain available under `projects/<slug>`.
+
 Notebooks are stored under `notebooks/` in the current Codespace checkout. The notebook itself is standard Jupyter `nbformat` 4 and can also be opened in Jupyter or VS Code. The app does not create, start, commit, or push Codespaces on behalf of the user; GitHub remains the owner of repository and Codespace lifecycle.
 
 ## Local development

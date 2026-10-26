@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse Terpedia's genomics, transcriptomics, proteomics, and metabolomics study repositories.">
+  <title>Research Library · Terputer</title>
+  <link rel="stylesheet" href="/projects/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">TERPUTER <span>/ RESEARCH LIBRARY</span></a>
+    <a href="/">Back to workspace</a>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">TERPEDIA BIOINFORMATICS</p>
+      <h1>Research library</h1>
+      <p class="lede">Browse 16 independently versioned studies across genomics, transcriptomics, proteomics, metabolomics, and translational research. Each project has its own notebook and white paper.</p>
+      <div class="controls">
+        <label class="search"><span>Search</span><input id="search" type="search" placeholder="Search projects, compounds, or methods…" autocomplete="off"></label>
+        <label class="filter"><span>Category</span><select id="category"><option value="">All categories</option></select></label>
+        <span id="count" class="count" aria-live="polite"></span>
+      </div>
+    </section>
+    <section id="catalog" class="catalog" aria-live="polite"><p class="loading">Loading projects…</p></section>
+  </main>
+  <footer><span>Terpedia · Terputer</span><span>Study checkouts are pinned as Git submodules under <code>projects/</code>.</span></footer>
+  <script src="/projects/app.js" defer></script>
+</body>
+</html>
