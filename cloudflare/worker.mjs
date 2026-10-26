@@ -74,6 +74,42 @@ function adapterMissesSnapshot(name, live, snapshot) {
     || snapshot.observations.some((row) => !observations.has(row.observation_id));
 }
 
+function mergeWithSnapshot(name, args, live, snapshot) {
+  const mergeRows = (liveRows, snapshotRows, key, replaceWhen = () => false) => {
+    const rows = new Map((liveRows || []).map((row) => [row[key], { ...row, record_source_mode: 'bigquery' }]));
+    for (const row of snapshotRows) {
+      if (!rows.has(row[key]) || replaceWhen(rows.get(row[key]), row)) {
+        rows.set(row[key], { ...row, record_source_mode: 'commit-pinned-public-snapshot' });
+      }
+    }
+    return [...rows.values()].sort((a, b) => String(a[key]).localeCompare(String(b[key])));
+  };
+  const provenance = {
+    source_mode: 'bigquery-plus-commit-pinned-public-snapshot',
+    snapshot_revision: snapshot.snapshot_revision,
+    snapshot_record_ids: [],
+    adapter_status: 'stale_or_incomplete',
+  };
+  if (name === 'search_transcriptomic_studies') {
+    const limit = Math.min(30, Math.max(1, Number(args.limit) || 10));
+    const records = mergeRows(live.records, snapshot.records, 'accession', (current, row) => row.source_sha256 && !current.source_sha256).slice(0, limit);
+    provenance.snapshot_record_ids = records.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.accession);
+    return { ...live, records, snapshot_source: snapshot.source, ...provenance };
+  }
+  if (name === 'get_transcriptomic_samples') {
+    const samples = mergeRows(live.samples, snapshot.samples, 'sample_id').slice(0, 100);
+    provenance.snapshot_record_ids = samples.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.sample_id);
+    return { ...live, samples, snapshot_source: snapshot.source, ...provenance };
+  }
+  const contrasts = mergeRows(live.contrasts, snapshot.contrasts, 'contrast_id').slice(0, 50);
+  const observations = mergeRows(live.observations, snapshot.observations, 'observation_id').slice(0, 50);
+  provenance.snapshot_record_ids = [
+    ...contrasts.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.contrast_id),
+    ...observations.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.observation_id),
+  ];
+  return { ...live, contrasts, observations, sources: [...new Set([...(live.sources || []), ...(snapshot.sources || [])])], ...provenance };
+}
+
 async function searchEntrez(db, query, limit) {
   const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
   const found = await sourceJson(`${base}/esearch.fcgi?${new URLSearchParams({ db, term: query, retmode: 'json', retmax: String(limit) })}`);
@@ -107,7 +143,7 @@ export async function handleTool(name, args, env) {
         const live = await response.json();
         try {
           const snapshot = await publicSnapshotResult(name, args, 'stale_or_incomplete');
-          if (adapterMissesSnapshot(name, live, snapshot)) return snapshot;
+          if (adapterMissesSnapshot(name, live, snapshot)) return mergeWithSnapshot(name, args, live, snapshot);
         } catch { /* Keep the live BigQuery result when the public snapshot is unreachable. */ }
         return live;
       }
