@@ -2,8 +2,8 @@
   "schema_version": 2,
   "runner": "terputer-notebook-runner-v1",
   "notebook": "notebooks/terputer-transcriptomics.ipynb",
-  "source_notebook_sha256": "d0d4fc614969fdf7e390c89f9c8cc1166152d968a698e47d9ee528537e9240b9",
-  "notebook_sha256": "75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22",
+  "source_notebook_sha256": "75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22",
+  "notebook_sha256": "469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c",
   "executed_code_cells": 5,
   "artifacts_written": {
     "research/transcriptomics/results/gse136998_descriptive_effects.tsv": "a327b94c307265a3c448dde4e0ee6b82ab5871b2b120bada8ef64a3fd512c543",
@@ -18,6 +18,8 @@
   "inputs_pinned": {
     "research/transcriptomics/data/GSE136998_rsem.genes.fpkm.table.txt.gz": "f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811",
     "research/transcriptomics/data/GSE138291_All_gene_fpkm.list.txt.txt.gz": "2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0",
+    "research/transcriptomics/data/a549_ifnb.parquet": "8096c53c273a9c455e2f81b5e4aa09afd1f6c44cb34adaa6856968aa9886d40b",
+    "research/transcriptomics/data/a549_ifng.parquet": "8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462",
     "research/transcriptomics/data/jiang_sources.json": "5e32f4c716a391a0d6ca8a6da8fc28d00c628fe79b136a080f210650e81f260b",
     "research/transcriptomics/data/run_manifest.json": "7432b796ff5e4c1a62cd728de22cf3579ab8fee7ab604b5fa8647e67cb0b06f9",
     "research/transcriptomics/data/selected_sample_manifest.tsv": "42138e47cf12ed012c9663359a3090b9d1afcfd88391a92c84139db8890cd143"
@@ -81,5 +83,5 @@
       "wcwidth": "0.9.4"
     }
   },
-  "completed_at_utc": "2026-10-26T17:08:50.132328+00:00"
+  "completed_at_utc": "2026-10-26T17:44:06.258585+00:00"
 }

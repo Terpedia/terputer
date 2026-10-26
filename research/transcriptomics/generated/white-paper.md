@@ -4,7 +4,7 @@
 
 **Research question:** Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?
 
-**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22` · 5 executed code cells
+**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c` · 5 executed code cells
 
 ## Abstract
 
@@ -42,7 +42,18 @@ No analyzed result yet identifies a replicated metabolic or signaling pathway, a
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `d773422f80ed8ebde6fb8f3317409d250d40f9d4a9806b0cb48f226d40fefe3d`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums. The [notebook execution receipt](../../execution-receipts/terputer-transcriptomics.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. It also pins 5 declared local input files by SHA-256. It records the Python version and installed package versions. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `d318c2238cf840c20fedf2251c4946faa942c497d63c6ca1a35c3c328b267896`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts. 4 externally sourced input files have source URLs and hashes listed below. The [notebook execution receipt](../../execution-receipts/terputer-transcriptomics.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. It also pins 7 declared local input files by SHA-256. It records the Python version and installed package versions. Notebook execution does not independently validate scientific interpretation.
+
+### External data files
+
+The following download locations and file hashes match inputs pinned by the notebook execution receipt. The generator does not download these files or verify that the URLs remain live.
+
+| Input | Download | SHA-256 |
+| --- | --- | --- |
+| `research/transcriptomics/data/GSE136998_rsem.genes.fpkm.table.txt.gz` | [Source file](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE136nnn/GSE136998/suppl/GSE136998_rsem.genes.fpkm.table.txt.gz) | `f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811` |
+| `research/transcriptomics/data/GSE138291_All_gene_fpkm.list.txt.txt.gz` | [Source file](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE138nnn/GSE138291/suppl/GSE138291_All_gene_fpkm.list.txt.txt.gz) | `2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0` |
+| `research/transcriptomics/data/a549_ifnb.parquet` | [Source file](https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifnb.parquet) | `8096c53c273a9c455e2f81b5e4aa09afd1f6c44cb34adaa6856968aa9886d40b` |
+| `research/transcriptomics/data/a549_ifng.parquet` | [Source file](https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifng.parquet) | `8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462` |
 
 ## References
 

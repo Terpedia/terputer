@@ -83,6 +83,23 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   }
 
   if (!Array.isArray(spec.sources) || !spec.sources.length) throw new Error('At least one source is required');
+  const dataInputs = [];
+  if (spec.data_inputs !== undefined) {
+    if (spec.schema_version !== 2 || !Array.isArray(spec.data_inputs) || spec.data_inputs.length > 50) {
+      throw new Error('Data inputs require a version 2 report and an array of at most 50 entries');
+    }
+    const seen = new Set();
+    for (const entry of spec.data_inputs) {
+      const input = workspacePath(text(entry.path, 'Data input path'), ['research']);
+      if (seen.has(input.name)) throw new Error(`Duplicate data input: ${input.name}`);
+      seen.add(input.name);
+      const expectedHash = text(entry.sha256, `Data input ${input.name} SHA-256`);
+      if (!/^[a-f0-9]{64}$/.test(expectedHash) || inputHashes.get(input.name) !== expectedHash) {
+        throw new Error(`Data input does not match the notebook execution receipt: ${input.name}`);
+      }
+      dataInputs.push({ path: input.name, url: publicUrl(entry.url), sha256: expectedHash });
+    }
+  }
   const sources = new Map();
   for (const source of spec.sources) {
     const id = text(source.id, 'Source ID');
@@ -157,7 +174,11 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
       lines.push(section === 'limitations' ? limitationLine(id) : claimLine(id, true, section === 'results' || section === 'interpretation'), '');
     }
   }
-  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts; external data inputs require their own pinned URLs and checksums.${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook and records hashes for result files written during its fresh-kernel run.${inputHashes.size ? ` It also pins ${inputHashes.size} declared local input file${inputHashes.size === 1 ? '' : 's'} by SHA-256.` : ' No local input files were declared for this run.'}${executionReceipt.environment?.package_versions ? ' It records the Python version and installed package versions.' : ' This older receipt does not record installed-package versions.'}` : ''} Notebook execution does not independently validate scientific interpretation.`, '', '## References', '');
+  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts.${dataInputs.length ? ` ${dataInputs.length} externally sourced input files have source URLs and hashes listed below.` : ' External data inputs require their own pinned URLs and checksums.'}${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook and records hashes for result files written during its fresh-kernel run.${inputHashes.size ? ` It also pins ${inputHashes.size} declared local input file${inputHashes.size === 1 ? '' : 's'} by SHA-256.` : ' No local input files were declared for this run.'}${executionReceipt.environment?.package_versions ? ' It records the Python version and installed package versions.' : ' This older receipt does not record installed-package versions.'}` : ''} Notebook execution does not independently validate scientific interpretation.`, '');
+  if (dataInputs.length) {
+    lines.push('### External data files', '', 'The following download locations and file hashes match inputs pinned by the notebook execution receipt. The generator does not download these files or verify that the URLs remain live.', '', '| Input | Download | SHA-256 |', '| --- | --- | --- |', ...dataInputs.map((item) => `| \`${item.path}\` | [Source file](${item.url}) | \`${item.sha256}\` |`), '');
+  }
+  lines.push('## References', '');
   for (const [id, source] of sources) lines.push(`[${sourceNumbers.get(id)}] ${source.title}. ${source.url}`);
   lines.push('');
   const ledger = ['claim_id\tevidence_class\tclaim\tsource_ids\tsource_urls\tartifacts\tlimitation'];
@@ -172,6 +193,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
     ...(executionReceiptFile ? { notebook_execution_receipt: executionReceiptFile.name, notebook_execution_receipt_sha256: sha256(executionReceiptBytes) } : {}),
     artifact_sha256: Object.fromEntries([...artifacts].sort(([a], [b]) => a.localeCompare(b))),
     ...(inputHashes.size ? { input_sha256: Object.fromEntries([...inputHashes].sort(([a], [b]) => a.localeCompare(b))) } : {}),
+    ...(dataInputs.length ? { external_data_inputs: dataInputs } : {}),
     claim_count: claims.size, observed_claim_count: [...claims.values()].filter((claim) => claim.class === 'observed').length,
     report_sha256: sha256(report), ledger_sha256: sha256(ledgerText),
     limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth.'
