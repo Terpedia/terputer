@@ -1,0 +1,5 @@
+sample	treatment	hours	filtered_matrix_cells	cells_after_qc	median_umis_after_qc	median_genes_after_qc	median_mito_fraction_after_qc
+GSM8257022	DMSO	24	1191	1106	58257.5	7474.0	0.0749179758858256
+GSM8257023	paclitaxel	24	950	788	57188.5	7206.5	0.06905898775444036
+GSM8257024	DMSO	72	904	787	54013.0	6942.0	0.06661631652769001
+GSM8257025	paclitaxel	72	676	513	56858.0	7223.0	0.06388534806316833

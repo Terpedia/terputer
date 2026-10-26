@@ -1,0 +1,5 @@
+hours	panel	paclitaxel_minus_DMSO_median	paclitaxel_median	DMSO_median	interpretation
+24	cell_cycle	-0.2506562944310834	0.5186617179713857	0.7693180124024691	descriptive; one library per condition
+24	interferon	0.21827252640177985	0.4217071821635875	0.20343465576180764	descriptive; one library per condition
+72	cell_cycle	-0.04943180722604498	0.24218347826828177	0.29161528549432675	descriptive; one library per condition
+72	interferon	0.5095131114155614	0.7990063101415732	0.28949319872601176	descriptive; one library per condition

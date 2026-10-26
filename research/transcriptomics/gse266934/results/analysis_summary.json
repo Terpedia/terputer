@@ -1,0 +1,156 @@
+{
+  "accession": "GSE266934",
+  "source_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE266nnn/GSE266934/suppl/GSE266934_RAW.tar",
+  "source_sha256": "547370866041ae6048eed81a0d6486a5261ecc628d89956bdcca788a6c308ccc",
+  "source_article": "https://doi.org/10.1038/s41598-024-82218-9",
+  "chemical": "paclitaxel",
+  "chemical_class": "taxane diterpenoid",
+  "dose": "1 nM",
+  "control": "0.1% DMSO",
+  "cell_model": "HCC1143",
+  "independent_libraries_per_condition": 1,
+  "analysis_scope": "descriptive single-cell chemical exposure; no genetic Perturb-seq, replicate-level inference, or target dependency",
+  "qc": {
+    "min_detected_genes": 3000,
+    "max_mitochondrial_fraction": 0.25
+  },
+  "marker_panels": {
+    "cell_cycle": [
+      "MKI67",
+      "TOP2A",
+      "CCNB1",
+      "UBE2C",
+      "CDK1",
+      "CENPF"
+    ],
+    "interferon": [
+      "ISG15",
+      "IFI6",
+      "IFIT1",
+      "IFIT3",
+      "MX1",
+      "OAS1",
+      "STAT1"
+    ]
+  },
+  "mapped_markers": {
+    "cell_cycle": [
+      "MKI67",
+      "TOP2A",
+      "CCNB1",
+      "UBE2C",
+      "CDK1",
+      "CENPF"
+    ],
+    "interferon": [
+      "ISG15",
+      "IFI6",
+      "IFIT1",
+      "IFIT3",
+      "MX1",
+      "OAS1",
+      "STAT1"
+    ]
+  },
+  "inputs": {
+    "GSM8257022": {
+      "sha256": "aced8ab6cb15c38a2cdc7ad90eec276c1f661684c74c7ef72e0b0b8e2607dcc1",
+      "file": "GSM8257022_LH2400_filtered_feature_bc_matrix.h5"
+    },
+    "GSM8257023": {
+      "sha256": "1c64bd7d5fb06d601653dd00309682ceb01e3e0465b6d2295d231212a14f4278",
+      "file": "GSM8257023_LH2401_filtered_feature_bc_matrix.h5"
+    },
+    "GSM8257024": {
+      "sha256": "b783372fd12a166921cd5d03df30e4afcbf454540239f43e52d0b52483971018",
+      "file": "GSM8257024_LH7200_filtered_feature_bc_matrix.h5"
+    },
+    "GSM8257025": {
+      "sha256": "5822bb4150f146c1c2abfc1fa0871e202087f16c465deeec8b7918251596abaf",
+      "file": "GSM8257025_LH7201_filtered_feature_bc_matrix.h5"
+    }
+  },
+  "software": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "h5py": "3.16.0",
+    "matplotlib": "3.11.2"
+  },
+  "library_qc": [
+    {
+      "sample": "GSM8257022",
+      "treatment": "DMSO",
+      "hours": 24,
+      "filtered_matrix_cells": 1191,
+      "cells_after_qc": 1106,
+      "median_umis_after_qc": 58257.5,
+      "median_genes_after_qc": 7474.0,
+      "median_mito_fraction_after_qc": 0.0749179758858256
+    },
+    {
+      "sample": "GSM8257023",
+      "treatment": "paclitaxel",
+      "hours": 24,
+      "filtered_matrix_cells": 950,
+      "cells_after_qc": 788,
+      "median_umis_after_qc": 57188.5,
+      "median_genes_after_qc": 7206.5,
+      "median_mito_fraction_after_qc": 0.06905898775444036
+    },
+    {
+      "sample": "GSM8257024",
+      "treatment": "DMSO",
+      "hours": 72,
+      "filtered_matrix_cells": 904,
+      "cells_after_qc": 787,
+      "median_umis_after_qc": 54013.0,
+      "median_genes_after_qc": 6942.0,
+      "median_mito_fraction_after_qc": 0.06661631652769001
+    },
+    {
+      "sample": "GSM8257025",
+      "treatment": "paclitaxel",
+      "hours": 72,
+      "filtered_matrix_cells": 676,
+      "cells_after_qc": 513,
+      "median_umis_after_qc": 56858.0,
+      "median_genes_after_qc": 7223.0,
+      "median_mito_fraction_after_qc": 0.06388534806316833
+    }
+  ],
+  "module_contrasts": [
+    {
+      "hours": 24,
+      "panel": "cell_cycle",
+      "paclitaxel_minus_DMSO_median": -0.2506562944310834,
+      "paclitaxel_median": 0.5186617179713857,
+      "DMSO_median": 0.7693180124024691,
+      "interpretation": "descriptive; one library per condition"
+    },
+    {
+      "hours": 24,
+      "panel": "interferon",
+      "paclitaxel_minus_DMSO_median": 0.21827252640177985,
+      "paclitaxel_median": 0.4217071821635875,
+      "DMSO_median": 0.20343465576180764,
+      "interpretation": "descriptive; one library per condition"
+    },
+    {
+      "hours": 72,
+      "panel": "cell_cycle",
+      "paclitaxel_minus_DMSO_median": -0.04943180722604498,
+      "paclitaxel_median": 0.24218347826828177,
+      "DMSO_median": 0.29161528549432675,
+      "interpretation": "descriptive; one library per condition"
+    },
+    {
+      "hours": 72,
+      "panel": "interferon",
+      "paclitaxel_minus_DMSO_median": 0.5095131114155614,
+      "paclitaxel_median": 0.7990063101415732,
+      "DMSO_median": 0.28949319872601176,
+      "interpretation": "descriptive; one library per condition"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slug": "paclitaxel-single-cell",
+  "title": "Paclitaxel exposure in HCC1143: a compact single-cell evidence brief",
+  "question": "Which cellular responses to a terpene-derived compound appear at 24 and 72 hours in one public single-cell experiment?",
+  "notebook": "notebooks/terputer-paclitaxel-single-cell.ipynb",
+  "sources": [
+    {"id":"geo","title":"GEO GSE266934","url":"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE266934"},
+    {"id":"paper","title":"Primary study article","url":"https://doi.org/10.1038/s41598-024-82218-9"},
+    {"id":"chemical","title":"PubChem paclitaxel","url":"https://pubchem.ncbi.nlm.nih.gov/compound/Paclitaxel"}
+  ],
+  "claims": [
+    {"id":"P01","class":"source-reported","text":"Paclitaxel is a taxane diterpenoid, and GSE266934 includes HCC1143 single-cell libraries exposed to 1 nM paclitaxel or 0.1% DMSO for 24 or 72 hours.","sources":["geo","paper","chemical"],"limitation":"This chemical exposure experiment is not genetic Perturb-seq."},
+    {"id":"P02","class":"observed","text":"After the prespecified cell QC, 1,106 and 788 cells remained in the 24-hour DMSO and paclitaxel libraries; 787 and 513 remained at 72 hours.","sources":["geo"],"artifacts":["research/transcriptomics/gse266934/results/library_qc.tsv"],"limitation":"These are filtered cells from one library per arm, not independent replicates."},
+    {"id":"P03","class":"observed","text":"The treated-minus-control median interferon marker score was +0.218 at 24 hours and +0.510 at 72 hours; the selected cell-cycle score was -0.251 and -0.049, respectively.","sources":["geo"],"artifacts":["research/transcriptomics/gse266934/results/module_contrasts.tsv"],"limitation":"Scores summarize prespecified markers and are descriptive; they are not pathway activity estimates or statistical tests."},
+    {"id":"P04","class":"observed","text":"Marker-level CPM ratios are heterogeneous: at both time points CCNB1 and UBE2C are higher in the paclitaxel library, whereas MKI67, TOP2A, and CENPF are lower.","sources":["geo"],"artifacts":["research/transcriptomics/gse266934/results/marker_cpm_ratios.tsv"],"limitation":"Pooled-library CPM can shift with cell composition, survival, and library effects."},
+    {"id":"P05","class":"source-reported","text":"This four-library design has one library per treatment and time point, so it cannot establish biological reproducibility, cross-context transfer, or target dependence.","sources":["geo","paper"],"limitation":"The conclusion concerns evidence available from this particular design."},
+    {"id":"P06","class":"proposed","text":"Repeat the time-matched comparison across independent culture preparations, include a second dose and another terpenoid, and add a replicated target perturbation before testing target dependence.","sources":["geo","paper"],"limitation":"This experiment has not yet been performed."}
+  ],
+  "abstract":["P01","P03","P05"],
+  "sections":{"background":["P01"],"methods":["P02"],"results":["P03","P04"],"interpretation":["P03"],"limitations":["P05"],"next_steps":["P06"]}
+}
