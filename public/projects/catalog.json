@@ -30,6 +30,16 @@
     "notebook": "https://github.com/Terpedia/terputer-paclitaxel-single-cell/blob/main/notebooks/terputer-paclitaxel-single-cell.ipynb"
   },
   {
+    "slug": "menthol-aerosol-single-cell",
+    "title": "Menthol-mint aerosol mouse-lung single-cell audit",
+    "category": "Transcriptomics",
+    "status": "Executed descriptive analysis",
+    "summary": "GSE263903 six-library 10x audit: mixed menthol-mint aerosol with nicotine; marker-bin Il1b/Cxcl2 contrasts depend on the control and collection date.",
+    "repository": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell",
+    "paper": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell/blob/main/research/menthol-aerosol-single-cell/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-menthol-aerosol-single-cell/blob/main/notebooks/gse263903_menthol_aerosol.ipynb"
+  },
+  {
     "slug": "census",
     "title": "Cannabis chemical diversity census",
     "category": "Metabolomics",

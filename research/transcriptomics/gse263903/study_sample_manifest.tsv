@@ -1,0 +1,11 @@
+gsm	library	condition	sex	sac_date	source_url
+GSM8207273	S0102	PGVG	Male	10/20/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207273
+GSM8207274	S0607	PGVG	Female	10/20/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207274
+GSM8207275	S1112	Air	Male	10/21/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207275
+GSM8207276	S1617	Air	Female	10/21/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207276
+GSM8207277	S4344	Mango	Male	11/4/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207277
+GSM8207278	S4849	Mango	Female	11/4/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207278
+GSM8207279	S6364	MentholMint	Male	11/11/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207279
+GSM8207280	S6869	MentholMint	Female	11/11/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207280
+GSM8207281	S8384	Tobacco	Male	11/18/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207281
+GSM8207282	S8889	Tobacco	Female	11/18/2022	https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM8207282
