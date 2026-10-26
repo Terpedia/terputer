@@ -138,12 +138,13 @@ export async function callResearchTool(name, args = {}, context = {}) {
     if (generated.specification_schema_version !== 2) throw new Error('Only version 2 reports with execution provenance can be published.');
     const spec = JSON.parse(await readFile(workspacePath(args.manifest_path, activeRoot), 'utf8'));
     if (args.project_slug && spec.slug !== args.project_slug) throw new Error('Report slug must match the selected project submodule.');
+    const externalInputs = new Set((generated.external_data_inputs || []).map((item) => item.path));
     const required = [args.manifest_path, spec.notebook, spec.execution_receipt,
       generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256),
-      ...Object.keys(generated.input_sha256 || {})];
+      ...Object.keys(generated.input_sha256 || {}).filter((path) => !externalInputs.has(path))];
     const extras = Array.isArray(args.extra_paths) ? args.extra_paths : [];
     if (extras.length > 20) throw new Error('At most 20 extra paths are allowed.');
-    const runtimeFiles = new Set(['requirements.txt', 'notebook-runner.py', 'report-generator.mjs']);
+    const runtimeFiles = new Set(['requirements.txt', 'notebook-runner.py', 'report-generator.mjs', 'restore-inputs.py']);
     const paths = [...new Set([...required, ...extras, ...runtimeFiles])];
     if (paths.length > 49) throw new Error('Report bundle has too many files.');
     const files = [];
@@ -162,7 +163,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
     }
     const artifactPaths = Object.keys(generated.artifact_sha256);
     const inputPaths = Object.keys(generated.input_sha256 || {});
-    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nThe runner, report generator, and requirements file were copied from the Terputer workspace into this project at publication time. Declared local inputs are included in this repository. The notebook may also use external data that must be restored from the source manifests and checked against their recorded SHA-256 values. Review code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}' '${JSON.stringify(inputPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
+    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nThe runner, input restorer, report generator, and requirements file were copied from the Terputer workspace into this project at publication time. Locally derived inputs are included in this repository. Externally sourced inputs are listed with HTTPS download URLs and SHA-256 hashes in the report specification; restore them before rerunning the notebook. Review code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython restore-inputs.py ${args.manifest_path}\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}' '${JSON.stringify(inputPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
     bytesTotal += Buffer.byteLength(readme);
     if (bytesTotal > 7_000_000) throw new Error('Report bundle exceeds 7 MB.');
     files.push({ path: 'README.md', content_base64: Buffer.from(readme).toString('base64') });
