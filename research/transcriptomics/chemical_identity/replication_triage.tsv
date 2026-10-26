@@ -1,0 +1,7 @@
+label_family_for_triage	study_count	study_ids	replication_status	reason
+1,8-cineole	1	GSE138291	not established	only one curated study context
+MentholMint formulation	1	GSE263903	not established	only one curated study context
+beta-caryophyllene	2	GSE125511;GSE276099	not established	same family label is insufficient to align structure, formulation, design, and independent effects
+limonene	2	PRJNA1234870;PRJNA608617	not established	same family label is insufficient to align structure, formulation, design, and independent effects
+linalool	2	GSE136998;PRJNA913446	not established	same family label is insufficient to align structure, formulation, design, and independent effects
+terpinen-4-ol	2	GSE138291;GSE157638	not established	same family label is insufficient to align structure, formulation, design, and independent effects

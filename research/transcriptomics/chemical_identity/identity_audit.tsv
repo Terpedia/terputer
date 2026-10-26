@@ -1,0 +1,11 @@
+study_id	source_exposure_label	label_family_for_triage	exact_label_chebi_candidates	identity_note	source_contrast_id
+GSE125511	beta-caryophyllene; stereochemistry unverified	beta-caryophyllene		source audit explicitly leaves stereochemistry unresolved	GSE125511:beta-caryophyllene-200-vs-vehicle
+GSE136998	linalool	linalool	CHEBI:17580	name only; lot-level structural identity not verified here	GSE136998:linalool-vs-control
+GSE138291	1,8-cineole	1,8-cineole	CHEBI:27961	name only; lot-level structural identity not verified here	GSE138291:cineole-vs-control
+GSE138291	terpinen-4-ol	terpinen-4-ol		name only; lot-level structural identity not verified here	GSE138291:terpinen-4-ol-vs-control
+GSE157638	terpinen-4-ol	terpinen-4-ol		name only; lot-level structural identity not verified here	GSE157638:terpinen-4-ol-vs-control
+GSE263903	MentholMint commercial aerosol; isolated menthol dose unknown; nicotine coexposure	MentholMint formulation		commercial mixture; isolated menthol dose and stereochemistry unknown	GSE263903:MentholMint-vs-Air:myeloid-marker-targets
+GSE276099	beta-caryophyllene	beta-caryophyllene	CHEBI:63191	name only; lot-level structural identity not verified here	GSE276099:beta-caryophyllene-vs-vehicle
+PRJNA1234870	D-limonene; stereochemistry to verify against source	limonene		source audit explicitly leaves stereochemistry unresolved	PRJNA1234870:dlimonene-vs-control
+PRJNA608617	R-(+)-limonene	limonene		stereochemistry reported; structural crosswalk needs source confirmation	PRJNA608617:limonene-vs-control
+PRJNA913446	linalool; stereochemistry unconfirmed	linalool		source audit explicitly leaves stereochemistry unresolved	PRJNA913446:linalool-vs-vehicle
