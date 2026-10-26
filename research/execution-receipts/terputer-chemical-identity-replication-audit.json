@@ -2,15 +2,15 @@
   "schema_version": 2,
   "runner": "terputer-notebook-runner-v1",
   "notebook": "notebooks/terputer-chemical-identity-replication-audit.ipynb",
-  "source_notebook_sha256": "0c0f041e7875ebb89dd9cbae6d91846c017e3fae83ff404fc587b5a902549cdb",
-  "notebook_sha256": "c4fa75585f0d8145a2d3eb9c484280bd78efb609bc604a068f66faa045ed5a2c",
+  "source_notebook_sha256": "26ab0448d165b8a26cfffb99b6be8bcbc24c75fde16f7b284d17b8e4baee5e0b",
+  "notebook_sha256": "1f68f178960b502416ad1faf3896d76bfe7c5af1cd056116bbbdda7d3fa01a29",
   "executed_code_cells": 3,
   "artifacts_written": {
-    "research/transcriptomics/chemical_identity/identity_audit.tsv": "456551edb1ec01643cdb8ac99b263888cf11b3f856c828962b85895b3b0f76a0",
-    "research/transcriptomics/chemical_identity/replication_triage.tsv": "830551c87a4b62694147ca2430ba6b4f35aa3bfebcc90855e5c363e5f96b6160"
+    "research/transcriptomics/chemical_identity/identity_audit.tsv": "4be487f385a074f4749f6d84cee86a902ab825a2564aed950c7fb5d4b1d39a03",
+    "research/transcriptomics/chemical_identity/replication_triage.tsv": "db29b791f52131987c592e0f59edc6f60b4ad9a2002180ba33b90a5e81a1fef9"
   },
   "inputs_pinned": {
-    "research/transcriptomics/bigquery-ready/contrasts.jsonl": "4de4ff61e5a303f871424ece9ebe22d31c2aca7254aa98bbf785dc12e79c9778",
+    "research/transcriptomics/bigquery-ready/contrasts.jsonl": "8506ac50439d0ff1cffb82e610f7b89a07e51196485799ae6e3e17055aafe1dd",
     "research/transcriptomics/chemical_identity/chebi_candidates.tsv": "73d883d55db65d2a8a1166d52cc8b7dcef5d839a367308df353a999e211c5291"
   },
   "python_version": "3.11.13",
@@ -872,5 +872,5 @@
       "zstandard": "0.23.0"
     }
   },
-  "completed_at_utc": "2026-10-26T21:04:51.117384+00:00"
+  "completed_at_utc": "2026-10-26T21:26:25.378730+00:00"
 }

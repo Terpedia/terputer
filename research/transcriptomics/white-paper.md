@@ -2,7 +2,7 @@
 
 **Working white paper · 26 October 2026 · Methods and results from an executed Terputer notebook**
 
-For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [public transcriptomics white-paper snapshot](../terpene-transcriptomics/manuscript/white-paper.md) and its [claim ledger](../terpene-transcriptomics/manuscript/claim-ledger.md). This note focuses on the Terputer workspace and its executed examples. The public snapshot preserves the source manuscript and evidence files while the research custom domain is unavailable.
+For the fuller biological and statistical background relevant to the Codebreaker Labs role, see the [public transcriptomics white-paper snapshot](../terpene-transcriptomics/manuscript/white-paper.md) and its [claim ledger](../terpene-transcriptomics/manuscript/claim-ledger.md). This note focuses on the Terputer workspace and its executed examples. The public snapshot preserves the source manuscript and evidence files at [research.terpedia.com](https://research.terpedia.com/terpene-transcriptomics/).
 
 ## Abstract
 
@@ -70,12 +70,13 @@ We added a [checksum-pinned A2780 analysis](gse162256/README.md) of [GSE162256](
 
 ## Limitations and reproducibility status
 
-This is a working research white paper based on executed descriptive notebook analysis. It is not a peer-reviewed mechanistic conclusion. GSE136998 and GSE138291 inputs are processed FPKM, so formal differential expression cannot be inferred from the reported ratios. Cross-species gene and pathway mapping has not been done. The selected PIE tables do not contain terpene-exposure effects and cannot answer target specificity. The PRJNA cohorts now have bounded publisher-table audits, while raw-count reanalysis remains outstanding. Previously loaded BigQuery study/sample metadata may not include the newly prepared Penicillium, Fusarium, or GSE263903 evidence; nine-study metadata and 42 observations remain staged locally until the curated loader is run with Google access. The GSE263903 menthol-mint arm is a nicotine-containing mixed-aerosol exposure with pooled mouse libraries and collection date confounding, not a purified-terpene or target-specific result. The earlier remote MCP and Cloud Run adapter support read-only metadata queries, while the personal-key chat and MCP flow remains undeployed and has not been demonstrated end to end.
+This is a working research white paper based on executed descriptive notebook analysis. It is not a peer-reviewed mechanistic conclusion. GSE136998, GSE138291, and GSE242559 inputs are processed FPKM, so formal differential expression cannot be inferred from the reported ratios. Cross-species gene and pathway mapping has not been done. The selected PIE tables do not contain terpene-exposure effects and cannot answer target specificity. The PRJNA cohorts now have bounded publisher-table audits, while raw-count reanalysis remains outstanding. Previously loaded BigQuery study/sample metadata may not include the newly prepared Penicillium, Fusarium, GSE263903, or GSE242559 evidence; ten-study metadata and 52 observations remain staged locally until the curated loader is run with Google access. The GSE263903 menthol-mint arm is a nicotine-containing mixed-aerosol exposure with pooled mouse libraries and collection date confounding, not a purified-terpene or target-specific result. GSE242559 directly applies menthol in a cell line, but its processed-FPKM factorial audit does not establish TRPM8 dependency or replication with the aerosol study. The earlier remote MCP and Cloud Run adapter support read-only metadata queries, while the personal-key chat and MCP flow remains undeployed and has not been demonstrated end to end.
 
 ## Primary sources
 
 - [NCBI GEO GSE136998](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998)
 - [NCBI GEO GSE138291](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291)
+- [NCBI GEO GSE242559](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE242559)
 - [ENA PRJNA608617](https://www.ebi.ac.uk/ena/browser/view/PRJNA608617) and [PRJNA913446](https://www.ebi.ac.uk/ena/browser/view/PRJNA913446)
 - [PIE Jiang dataset card and pinned revision](https://huggingface.co/datasets/arcinstitute/PIE_jiang/tree/d0519f67452a0662c2db30c3831900b38aa3c017)
 - [NCBI GEO GSE246115](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE246115) and [primary PfMYST study](https://pmc.ncbi.nlm.nih.gov/articles/PMC12394585/)

@@ -1,0 +1,21 @@
+{
+  "source_accession": "GSE242559",
+  "source_sha256": "fa3149865f0445ad95d5fdb757613f89018e72fd18edc0221b7757adf9044d30",
+  "assay": "processed FPKM from bulk RNA-seq",
+  "features": 21556,
+  "libraries": 12,
+  "replicates_per_arm": 3,
+  "expressed_feature_filter": "maximum arm mean FPKM >= 1",
+  "expressed_features": 10783,
+  "pseudocount_primary": 0.1,
+  "interaction_abs_ge_1_pc_0_1": 18,
+  "interaction_abs_ge_1_pc_1_0": 4,
+  "interaction_sign_concordance_pc_0_1_vs_1_0": 0.997403320040805,
+  "minimum_within_arm_spearman": 0.971723273886528,
+  "limitations": [
+    "Processed FPKM is not raw integer count data; no formal differential-expression or pathway significance is estimated.",
+    "The matrix does not establish paired replicates, independent culture provenance, or batch balance.",
+    "Menthol stereochemistry and measured cellular exposure are not confirmed in this audit.",
+    "Expression interaction is not evidence of TRPM8 binding or genetic dependency."
+  ]
+}

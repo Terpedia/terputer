@@ -155,3 +155,4 @@ for dose in (20, 200):
 write('observations.jsonl', observations)
 print(json.dumps({'studies': len(studies), 'samples': len(samples), 'contrasts': len(contrasts), 'observations': len(observations), 'directory': str(OUT)}))
 runpy.run_path(str(ROOT / 'research/transcriptomics/gse263903/stage_curated_rows.py'))
+runpy.run_path(str(ROOT / 'research/transcriptomics/gse242559/stage_curated_rows.py'))

@@ -46,12 +46,12 @@ UNION ALL SELECT 'observations', COUNT(*)
 
 SELECT study_id, accession, title
   FROM `terpedia-489015.terpedia_research.transcriptomic_studies`
- WHERE study_id = 'GSE263903';
+ WHERE study_id IN ('GSE263903', 'GSE242559');
 ```
 
-The current manifests contain 9 studies, 70 samples, 14 contrasts, and 42
+The current manifests contain 10 studies, 82 samples, 16 contrasts, and 52
 observations. Warehouse counts may be larger because the upsert retains
-unrelated existing rows. Confirm the GSE263903 record and its related rows,
+unrelated existing rows. Confirm both new GEO records and their related rows,
 then check the authenticated adapter endpoints before claiming BigQuery is
 current. The Worker snapshot must not be presented as a successful warehouse
 load.
