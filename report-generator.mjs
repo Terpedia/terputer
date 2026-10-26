@@ -7,9 +7,9 @@ const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const classes = new Set(['observed', 'source-reported', 'proposed']);
 const sections = ['background', 'methods', 'results', 'interpretation', 'limitations', 'next_steps'];
 
-function workspacePath(value, allowed) {
-  const path = resolve(root, String(value || ''));
-  const name = relative(root, path);
+function workspacePathFor(workspaceRoot, value, allowed) {
+  const path = resolve(workspaceRoot, String(value || ''));
+  const name = relative(workspaceRoot, path);
   if (!name || name.startsWith('..') || name.includes(`..${sep}`) || !allowed.some((prefix) => name.startsWith(`${prefix}${sep}`))) {
     throw new Error(`Path must remain under ${allowed.join(' or ')}: ${value}`);
   }
@@ -26,7 +26,8 @@ function publicUrl(value) {
   if (!['https:', 'http:'].includes(url.protocol)) throw new Error(`Source URL must use HTTP(S): ${value}`);
   return url.toString();
 }
-export async function generateResearchReport(manifestPath) {
+export async function generateResearchReport(manifestPath, workspaceRoot = root) {
+  const workspacePath = (value, allowed) => workspacePathFor(workspaceRoot, value, allowed);
   const manifestFile = workspacePath(manifestPath, ['research']);
   const manifestBytes = await readFile(manifestFile.path);
   const spec = JSON.parse(manifestBytes.toString('utf8'));
@@ -102,7 +103,7 @@ export async function generateResearchReport(manifestPath) {
     throw new Error('Abstract must list valid claim IDs in the intended order');
   }
   const sourceNumbers = new Map([...sources.keys()].map((id, index) => [id, index + 1]));
-  const outputDir = join(root, 'research', slug, 'generated');
+  const outputDir = join(workspaceRoot, 'research', slug, 'generated');
   const claimLine = (id, includeArtifacts = true) => {
     const claim = claims.get(id);
     const refs = claim.sources.map((sourceId) => `[${sourceNumbers.get(sourceId)}](${sources.get(sourceId).url})`).join(', ');
