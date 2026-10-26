@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import runpy
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -153,3 +154,4 @@ for dose in (20, 200):
         observations.append(dict(observation_id=f'GSE125511:vs_GSE276099:bcp{dose}:{metric}', study_id='GSE125511', comparison=f'UFH-001 beta-caryophyllene {dose} µM versus HepG2 beta-caryophyllene processed-effect directions', metric=metric, value=comparison[key], feature_universe=context_summary['strict_shared_ids_expressed_in_both'], evidence_class='cross-study processed-effect descriptive', method='Join pinned source-audit effect tables by Entrez ID, exclude symbol mismatches, require each source expression filter, and calculate observed sign agreement or sign-frequency baseline', source_url=f'https://github.com/Terpedia/terpedia-human-bcp-context/tree/{context_revision}', source_sha256=digest(context_summary_path), analysis_version='terputer-human-bcp-context-2026-10-26', limitations='Different cell line, oxygen, dose, duration, vehicle, and quantification; no matched context interaction, independent DEG replication, or biological-null significance test'))
 write('observations.jsonl', observations)
 print(json.dumps({'studies': len(studies), 'samples': len(samples), 'contrasts': len(contrasts), 'observations': len(observations), 'directory': str(OUT)}))
+runpy.run_path(str(ROOT / 'research/transcriptomics/gse263903/stage_curated_rows.py'))
