@@ -51,6 +51,8 @@ The app supports chat-to-report drafting, editable Markdown/Python cells, per-ce
 
 The [executed notebook](notebooks/terputer-transcriptomics.ipynb), [white paper](research/transcriptomics/white-paper.md), and [critical review](research/transcriptomics/critical-review.md) cover linalool bulk RNA-seq, a second fungal terpene exposure study, and an A549 Perturb-seq context demonstration. Derived tables are under `research/transcriptomics/results/`; pinned source inputs and manifests are under `research/transcriptomics/data/`.
 
+The public [paclitaxel single-cell example](https://github.com/Terpedia/terpedia-paclitaxel-single-cell) and its [executed notebook](https://github.com/Terpedia/terpedia-paclitaxel-single-cell/blob/main/notebooks/terputer-paclitaxel-single-cell.ipynb) demonstrate a time-matched chemical exposure analysis and claim-linked report. A copy of its script, result artifacts, and generated brief also lives in this workspace. It has one library per condition, so the response patterns are descriptive rather than biologically replicated.
+
 ## Report generation pipeline
 
 The local `generate_research_report` tool turns a structured report specification and an executed Jupyter notebook into `white-paper.md`, `claim-ledger.tsv`, and `generation-receipt.json` under `research/<slug>/generated/`. It checks source URLs, claim evidence classes, referenced local artifacts, notebook execution metadata, and input hashes. Observed claims require a result artifact and at least one executed code cell; proposed claims are labeled in the report. It does not judge whether a scientific claim is true, so the generated paper still needs expert review.
