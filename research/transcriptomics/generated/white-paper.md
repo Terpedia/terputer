@@ -4,7 +4,7 @@
 
 **Research question:** Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?
 
-**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c` · 5 executed code cells
+**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `7504d216ae41e681b4da38d97c6548f56b9a404f41f777a4e43656adf744f124` · 5 executed code cells
 
 ## Abstract
 
@@ -42,7 +42,7 @@ No analyzed result yet identifies a replicated metabolic or signaling pathway, a
 
 ## Data and code availability
 
-The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `d318c2238cf840c20fedf2251c4946faa942c497d63c6ca1a35c3c328b267896`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts. 4 externally sourced input files have source URLs and hashes listed below. The [notebook execution receipt](../../execution-receipts/terputer-transcriptomics.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. It also pins 7 declared local input files by SHA-256. It records the Python version and installed package versions. Notebook execution does not independently validate scientific interpretation.
+The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `d318c2238cf840c20fedf2251c4946faa942c497d63c6ca1a35c3c328b267896`). The claim ledger and generation receipt accompany this report. File hashes identify the report files and cited result artifacts. 4 externally sourced input files have source URLs and hashes listed below. The [notebook execution receipt](../../execution-receipts/terputer-transcriptomics.json) matches the saved notebook and records hashes for result files written during its fresh-kernel run. It also pins 9 declared local input files by SHA-256. It records the Python version and installed package versions. Notebook execution does not independently validate scientific interpretation.
 
 ### External data files
 

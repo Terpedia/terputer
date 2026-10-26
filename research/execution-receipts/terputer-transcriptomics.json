@@ -2,8 +2,8 @@
   "schema_version": 2,
   "runner": "terputer-notebook-runner-v1",
   "notebook": "notebooks/terputer-transcriptomics.ipynb",
-  "source_notebook_sha256": "75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22",
-  "notebook_sha256": "469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c",
+  "source_notebook_sha256": "469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c",
+  "notebook_sha256": "7504d216ae41e681b4da38d97c6548f56b9a404f41f777a4e43656adf744f124",
   "executed_code_cells": 5,
   "artifacts_written": {
     "research/transcriptomics/results/gse136998_descriptive_effects.tsv": "a327b94c307265a3c448dde4e0ee6b82ab5871b2b120bada8ef64a3fd512c543",
@@ -22,7 +22,9 @@
     "research/transcriptomics/data/a549_ifng.parquet": "8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462",
     "research/transcriptomics/data/jiang_sources.json": "5e32f4c716a391a0d6ca8a6da8fc28d00c628fe79b136a080f210650e81f260b",
     "research/transcriptomics/data/run_manifest.json": "7432b796ff5e4c1a62cd728de22cf3579ab8fee7ab604b5fa8647e67cb0b06f9",
-    "research/transcriptomics/data/selected_sample_manifest.tsv": "42138e47cf12ed012c9663359a3090b9d1afcfd88391a92c84139db8890cd143"
+    "research/transcriptomics/data/selected_sample_manifest.tsv": "42138e47cf12ed012c9663359a3090b9d1afcfd88391a92c84139db8890cd143",
+    "terputer_bio/__init__.py": "a1d25cdc169aa6ac402a78565cb3b6669b6761cef0f7d77eb4bfc51bb49eac3a",
+    "terputer_bio/transcriptomics.py": "8eb5bd937891980fe63699fb8aa9cd44cd005550f1987c055e8c496601c5bb2b"
   },
   "python_version": "3.14.7",
   "environment": {
@@ -83,5 +85,5 @@
       "wcwidth": "0.9.4"
     }
   },
-  "completed_at_utc": "2026-10-26T17:44:06.258585+00:00"
+  "completed_at_utc": "2026-10-26T17:55:29.134185+00:00"
 }
