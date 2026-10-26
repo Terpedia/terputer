@@ -3,26 +3,50 @@
   "generator": "terputer-report-generator-v2",
   "specification_schema_version": 2,
   "manifest": "research/transcriptomics/report-spec.json",
-  "manifest_sha256": "d773422f80ed8ebde6fb8f3317409d250d40f9d4a9806b0cb48f226d40fefe3d",
+  "manifest_sha256": "d318c2238cf840c20fedf2251c4946faa942c497d63c6ca1a35c3c328b267896",
   "notebook": "notebooks/terputer-transcriptomics.ipynb",
-  "notebook_sha256": "75cbc8ddbcc81b8f3709149f11aa83b9394fef2bfb1bc4b297ead54abad1ff22",
+  "notebook_sha256": "469b5812c6753ce2bf5bfaba552e0f456ba897acbb222ee386fe560d9e0dba8c",
   "executed_code_cells": 5,
   "notebook_execution_receipt": "research/execution-receipts/terputer-transcriptomics.json",
-  "notebook_execution_receipt_sha256": "252361ba1a96b4e011ad8b7b1c65fbdf984aede2583f969aefe84adb6ddbef87",
+  "notebook_execution_receipt_sha256": "6256eb2ce4734e76edffb2902f30cc3b39c80c1f398bdf2c57f52f7cb51def75",
   "artifact_sha256": {
     "research/transcriptomics/results/gse136998_descriptive_effects.tsv": "a327b94c307265a3c448dde4e0ee6b82ab5871b2b120bada8ef64a3fd512c543",
     "research/transcriptomics/results/gse138291_arm_similarity.tsv": "a034908da948a6346f73da530feb2ef4b0c26ad70f396da3f8c62ec00d5535fe"
   },
   "input_sha256": {
+    "research/transcriptomics/data/a549_ifnb.parquet": "8096c53c273a9c455e2f81b5e4aa09afd1f6c44cb34adaa6856968aa9886d40b",
+    "research/transcriptomics/data/a549_ifng.parquet": "8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462",
     "research/transcriptomics/data/GSE136998_rsem.genes.fpkm.table.txt.gz": "f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811",
     "research/transcriptomics/data/GSE138291_All_gene_fpkm.list.txt.txt.gz": "2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0",
     "research/transcriptomics/data/jiang_sources.json": "5e32f4c716a391a0d6ca8a6da8fc28d00c628fe79b136a080f210650e81f260b",
     "research/transcriptomics/data/run_manifest.json": "7432b796ff5e4c1a62cd728de22cf3579ab8fee7ab604b5fa8647e67cb0b06f9",
     "research/transcriptomics/data/selected_sample_manifest.tsv": "42138e47cf12ed012c9663359a3090b9d1afcfd88391a92c84139db8890cd143"
   },
+  "external_data_inputs": [
+    {
+      "path": "research/transcriptomics/data/GSE136998_rsem.genes.fpkm.table.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE136nnn/GSE136998/suppl/GSE136998_rsem.genes.fpkm.table.txt.gz",
+      "sha256": "f93e498783146ddc5cefffc85daaa02f522c1c28c87c5698edbe9cebdd101811"
+    },
+    {
+      "path": "research/transcriptomics/data/GSE138291_All_gene_fpkm.list.txt.txt.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE138nnn/GSE138291/suppl/GSE138291_All_gene_fpkm.list.txt.txt.gz",
+      "sha256": "2c85b85fdbf973457a8239393bfc797d7e3bc002781b3222f1d63a99cde60ac0"
+    },
+    {
+      "path": "research/transcriptomics/data/a549_ifnb.parquet",
+      "url": "https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifnb.parquet",
+      "sha256": "8096c53c273a9c455e2f81b5e4aa09afd1f6c44cb34adaa6856968aa9886d40b"
+    },
+    {
+      "path": "research/transcriptomics/data/a549_ifng.parquet",
+      "url": "https://huggingface.co/datasets/arcinstitute/PIE_jiang/resolve/d0519f67452a0662c2db30c3831900b38aa3c017/de/a549_ifng.parquet",
+      "sha256": "8e1d53343fae6bfa2e8948423b9bc23db9f3ddbd34f9214d382b185ef7dbf462"
+    }
+  ],
   "claim_count": 8,
   "observed_claim_count": 2,
-  "report_sha256": "ceba937ac3fe7a65579b7f9001059eae44db8c9ac25c24eba0252cf3b434de3f",
+  "report_sha256": "25e3180209dbbfb0be5c65279f9e5ee46b01c2737306174609b2d3e0b36f3e7f",
   "ledger_sha256": "0cdad0c3d0d824947177478b1c275381b6746dc7ab1743fcc1680c71f7e572f4",
   "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook, observed-claim artifact hashes, and any declared local input hashes. Does not verify that a notebook read every declared input, live URL reachability, biological replication, or claim truth."
 }
