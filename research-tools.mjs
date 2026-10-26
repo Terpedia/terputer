@@ -1,6 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generateResearchReport } from './report-generator.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const allowedRoots = ['notebooks', 'research'];
@@ -25,6 +26,7 @@ export const toolDefinitions = [
   { name: 'search_transcriptomic_studies', description: 'Search curated transcriptomic study records in Terpedia BigQuery. Returns provenance and evidence class.', parameters: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['query'] } },
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
+  { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
   { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
   { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/. Cite sources and mark unexecuted analysis.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' } }, required: ['path', 'content'] } },
@@ -108,6 +110,9 @@ export async function callResearchTool(name, args = {}) {
     const headers = lines[0].split('\t');
     const runs = lines.slice(1, 101).map((line) => Object.fromEntries(line.split('\t').map((value, index) => [headers[index], value])));
     return { accession, runCountReturned: runs.length, truncated: lines.length - 1 > 100, runs, source: url };
+  }
+  if (name === 'generate_research_report') {
+    return generateResearchReport(args.manifest_path);
   }
   if (name === 'list_notebooks') {
     const files = await readdir(join(workspaceRoot, 'notebooks')).catch(() => []);

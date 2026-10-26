@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "slug": "transcriptomics",
+  "title": "Terpene transcriptomics: a bounded evidence brief",
+  "question": "Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?",
+  "notebook": "notebooks/terputer-transcriptomics.ipynb",
+  "sources": [
+    {
+      "id": "gse136998",
+      "title": "GEO GSE136998 linalool exposure series",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998"
+    },
+    {
+      "id": "gse138291",
+      "title": "GEO GSE138291 Botrytis cinerea terpene-component exposure series",
+      "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291"
+    },
+    {
+      "id": "notebook",
+      "title": "Executed Terputer transcriptomics notebook at pinned example commit 2681004",
+      "url": "https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb"
+    },
+    {
+      "id": "review",
+      "title": "Terpedia transcriptomics white paper v0.4 and claim assessment",
+      "url": "https://terpedia.github.io/research/terpene-transcriptomics/"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "class": "source-reported",
+      "text": "The selected public exposure studies differ in organism, compound, duration, and control design; comparable exact-compound replication has not yet been established in this project.",
+      "sources": ["gse136998", "gse138291", "review"],
+      "limitation": "The source selection is targeted rather than systematic."
+    },
+    {
+      "id": "C02",
+      "class": "source-reported",
+      "text": "The notebook computes treatment-to-control mean FPKM log2 ratios with a 0.1 pseudocount for the processed exposure matrices.",
+      "sources": ["notebook"],
+      "limitation": "FPKM ratios are descriptive and do not provide count-based differential-expression uncertainty."
+    },
+    {
+      "id": "C03",
+      "class": "observed",
+      "text": "In the processed GSE138291 matrix, 1,8-cineole and terpinen-4-ol contrasts have Spearman correlation 0.433 and 64.8% sign agreement across 9,000 control-expressed features.",
+      "sources": ["gse138291", "notebook"],
+      "artifacts": ["research/transcriptomics/results/gse138291_arm_similarity.tsv"],
+      "limitation": "Both contrasts share untreated controls; the numbers are not independent replication or a pathway result."
+    },
+    {
+      "id": "C04",
+      "class": "observed",
+      "text": "The GSE136998 processed matrix contains 2,976 analyzed feature rows, with 1,955 positive, 1,011 negative, and 10 zero descriptive treatment-to-control ratios.",
+      "sources": ["gse136998", "notebook"],
+      "artifacts": ["research/transcriptomics/results/gse136998_descriptive_effects.tsv"],
+      "limitation": "Direction counts are not statistically significant gene calls; feature annotation remains incomplete."
+    },
+    {
+      "id": "C05",
+      "class": "source-reported",
+      "text": "No analyzed result yet identifies a replicated metabolic or signaling pathway, a terpene-by-context interaction, or a specific target dependency.",
+      "sources": ["review"],
+      "limitation": "This is a status assessment of the analyzed evidence, not proof that such effects do not exist."
+    },
+    {
+      "id": "C06",
+      "class": "source-reported",
+      "text": "The fungal arm similarity shares an untreated denominator, and processed FPKM lacks the replicate-level uncertainty required for inferential comparison.",
+      "sources": ["gse138291", "notebook", "review"],
+      "limitation": "The current sensitivity calculations do not remove shared-control covariance."
+    },
+    {
+      "id": "C07",
+      "class": "proposed",
+      "text": "Reanalyze GSE138291 from raw counts with explicit shared-control covariance and compare the pure-compound arms directly.",
+      "sources": ["gse138291", "review"],
+      "limitation": "This analysis has not been executed in the current notebook."
+    },
+    {
+      "id": "C08",
+      "class": "proposed",
+      "text": "Seek a compatible same-compound exposure experiment before testing cross-study replication; treat the bacterial and fungal linalool comparison as exploratory transfer.",
+      "sources": ["gse136998", "review"],
+      "limitation": "Cross-kingdom and exposure differences preclude a confirmatory replication claim from the current pair."
+    }
+  ],
+  "abstract": ["C05", "C03"],
+  "sections": {
+    "background": ["C01"],
+    "methods": ["C02"],
+    "results": ["C03", "C04"],
+    "interpretation": ["C05"],
+    "limitations": ["C06"],
+    "next_steps": ["C07", "C08"]
+  }
+}

@@ -54,6 +54,7 @@ const researchTools = [
   ['search_transcriptomic_studies', z.object({ query: z.string().trim().min(2).max(200), limit: z.number().int().min(1).max(30).default(10) })],
   ['get_transcriptomic_samples', z.object({ accession: z.string().trim().regex(/^[A-Za-z0-9_-]{4,30}$/) })],
   ['get_ena_runs', z.object({ accession: z.string().trim().min(5).max(30) })],
+  ['generate_research_report', z.object({ manifest_path: z.string().trim().min(1).max(300) })],
   ['list_notebooks', z.object({})],
   ['read_workspace_file', z.object({ path: z.string().min(1).max(300) })],
   ['write_workspace_file', z.object({ path: z.string().min(1).max(300), content: z.string().max(2_000_000) })],
@@ -69,13 +70,14 @@ for (const [name, schema] of researchTools) {
       search_transcriptomic_studies: 'Search curated transcriptomic study records in Terpedia BigQuery.',
       get_transcriptomic_samples: 'List curated sample records for a transcriptomic study.',
       get_ena_runs: 'Inspect public ENA sequencing runs and checksums.',
+      generate_research_report: 'Generate a source-linked report, claim ledger, and provenance receipt from an executed notebook and report specification.',
       list_notebooks: 'List Jupyter notebooks in this Terputer workspace.',
       read_workspace_file: 'Read a small research file or notebook in this Codespace.',
       write_workspace_file: 'Save a research file or notebook in this Codespace.',
       execute_python_cell: 'Run Python in this Codespace Jupyter kernel.'
     }[name],
     inputSchema: schema,
-    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell'].includes(name) }
+    annotations: { readOnlyHint: !['write_workspace_file', 'execute_python_cell', 'generate_research_report'].includes(name), destructiveHint: false, openWorldHint: ['search_geo_series', 'search_pubmed', 'search_terpedia_bigquery', 'get_ena_runs', 'execute_python_cell'].includes(name) }
   }, async (args) => ({ content: [{ type: 'text', text: JSON.stringify(await callResearchTool(name, args)) }] }));
 }
 

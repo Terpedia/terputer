@@ -1,0 +1,52 @@
+# Terpene transcriptomics: a bounded evidence brief
+
+> Generated evidence brief. Each statement is linked to a claim record; scientific interpretation still requires review.
+
+**Research question:** Which metabolic and signaling responses to terpene exposure are reproducible, and which depend on cellular context or a specific target?
+
+**Notebook:** `notebooks/terputer-transcriptomics.ipynb` · SHA-256 `3522bccb9c65223f50f1806a869ef1872affef5220eef3845dd7d0b803196b73` · 5 executed code cells
+
+## Abstract
+
+No analyzed result yet identifies a replicated metabolic or signaling pathway, a terpene-by-context interaction, or a specific target dependency. (claim C05; [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+In the processed GSE138291 matrix, 1,8-cineole and terpinen-4-ol contrasts have Spearman correlation 0.433 and 64.8% sign agreement across 9,000 control-expressed features. (claim C03; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb))
+
+## Background
+
+The selected public exposure studies differ in organism, compound, duration, and control design; comparable exact-compound replication has not yet been established in this project. (claim C01; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998), [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+## Methods
+
+The notebook computes treatment-to-control mean FPKM log2 ratios with a 0.1 pseudocount for the processed exposure matrices. (claim C02; [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb))
+
+## Results
+
+In the processed GSE138291 matrix, 1,8-cineole and terpinen-4-ol contrasts have Spearman correlation 0.433 and 64.8% sign agreement across 9,000 control-expressed features. (claim C03; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse138291_arm_similarity.tsv](../results/gse138291_arm_similarity.tsv).
+
+The GSE136998 processed matrix contains 2,976 analyzed feature rows, with 1,955 positive, 1,011 negative, and 10 zero descriptive treatment-to-control ratios. (claim C04; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb)) Artifacts: [research/transcriptomics/results/gse136998_descriptive_effects.tsv](../results/gse136998_descriptive_effects.tsv).
+
+## Interpretation
+
+No analyzed result yet identifies a replicated metabolic or signaling pathway, a terpene-by-context interaction, or a specific target dependency. (claim C05; [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+## Limitations
+
+The fungal arm similarity shares an untreated denominator, and processed FPKM lacks the replicate-level uncertainty required for inferential comparison. (claim C06; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [3](https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+## Next research steps
+
+**Proposed:** Reanalyze GSE138291 from raw counts with explicit shared-control covariance and compare the pure-compound arms directly. (claim C07; [2](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+**Proposed:** Seek a compatible same-compound exposure experiment before testing cross-study replication; treat the bacterial and fungal linalool comparison as exploratory transfer. (claim C08; [1](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998), [4](https://terpedia.github.io/research/terpene-transcriptomics/))
+
+## Data and code availability
+
+The source specification is `research/transcriptomics/report-spec.json` (SHA-256 `56bec84a24912c587c79ba517aef387f484351789d080191990979ec1ca4cb10`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used. An executed notebook confirms that some cells ran; it does not independently validate every scientific interpretation.
+
+## References
+
+[1] GEO GSE136998 linalool exposure series. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE136998
+[2] GEO GSE138291 Botrytis cinerea terpene-component exposure series. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138291
+[3] Executed Terputer transcriptomics notebook at pinned example commit 2681004. https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/2681004/notebooks/terputer-transcriptomics.ipynb
+[4] Terpedia transcriptomics white paper v0.4 and claim assessment. https://terpedia.github.io/research/terpene-transcriptomics/

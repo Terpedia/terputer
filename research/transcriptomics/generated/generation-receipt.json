@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generator": "terputer-report-generator-v1",
+  "manifest": "research/transcriptomics/report-spec.json",
+  "manifest_sha256": "56bec84a24912c587c79ba517aef387f484351789d080191990979ec1ca4cb10",
+  "notebook": "notebooks/terputer-transcriptomics.ipynb",
+  "notebook_sha256": "3522bccb9c65223f50f1806a869ef1872affef5220eef3845dd7d0b803196b73",
+  "executed_code_cells": 5,
+  "artifact_sha256": {
+    "research/transcriptomics/results/gse136998_descriptive_effects.tsv": "a327b94c307265a3c448dde4e0ee6b82ab5871b2b120bada8ef64a3fd512c543",
+    "research/transcriptomics/results/gse138291_arm_similarity.tsv": "a034908da948a6346f73da530feb2ef4b0c26ad70f396da3f8c62ec00d5535fe"
+  },
+  "claim_count": 8,
+  "observed_claim_count": 2,
+  "report_sha256": "27e7e2418e18fc8e66d229424a04b494fe4e344993f5d8f81c1141543bb621f4",
+  "ledger_sha256": "d27582e757f112157cab8f5f3f16ae2458e385fe6ab70439d8554937d27007c7",
+  "limits": "Checks source links, local artifact presence, notebook execution metadata, and provenance; does not establish biological replication or validate claim truth."
+}
