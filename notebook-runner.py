@@ -15,8 +15,8 @@ from nbclient import NotebookClient
 
 
 def main() -> None:
-    if len(sys.argv) != 4:
-        raise SystemExit("Usage: notebook-runner.py NOTEBOOK WORKSPACE CELL_TIMEOUT_SECONDS")
+    if len(sys.argv) not in (4, 5):
+        raise SystemExit("Usage: notebook-runner.py NOTEBOOK WORKSPACE CELL_TIMEOUT_SECONDS [ARTIFACT_PATHS_JSON]")
     notebook_path = Path(sys.argv[1]).resolve()
     workspace = Path(sys.argv[2]).resolve()
     cell_timeout = int(sys.argv[3])
@@ -24,6 +24,22 @@ def main() -> None:
         raise ValueError("Notebook must be directly under notebooks/")
     if notebook_path.suffix != ".ipynb" or not 1 <= cell_timeout <= 600:
         raise ValueError("Expected an .ipynb notebook and a 1–600 second cell timeout")
+
+    artifact_names = json.loads(sys.argv[4]) if len(sys.argv) == 5 else []
+    if not isinstance(artifact_names, list) or len(artifact_names) > 50 or any(not isinstance(name, str) for name in artifact_names) or len(set(artifact_names)) != len(artifact_names):
+        raise ValueError("Expected up to 50 distinct artifact paths")
+    artifact_paths = {}
+    artifact_before = {}
+    for name in artifact_names:
+        if not isinstance(name, str) or not name.startswith("research/"):
+            raise ValueError("Artifact paths must be relative to research/")
+        path = (workspace / name).resolve()
+        if workspace / "research" not in path.parents or not path.is_relative_to(workspace):
+            raise ValueError("Artifact path leaves the research workspace")
+        if path.relative_to(workspace).as_posix() != name:
+            raise ValueError("Artifact paths must use normalized workspace-relative names")
+        artifact_paths[name] = path
+        artifact_before[name] = path.stat() if path.exists() else None
 
     source_sha256 = hashlib.sha256(notebook_path.read_bytes()).hexdigest()
     notebook = nbformat.read(notebook_path, as_version=4)
@@ -52,6 +68,19 @@ def main() -> None:
     executed = sum(cell.cell_type == "code" and cell.execution_count is not None for cell in notebook.cells)
     if not executed:
         raise ValueError("Notebook contains no executed code cells")
+    artifact_hashes = {}
+    for name, path in artifact_paths.items():
+        if not path.is_file():
+            raise ValueError(f"Declared output was not created: {name}")
+        before = artifact_before[name]
+        after = path.stat()
+        if before is not None and (before.st_mtime_ns, before.st_ctime_ns, before.st_ino, before.st_size) == (after.st_mtime_ns, after.st_ctime_ns, after.st_ino, after.st_size):
+            raise ValueError(f"Declared output was not written during this run: {name}")
+        digest = hashlib.sha256()
+        with path.open("rb") as stream:
+            while chunk := stream.read(1 << 20):
+                digest.update(chunk)
+        artifact_hashes[name] = digest.hexdigest()
     notebook.metadata["terputer_execution"] = {"runner": "terputer-notebook-runner-v1",
                                                "python_version": sys.version.split()[0],
                                                "executed_code_cells": executed}
@@ -80,12 +109,13 @@ def main() -> None:
     receipt_path = workspace / "research" / "execution-receipts" / f"{notebook_path.stem}.json"
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
-        "schema_version": 1,
+        "schema_version": 2,
         "runner": "terputer-notebook-runner-v1",
         "notebook": str(notebook_path.relative_to(workspace)),
         "source_notebook_sha256": source_sha256,
         "notebook_sha256": notebook_sha256,
         "executed_code_cells": executed,
+        "artifacts_written": artifact_hashes,
         "python_version": sys.version.split()[0],
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
     }
@@ -99,7 +129,7 @@ def main() -> None:
         receipt_temporary_path.unlink(missing_ok=True)
     print(json.dumps({"path": str(notebook_path.relative_to(workspace)), "executed_code_cells": executed,
                       "sha256": notebook_sha256, "execution_receipt": str(receipt_path.relative_to(workspace)),
-                      "saved": True,
+                      "artifacts_written": artifact_hashes, "saved": True,
                       "text_outputs": output_summaries[:10]}))
 
 

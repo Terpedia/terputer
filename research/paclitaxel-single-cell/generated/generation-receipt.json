@@ -5,10 +5,10 @@
   "manifest": "research/transcriptomics/gse266934/report-spec.json",
   "manifest_sha256": "4188643ffdbeb46522a11dfad348a017f9219d054589002a4f22954efba1173c",
   "notebook": "notebooks/terputer-paclitaxel-single-cell.ipynb",
-  "notebook_sha256": "7b6590dd43ca693c6fdca65165e2e8df9da07c83835de8f0647750f0d8a9f9ed",
+  "notebook_sha256": "e9c2a89acb12713cf8f8aa1407efcea9c8109a512ac1cc0f6926cc5e6723bb43",
   "executed_code_cells": 4,
   "notebook_execution_receipt": "research/execution-receipts/terputer-paclitaxel-single-cell.json",
-  "notebook_execution_receipt_sha256": "b390f5bf258a6bbf48b433b0d27094ffff658cc8047b524aaef0d578b13cb09f",
+  "notebook_execution_receipt_sha256": "55ade87c6d2c158aaba0dc797431467ec5c41b6ed4c9ea94a8fca0b751d557aa",
   "artifact_sha256": {
     "research/transcriptomics/gse266934/results/library_qc.tsv": "eb3e04bde2ef54dc489bc64631acb05b4e11b26c48b34f6117a32f1ad4b72edd",
     "research/transcriptomics/gse266934/results/marker_cpm_ratios.tsv": "85fa1f66e16e0f7edbad2b2ee1e9b13ea3efe84174f25f701f284bce4b8675bb",
@@ -16,7 +16,7 @@
   },
   "claim_count": 6,
   "observed_claim_count": 3,
-  "report_sha256": "d3206385399bb459820fe55c760081c794bd1ffd7e22f6bb690302fccfc11d02",
+  "report_sha256": "ac378e29b1a26f998ae0fbcf82cf04e730715531c8ea87f08d6ef34ccf19cdd8",
   "ledger_sha256": "c520e239dbd19f66cc1da735c1050355cc7ec1278fc0853a6de99708b83a2a23",
-  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook hash. Does not verify live URL reachability, biological replication, or claim truth."
+  "limits": "Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth."
 }

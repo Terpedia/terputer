@@ -51,7 +51,7 @@ export async function generateResearchReport(manifestPath) {
     executionReceiptFile = workspacePath(spec.execution_receipt, ['research']);
     executionReceiptBytes = await readFile(executionReceiptFile.path);
     executionReceipt = JSON.parse(executionReceiptBytes.toString('utf8'));
-    if (executionReceipt.schema_version !== 1 || executionReceipt.runner !== 'terputer-notebook-runner-v1'
+    if (executionReceipt.schema_version !== 2 || executionReceipt.runner !== 'terputer-notebook-runner-v1'
         || executionReceipt.notebook !== notebookFile.name || executionReceipt.notebook_sha256 !== sha256(notebookBytes)
         || executionReceipt.executed_code_cells !== executedCells) {
       throw new Error('Notebook execution receipt does not match this executed notebook');
@@ -83,7 +83,11 @@ export async function generateResearchReport(manifestPath) {
     for (const value of paths) {
       const artifact = workspacePath(value, ['research']);
       const bytes = await readFile(artifact.path);
-      artifacts.set(artifact.name, sha256(bytes));
+      const artifactHash = sha256(bytes);
+      if (claim.class === 'observed' && executionReceipt && executionReceipt.artifacts_written?.[artifact.name] !== artifactHash) {
+        throw new Error(`Observed claim ${id} references an artifact not recorded by the notebook run: ${artifact.name}`);
+      }
+      artifacts.set(artifact.name, artifactHash);
     }
     claims.set(id, { ...claim, text: claimText, limitation, sources: sourceIds, artifacts: paths });
   }
@@ -124,7 +128,7 @@ export async function generateResearchReport(manifestPath) {
       lines.push(claimLine(id), '');
     }
   }
-  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used.${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook SHA-256 and records the fresh-kernel run.` : ''} Notebook execution does not independently validate scientific interpretation.`, '', '## References', '');
+  lines.push('## Data and code availability', '', `The source specification is \`${manifestFile.name}\` (SHA-256 \`${sha256(manifestBytes)}\`). The claim ledger and generation receipt accompany this report. File hashes identify the exact local inputs used.${executionReceiptFile ? ` The [notebook execution receipt](${relative(outputDir, executionReceiptFile.path).split(sep).join('/')}) matches the saved notebook and records hashes for result files written during its fresh-kernel run.` : ''} Notebook execution does not independently validate scientific interpretation.`, '', '## References', '');
   for (const [id, source] of sources) lines.push(`[${sourceNumbers.get(id)}] ${source.title}. ${source.url}`);
   lines.push('');
   const ledger = ['claim_id\tevidence_class\tclaim\tsource_ids\tsource_urls\tartifacts\tlimitation'];
@@ -140,7 +144,7 @@ export async function generateResearchReport(manifestPath) {
     artifact_sha256: Object.fromEntries([...artifacts].sort(([a], [b]) => a.localeCompare(b))),
     claim_count: claims.size, observed_claim_count: [...claims.values()].filter((claim) => claim.class === 'observed').length,
     report_sha256: sha256(report), ledger_sha256: sha256(ledgerText),
-    limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook hash. Does not verify live URL reachability, biological replication, or claim truth.'
+    limits: 'Checks source URL syntax, local artifact presence, notebook execution metadata, and provenance; version 2 specifications also bind a recorded run to the notebook and observed-claim artifact hashes. Does not verify live URL reachability, biological replication, or claim truth.'
   };
   await writeFile(join(outputDir, 'white-paper.md'), report);
   await writeFile(join(outputDir, 'claim-ledger.tsv'), ledgerText);
