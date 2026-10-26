@@ -1,5 +1,5 @@
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
-const snapshotRevision = '894a02bd82f28cb45d7afb8dd89c5c5a1c112c73';
+const snapshotRevision = '9556432a8ad10db937c179a78148502718367476';
 const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
 
 export async function authorizeRequest(request, env) {
@@ -53,7 +53,7 @@ async function publicSnapshotResult(name, args, adapterStatus) {
     contrasts: contrasts.rows.filter((row) => row.study_id === accession).sort((a, b) => a.contrast_id.localeCompare(b.contrast_id)).slice(0, 50),
     observations: observations.rows.filter((row) => row.study_id === accession).sort((a, b) => a.observation_id.localeCompare(b.observation_id)).slice(0, 50),
     sources: [contrasts.url, observations.url],
-    interpretation: 'Source evidence classes, methods, and limitations are required; selected publisher-table rows do not establish independent replication or a direct target.',
+    interpretation: 'Source evidence classes, methods, and limitations are required; processed cross-study directions do not establish replication, a context interaction, or a direct target.',
     ...provenance
   };
 }
