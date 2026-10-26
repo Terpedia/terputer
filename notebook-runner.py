@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import os
+import platform
 import sys
 import tempfile
 from datetime import datetime, timezone
@@ -106,6 +108,17 @@ def main() -> None:
         temporary_path.unlink(missing_ok=True)
     content = notebook_path.read_bytes()
     notebook_sha256 = hashlib.sha256(content).hexdigest()
+    packages = {}
+    for distribution in importlib.metadata.distributions():
+        name = distribution.metadata.get("Name")
+        if name:
+            packages[name.lower().replace("_", "-")] = distribution.version
+    environment = {
+        "python_version": sys.version.split()[0],
+        "system": platform.system(),
+        "machine": platform.machine(),
+        "package_versions": dict(sorted(packages.items())),
+    }
     receipt_path = workspace / "research" / "execution-receipts" / f"{notebook_path.stem}.json"
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt = {
@@ -117,6 +130,7 @@ def main() -> None:
         "executed_code_cells": executed,
         "artifacts_written": artifact_hashes,
         "python_version": sys.version.split()[0],
+        "environment": environment,
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
     }
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", prefix=".terputer-", dir=receipt_path.parent, delete=False) as output:

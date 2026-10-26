@@ -87,6 +87,8 @@ The research agent can create a new specification and invoke the same tool in a 
 
 After connecting GitHub, ask Terputer to publish a completed report. The local `publish_research_report` tool revalidates the version 2 specification and sends the notebook, execution receipt, cited result artifacts, report, claim ledger, and generation receipt to the Terpedia GitHub service. It can include additional scripts or pinned inputs through `extra_paths`. The service checks the hashes and writes one commit to a private `terpedia-<slug>` repository in the connected user's account, then returns links pinned to that commit. The GitHub connection token remains in the Terpedia backend; the Codespace receives only the signed session.
 
+New notebook execution receipts include the Python version, operating-system family, machine architecture, and installed package versions at run completion. The generation receipt hashes the full execution receipt. These records help reproduce analyses; they do not replace pinned input data, source checksums, or independent biological replicates.
+
 When publication runs with a linked GitHub session, Terpedia also commits the project as `projects/<slug>` in the user's report fork. The result reports whether that attachment succeeded and supplies the pinned report fork commit. Pull and initialize the submodule before continuing in Codespaces. Without a linked session, standalone local MCP use stages the pointer for review and push.
 
 When GitHub OAuth returns to a Codespace address, Terpedia displays that destination before transferring the signed session. Confirm that it is your Codespace before continuing.
