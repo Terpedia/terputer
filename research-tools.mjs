@@ -4,16 +4,16 @@ import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
-import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule } from './research-projects.mjs';
+import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule, resolveResearchWorkspace } from './research-projects.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
 const allowedRoots = ['notebooks', 'research'];
 const execFileAsync = promisify(execFile);
 
-function workspacePath(value) {
+function workspacePath(value, rootDir = workspaceRoot) {
   const relative = String(value || '').replace(/^\/+/, '');
-  const target = resolve(workspaceRoot, relative);
-  if (!allowedRoots.some((root) => target.startsWith(join(workspaceRoot, root) + sep))) throw new Error('Path must be inside notebooks/ or research/');
+  const target = resolve(rootDir, relative);
+  if (!allowedRoots.some((root) => target.startsWith(join(rootDir, root) + sep))) throw new Error('Path must be inside notebooks/ or research/');
   return target;
 }
 
@@ -30,16 +30,16 @@ export const toolDefinitions = [
   { name: 'search_transcriptomic_studies', description: 'Search curated transcriptomic study records in Terpedia BigQuery. Returns provenance and evidence class.', parameters: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['query'] } },
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
-  { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from a report specification and executed notebook in this workspace. Validates provenance, not scientific truth.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' } }, required: ['manifest_path'] } },
-  { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Include extra_paths for scripts or pinned inputs needed to rerun the notebook. If this is the user’s terpedia-report fork, stage the project as a submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
+  { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from an executed notebook. Set project_slug to work inside an attached project submodule.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['manifest_path'] } },
+  { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Set project_slug for a submodule; include extra_paths for scripts or pinned inputs. In a terpedia-report fork, stage the project submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
   { name: 'fork_report_workspace', description: 'Fork public Terpedia/terputer to the connected GitHub user as terpedia-report and return its Codespace URL. The Terpedia GitHub session is used in chat; standalone local MCP use can authenticate with gh.', parameters: { type: 'object', properties: {} } },
   { name: 'list_research_projects', description: 'List the research project submodules and pinned commits in this user-owned terpedia-report checkout.', parameters: { type: 'object', properties: {} } },
   { name: 'add_research_project_submodule', description: 'Stage a user-owned terpedia-<slug> project repository under projects/<slug> in this terpedia-report checkout.', parameters: { type: 'object', properties: { slug: { type: 'string' }, repository: { type: 'string' } }, required: ['slug'] } },
   { name: 'update_research_project_submodule', description: 'Fetch the latest default-branch commit for an existing project submodule and stage its new pointer for review.', parameters: { type: 'object', properties: { slug: { type: 'string' } }, required: ['slug'] } },
-  { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh workspace Python kernel and save its outputs. Declare research/ files expected to be written so their hashes are included in the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
-  { name: 'list_notebooks', description: 'List Jupyter notebooks in the Terputer workspace.', parameters: { type: 'object', properties: {} } },
-  { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/. Use for manifests, results, methods, and manuscript drafts.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] } },
-  { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/. Cite sources and mark unexecuted analysis.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' } }, required: ['path', 'content'] } },
+  { name: 'execute_notebook', description: 'Execute a saved Jupyter notebook in a fresh Python kernel and save its outputs. Set project_slug for an attached project and declare research/ outputs for the execution receipt.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' }, cell_timeout_seconds: { type: 'integer', minimum: 1, maximum: 600 }, artifact_paths: { type: 'array', items: { type: 'string' }, maxItems: 50 } }, required: ['path'] } },
+  { name: 'list_notebooks', description: 'List Jupyter notebooks in the report workspace or an attached project submodule.', parameters: { type: 'object', properties: { project_slug: { type: 'string' } } } },
+  { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path'] } },
+  { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path', 'content'] } },
   { name: 'execute_python_cell', description: 'Execute Python in the current Terputer Codespace Jupyter kernel. Use only code needed for the requested research; inspect returned errors and outputs.', parameters: { type: 'object', properties: { code: { type: 'string' }, timeout_seconds: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['code'] } }
 ];
 
@@ -48,6 +48,8 @@ export async function callResearchTool(name, args = {}, context = {}) {
   if (name === 'list_research_projects') return listResearchProjects();
   if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args);
   if (name === 'update_research_project_submodule') return updateResearchProjectSubmodule(args);
+  const localTools = ['generate_research_report', 'publish_research_report', 'execute_notebook', 'list_notebooks', 'read_workspace_file', 'write_workspace_file'];
+  const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
   if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
@@ -126,15 +128,16 @@ export async function callResearchTool(name, args = {}, context = {}) {
     return { accession, runCountReturned: runs.length, truncated: lines.length - 1 > 100, runs, source: url };
   }
   if (name === 'generate_research_report') {
-    return generateResearchReport(args.manifest_path);
+    return generateResearchReport(args.manifest_path, activeRoot);
   }
   if (name === 'publish_research_report') {
     if (context.publicationAuthorized === false) throw new Error('The user must request GitHub publication before the research agent can publish a report.');
     const session = context.githubSession || process.env.TERPUTER_GITHUB_SESSION;
     if (!session) throw new Error('Connect GitHub in Terputer before publishing a research report.');
-    const generated = await generateResearchReport(args.manifest_path);
+    const generated = await generateResearchReport(args.manifest_path, activeRoot);
     if (generated.specification_schema_version !== 2) throw new Error('Only version 2 reports with execution provenance can be published.');
-    const spec = JSON.parse(await readFile(workspacePath(args.manifest_path), 'utf8'));
+    const spec = JSON.parse(await readFile(workspacePath(args.manifest_path, activeRoot), 'utf8'));
+    if (args.project_slug && spec.slug !== args.project_slug) throw new Error('Report slug must match the selected project submodule.');
     const required = [args.manifest_path, spec.notebook, spec.execution_receipt,
       generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256)];
     const extras = Array.isArray(args.extra_paths) ? args.extra_paths : [];
@@ -149,7 +152,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
         throw new Error(`Invalid report publication path: ${path}`);
       }
       const absolute = ['requirements.txt', 'notebook-runner.py', 'report-generator.mjs'].includes(path)
-        ? join(workspaceRoot, path) : workspacePath(path);
+        ? join(activeRoot, path) : workspacePath(path, activeRoot);
       const bytes = await readFile(absolute);
       if (bytes.length > 2_000_000) throw new Error(`Report file exceeds 2 MB: ${path}`);
       bytesTotal += bytes.length;
@@ -168,40 +171,43 @@ export async function callResearchTool(name, args = {}, context = {}) {
     if (!response.ok) throw new Error(result.error || `GitHub report publication failed (${response.status})`);
     let projectSubmodule;
     try {
-      projectSubmodule = { attached: true, ...await addResearchProjectSubmodule({
+      const attached = await addResearchProjectSubmodule({
         slug: spec.slug, repository: `https://github.com/${result.repository}`
-      }) };
+      });
+      projectSubmodule = { attached: true, ...attached, publishedCommit: result.commit,
+        needsSync: attached.commit !== result.commit };
+      if (projectSubmodule.needsSync) projectSubmodule.next = 'The project repository advanced on GitHub. Reconcile local project changes with the published commit, then stage and push the report fork submodule pointer.';
     } catch (error) {
       projectSubmodule = { attached: false, reason: error instanceof Error ? error.message : String(error) };
     }
     return { ...result, projectSubmodule };
   }
   if (name === 'execute_notebook') {
-    const path = workspacePath(args.path);
-    if (!path.startsWith(join(workspaceRoot, 'notebooks') + sep) || !path.endsWith('.ipynb')) throw new Error('Expected a notebook under notebooks/');
+    const path = workspacePath(args.path, activeRoot);
+    if (!path.startsWith(join(activeRoot, 'notebooks') + sep) || !path.endsWith('.ipynb')) throw new Error('Expected a notebook under notebooks/');
     const timeout = Math.min(600, Math.max(1, Number(args.cell_timeout_seconds) || 120));
     try {
       const artifactPaths = Array.isArray(args.artifact_paths) ? args.artifact_paths : [];
       const { stdout } = await execFileAsync(process.env.TERPUTER_PYTHON || 'python3',
-        [join(workspaceRoot, 'notebook-runner.py'), path, workspaceRoot, String(timeout), JSON.stringify(artifactPaths)],
-        { cwd: workspaceRoot, timeout: 30 * 60 * 1000, maxBuffer: 1024 * 1024 });
+        [join(workspaceRoot, 'notebook-runner.py'), path, activeRoot, String(timeout), JSON.stringify(artifactPaths)],
+        { cwd: activeRoot, timeout: 30 * 60 * 1000, maxBuffer: 1024 * 1024 });
       return JSON.parse(stdout.trim());
     } catch (error) {
       throw new Error(`Notebook execution failed: ${String(error.stderr || error.message || error).slice(0, 2000)}`);
     }
   }
   if (name === 'list_notebooks') {
-    const files = await readdir(join(workspaceRoot, 'notebooks')).catch(() => []);
-    return { notebooks: files.filter((file) => file.endsWith('.ipynb')).sort() };
+    const files = await readdir(join(activeRoot, 'notebooks')).catch(() => []);
+    return { project_slug: args.project_slug || null, notebooks: files.filter((file) => file.endsWith('.ipynb')).sort() };
   }
   if (name === 'read_workspace_file') {
-    const path = workspacePath(args.path);
+    const path = workspacePath(args.path, activeRoot);
     const content = await readFile(path, 'utf8');
     if (content.length > 120000) throw new Error('File exceeds 120 KB; use Python to summarize it.');
     return { path: String(args.path), content };
   }
   if (name === 'write_workspace_file') {
-    const path = workspacePath(args.path);
+    const path = workspacePath(args.path, activeRoot);
     const content = String(args.content || '');
     if (content.length > 2_000_000) throw new Error('File exceeds 2 MB.');
     if (!/\.(md|txt|csv|tsv|json|py|ipynb)$/i.test(path)) throw new Error('Unsupported research file type.');

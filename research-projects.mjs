@@ -1,5 +1,5 @@
-import { access, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { access, readFile, realpath } from 'node:fs/promises';
+import { join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -62,6 +62,28 @@ export async function listResearchProjects() {
     const match = line.match(/^([ +\-U])([0-9a-f]{40})\s+projects\/([a-z0-9-]+)(?:\s|$)/);
     return match ? { slug: match[3], commit: match[2], initialized: match[1] !== '-', changed: match[1] === '+' } : null;
   }).filter(Boolean) : [] };
+}
+
+export async function resolveResearchWorkspace(slug) {
+  if (slug == null || slug === '') return root;
+  if (!slugPattern.test(slug)) throw new Error('Invalid project slug.');
+  const remote = await command('git', ['remote', 'get-url', 'origin']);
+  const owner = remote.match(/^(?:https:\/\/github\.com\/|git@github\.com:)([A-Za-z0-9-]+)\/terpedia-report(?:\.git)?$/)?.[1];
+  if (!owner) throw new Error('Project-scoped tools require a terpedia-report fork checkout.');
+  const path = `projects/${slug}`;
+  const entry = `submodule.${path}`;
+  const configPath = await command('git', ['config', '-f', '.gitmodules', '--get', `${entry}.path`]);
+  const configUrl = await command('git', ['config', '-f', '.gitmodules', '--get', `${entry}.url`]);
+  if (configPath !== path || configUrl.replace(/\.git$/, '').toLowerCase() !== `https://github.com/${owner}/terpedia-${slug}`.toLowerCase()) {
+    throw new Error(`Unrecognized research submodule: ${path}`);
+  }
+  const indexed = await command('git', ['ls-files', '--stage', '--', path]);
+  if (!indexed.startsWith('160000 ')) throw new Error(`${path} is not staged as a Git submodule.`);
+  const absolute = await realpath(join(root, path)).catch(() => { throw new Error(`Initialize ${path} with git submodule update --init.`); });
+  if (!absolute.startsWith(await realpath(root) + sep)) throw new Error('Project path leaves the report workspace.');
+  const checkout = await realpath(await command('git', ['-C', absolute, 'rev-parse', '--show-toplevel']));
+  if (checkout !== absolute) throw new Error(`${path} is not an initialized project checkout.`);
+  return absolute;
 }
 
 export async function addResearchProjectSubmodule({ slug, repository }) {
