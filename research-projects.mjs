@@ -6,7 +6,7 @@ import { promisify } from 'node:util';
 
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('.', import.meta.url));
-const slugPattern = /^[a-z0-9][a-z0-9-]{0,62}$/;
+const slugPattern = /^[a-z0-9][a-z0-9-]{0,79}$/;
 
 async function command(file, args) {
   try {
