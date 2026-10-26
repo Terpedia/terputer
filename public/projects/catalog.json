@@ -1,0 +1,162 @@
+[
+  {
+    "slug": "terpene-exposure",
+    "title": "Terpene exposure transcriptomics",
+    "category": "Transcriptomics",
+    "status": "Active analysis",
+    "summary": "Reproducibility and context in terpene exposure RNA-seq, with microbial exposure datasets and a separate Perturb-seq context layer.",
+    "repository": "https://github.com/Terpedia/terputer-terpene-exposure",
+    "paper": "https://github.com/Terpedia/terputer-terpene-exposure/blob/main/manuscript/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-terpene-exposure/blob/main/notebooks/terpene_exposure_pilot.ipynb"
+  },
+  {
+    "slug": "transcriptomics",
+    "title": "Terputer transcriptomics",
+    "category": "Transcriptomics",
+    "status": "Methods platform",
+    "summary": "Terputer workflows for source-grounded transcriptomics, gene-effect evidence, analysis reports, and reproducible notebook execution.",
+    "repository": "https://github.com/Terpedia/terputer-transcriptomics",
+    "paper": "https://github.com/Terpedia/terputer-transcriptomics/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-transcriptomics/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "paclitaxel-single-cell",
+    "title": "Paclitaxel single-cell analysis",
+    "category": "Transcriptomics",
+    "status": "Active analysis",
+    "summary": "Single-cell transcriptomics analysis of paclitaxel response, with generated claims and execution receipts.",
+    "repository": "https://github.com/Terpedia/terputer-paclitaxel-single-cell",
+    "paper": "https://github.com/Terpedia/terputer-paclitaxel-single-cell/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-paclitaxel-single-cell/blob/main/notebooks/terputer-paclitaxel-single-cell.ipynb"
+  },
+  {
+    "slug": "census",
+    "title": "Cannabis chemical diversity census",
+    "category": "Metabolomics",
+    "status": "Active methods",
+    "summary": "Source-audited terpene identity union and reproducible analysis of the size and boundaries of the known terpene catalog.",
+    "repository": "https://github.com/Terpedia/terputer-census",
+    "paper": "https://github.com/Terpedia/terputer-census/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-census/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "strain",
+    "title": "Cannabis strain chemistry and terpotype",
+    "category": "Metabolomics",
+    "status": "Active analysis",
+    "summary": "Measured chemical-profile variation, name-independent terpotype classification, and a causal model for cannabis terpene composition.",
+    "repository": "https://github.com/Terpedia/terputer-strain",
+    "paper": "https://github.com/Terpedia/terputer-strain/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-strain/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "functional-flavors",
+    "title": "Cinnamaldehyde variation in cinnamon",
+    "category": "Metabolomics",
+    "status": "Research tooling",
+    "summary": "Research surfaces for flavor chemistry, including cinnamaldehyde variation across cinnamon types.",
+    "repository": "https://github.com/Terpedia/terputer-functional-flavors",
+    "paper": "https://github.com/Terpedia/terputer-functional-flavors/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-functional-flavors/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "nautilus-interaction-ranking",
+    "title": "Terpene–protein interaction ranking",
+    "category": "Proteomics",
+    "status": "Methods design",
+    "summary": "NAuTILUS design for large-scale terpene–protein interaction ranking, docking, and evidence-graph integration. Computational predictions remain hypotheses pending validation.",
+    "repository": "https://github.com/Terpedia/terputer-nautilus-interaction-ranking",
+    "paper": "https://github.com/Terpedia/terputer-nautilus-interaction-ranking/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-nautilus-interaction-ranking/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "receptor-claims",
+    "title": "Terpene receptor and structure–function claims",
+    "category": "Proteomics",
+    "status": "Evidence synthesis",
+    "summary": "Evidence-bounded receptor hypotheses and structure–function relationships, with explicit separation of association, binding, mechanism, and efficacy.",
+    "repository": "https://github.com/Terpedia/terputer-receptor-claims",
+    "paper": "https://github.com/Terpedia/terputer-receptor-claims/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-receptor-claims/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "terpnet-pathway-graphs",
+    "title": "Terpene biosynthesis and pathway graphs",
+    "category": "Genomics",
+    "status": "Methods development",
+    "summary": "TerpNet models terpene pathway evidence across genomes, transcripts, enzymes, and chemical products while preserving provenance and uncertainty.",
+    "repository": "https://github.com/Terpedia/terputer-terpnet-pathway-graphs",
+    "paper": "https://github.com/Terpedia/terputer-terpnet-pathway-graphs/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-terpnet-pathway-graphs/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "artemisia-terpene-evolution",
+    "title": "Artemisia terpene diversity and biosynthetic evolution",
+    "category": "Genomics",
+    "status": "Scoping review",
+    "summary": "Frozen scoping review of terpene diversity, biosynthetic evolution, and bounded antiparasitic evidence.",
+    "repository": "https://github.com/Terpedia/terputer-artemisia-terpene-evolution",
+    "paper": "https://github.com/Terpedia/terputer-artemisia-terpene-evolution/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-artemisia-terpene-evolution/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "adhd-attention",
+    "title": "ADHD attention evidence synthesis",
+    "category": "Translational & clinical",
+    "status": "In progress",
+    "summary": "A 2015–2025 metasurvey emphasizing reaction-time variability, network dynamics, and evidence quality.",
+    "repository": "https://github.com/Terpedia/terputer-adhd-attention",
+    "paper": "https://github.com/Terpedia/terputer-adhd-attention/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-adhd-attention/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "absinthe-evidence-map",
+    "title": "Absinthe and psychedelic classification",
+    "category": "Translational & clinical",
+    "status": "Evidence map",
+    "summary": "Critical evidence map testing whether absinthe should be described as a classic psychedelic.",
+    "repository": "https://github.com/Terpedia/terputer-absinthe-evidence-map",
+    "paper": "https://github.com/Terpedia/terputer-absinthe-evidence-map/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-absinthe-evidence-map/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "botanical-clinical-studies",
+    "title": "Botanical product clinical studies",
+    "category": "Translational & clinical",
+    "status": "Protocol development",
+    "summary": "Protocol and analysis work for 2026 pain, sleep, anxiety, and focus trials. These are clinical research tracks, not omics datasets.",
+    "repository": "https://github.com/Terpedia/terputer-botanical-clinical-studies",
+    "paper": "https://github.com/Terpedia/terputer-botanical-clinical-studies/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-botanical-clinical-studies/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "bcp-veterinary-evidence",
+    "title": "Beta-caryophyllene, pain and inflammation in pets",
+    "category": "Translational & clinical",
+    "status": "Evidence map",
+    "summary": "Species-aware evidence map connecting preclinical pain research, canine studies, feed safety, and labelled pet products.",
+    "repository": "https://github.com/Terpedia/terputer-bcp-veterinary-evidence",
+    "paper": "https://github.com/Terpedia/terputer-bcp-veterinary-evidence/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-bcp-veterinary-evidence/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "terpene-literature-intake",
+    "title": "Terpene literature discovery and evidence intake",
+    "category": "Research infrastructure",
+    "status": "Operational tooling",
+    "summary": "Search matrices and automated PubMed collection, metadata extraction, classification, and knowledge-base intake.",
+    "repository": "https://github.com/Terpedia/terputer-terpene-literature-intake",
+    "paper": "https://github.com/Terpedia/terputer-terpene-literature-intake/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-terpene-literature-intake/blob/main/notebooks/analysis.ipynb"
+  },
+  {
+    "slug": "terpene-classifier",
+    "title": "Auditable terpene molecular classifier",
+    "category": "Research infrastructure",
+    "status": "Methods development",
+    "summary": "Molecular classification using canonical identity, SMILES representations, Morgan fingerprints, and explicit rejection boundaries.",
+    "repository": "https://github.com/Terpedia/terputer-terpene-classifier",
+    "paper": "https://github.com/Terpedia/terputer-terpene-classifier/blob/main/whitepaper/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terputer-terpene-classifier/blob/main/notebooks/analysis.ipynb"
+  }
+]

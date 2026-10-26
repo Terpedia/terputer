@@ -30,6 +30,12 @@ The Terputer chat panel lists submodules from the local checkout and lets the us
 
 GitHub publication can advance both the private project repository and the report fork while a Codespace checkout remains at older commits. The publication result includes `projectSubmodule.needsSync` and pinned commit hashes. Reconcile local changes, pull the report fork, and initialize or update the submodule before continuing local work.
 
+## Public research catalog
+
+Browse and search Terpedia's public research portfolio at [`/projects/`](https://terputer.terpedia.com/projects/), or use the Research library link in the workspace. The catalog links to each study's source repository, notebook, and white paper across genomics, transcriptomics, proteomics, metabolomics, translational and clinical research, and research infrastructure.
+
+The public catalog is read from `public/projects/catalog.json`; it does not add study checkouts to a member's fork. The `projects/` directory in a `terpedia-report` fork holds that member's own `terpedia-<slug>` repositories as Git submodules, attached with `add_research_project_submodule`.
+
 Notebooks are stored under `notebooks/` in the current Codespace checkout. The notebook itself is standard Jupyter `nbformat` 4 and can also be opened in Jupyter or VS Code. The app does not create, start, commit, or push Codespaces on behalf of the user; GitHub remains the owner of repository and Codespace lifecycle.
 
 ## Local development
