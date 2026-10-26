@@ -142,24 +142,25 @@ export async function callResearchTool(name, args = {}, context = {}) {
       generated.report, generated.ledger, generated.receipt, ...Object.keys(generated.artifact_sha256)];
     const extras = Array.isArray(args.extra_paths) ? args.extra_paths : [];
     if (extras.length > 20) throw new Error('At most 20 extra paths are allowed.');
-    const paths = [...new Set([...required, ...extras, 'requirements.txt', 'notebook-runner.py', 'report-generator.mjs'])];
+    const runtimeFiles = new Set(['requirements.txt', 'notebook-runner.py', 'report-generator.mjs']);
+    const paths = [...new Set([...required, ...extras, ...runtimeFiles])];
     if (paths.length > 49) throw new Error('Report bundle has too many files.');
     const files = [];
     let bytesTotal = 0;
     for (const path of paths) {
       if (typeof path !== 'string' || path.includes('..') || path.split('/').some((part) => part.startsWith('.'))
-          || !(/^(?:research|notebooks)\/[A-Za-z0-9._/-]+$/.test(path) || ['requirements.txt', 'notebook-runner.py', 'report-generator.mjs'].includes(path))) {
+          || !(/^(?:research|notebooks)\/[A-Za-z0-9._/-]+$/.test(path) || runtimeFiles.has(path))) {
         throw new Error(`Invalid report publication path: ${path}`);
       }
-      const absolute = ['requirements.txt', 'notebook-runner.py', 'report-generator.mjs'].includes(path)
-        ? join(activeRoot, path) : workspacePath(path, activeRoot);
+      // The reproducibility tools belong to Terputer, not the attached user project.
+      const absolute = runtimeFiles.has(path) ? join(workspaceRoot, path) : workspacePath(path, activeRoot);
       const bytes = await readFile(absolute);
       if (bytes.length > 2_000_000) throw new Error(`Report file exceeds 2 MB: ${path}`);
       bytesTotal += bytes.length;
       files.push({ path, content_base64: bytes.toString('base64') });
     }
     const artifactPaths = Object.keys(generated.artifact_sha256);
-    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nReview code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
+    const readme = `# ${spec.title}\n\n${spec.question}\n\n[Executed notebook](${spec.notebook}) · [Evidence brief](${generated.report}) · [Generation receipt](${generated.receipt})\n\nThe runner, report generator, and requirements file were copied from the Terputer workspace into this project at publication time. Review code and data sources, then reproduce with:\n\n\`\`\`sh\npython -m pip install -r requirements.txt\npython notebook-runner.py ${spec.notebook} . 300 '${JSON.stringify(artifactPaths)}'\nnode report-generator.mjs ${args.manifest_path}\n\`\`\`\n`;
     bytesTotal += Buffer.byteLength(readme);
     if (bytesTotal > 7_000_000) throw new Error('Report bundle exceeds 7 MB.');
     files.push({ path: 'README.md', content_base64: Buffer.from(readme).toString('base64') });
