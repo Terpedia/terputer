@@ -8,6 +8,11 @@ export async function runResearchAgent(input) {
   const model = process.env.TERPUTER_AGENT_MODEL || 'openai/gpt-4.1-mini';
   const history = (Array.isArray(input.messages) ? input.messages : []).slice(-16).filter((item) => ['user', 'assistant'].includes(item?.role) && typeof item.content === 'string').map((item) => ({ role: item.role, content: item.content.slice(0, 10000) }));
   if (!history.length || history.at(-1).role !== 'user') throw Object.assign(new Error('The last message must be a user request.'), { status: 400 });
+  const publicationAuthorized = history.some((item) => item.role === 'user' && (
+    /\b(?:publish|push|upload|share)\b[\s\S]{0,120}\b(?:report|paper|notebook|github|repo(?:sitory)?)\b/i.test(item.content)
+    || /\b(?:github|repo(?:sitory)?)\b[\s\S]{0,120}\b(?:publish|push|upload|share|save|create)\b/i.test(item.content)
+    || /\b(?:save|create)\b[\s\S]{0,120}\b(?:github|repo(?:sitory)?)\b/i.test(item.content)
+  ));
   const messages = [{ role: 'system', content: SYSTEM }, ...history];
   const tools = toolDefinitions.map((tool) => ({ type: 'function', function: tool }));
   const activity = [];
@@ -30,7 +35,7 @@ export async function runResearchAgent(input) {
       try {
         if (index >= 5) throw new Error('This turn exceeded the five-tool limit; continue in the next turn.');
         const args = JSON.parse(call.function?.arguments || '{}');
-        result = await callResearchTool(call.function?.name, args, { githubSession: input.githubSession });
+        result = await callResearchTool(call.function?.name, args, { githubSession: input.githubSession, publicationAuthorized });
         if (call.function?.name === 'publish_research_report') publication = result;
         activity.push({ tool: call.function?.name, status: 'ok' });
       } catch (error) {

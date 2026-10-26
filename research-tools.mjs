@@ -120,6 +120,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
     return generateResearchReport(args.manifest_path);
   }
   if (name === 'publish_research_report') {
+    if (context.publicationAuthorized === false) throw new Error('The user must request GitHub publication before the research agent can publish a report.');
     const session = context.githubSession || process.env.TERPUTER_GITHUB_SESSION;
     if (!session) throw new Error('Connect GitHub in Terputer before publishing a research report.');
     const generated = await generateResearchReport(args.manifest_path);
