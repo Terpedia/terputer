@@ -57,3 +57,13 @@ def study_samples(accession: str, x_terputer_tool_key: str | None = Header(defau
     table = f"`{PROJECT}.{DATASET}.transcriptomic_samples`"
     rows = query(f"SELECT study_id, accession, sample_id, archive_accession, organism, condition, time_label, dose, source_url FROM {table} WHERE accession = @accession ORDER BY sample_id LIMIT 100", [bigquery.ScalarQueryParameter("accession", "STRING", accession)])
     return {"accession": accession, "samples": rows, "source": f"bigquery://{PROJECT}.{DATASET}.transcriptomic_samples"}
+
+
+@app.get("/v1/studies/{accession}/contrasts")
+def study_contrasts(accession: str, x_terputer_tool_key: str | None = Header(default=None)):
+    authorized(x_terputer_tool_key)
+    if not re.fullmatch(r"[A-Za-z0-9_-]{4,30}", accession):
+        raise HTTPException(status_code=400, detail="Invalid accession")
+    table = f"`{PROJECT}.{DATASET}.transcriptomic_contrasts`"
+    rows = query(f"SELECT contrast_id, study_id, chemical_identity, condition, control, assay, feature_universe, effect_class, analysis_version, artifact_url, source_sha256, limitations FROM {table} WHERE study_id = @accession ORDER BY contrast_id LIMIT 100", [bigquery.ScalarQueryParameter("accession", "STRING", accession)])
+    return {"accession": accession, "contrasts": rows, "source": f"bigquery://{PROJECT}.{DATASET}.transcriptomic_contrasts", "interpretation": "Contrast metadata and descriptive effects are not differential-expression or pathway evidence."}

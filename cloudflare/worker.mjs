@@ -19,7 +19,7 @@ async function searchEntrez(db, query, limit) {
 }
 
 export async function handleTool(name, args, env) {
-  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples') {
+  if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_contrasts') {
     if (!env.TERPUTER_BIGQUERY_API_URL || !env.TERPUTER_BIGQUERY_TOOL_KEY) throw new Error('BigQuery adapter is not configured');
     const base = env.TERPUTER_BIGQUERY_API_URL.replace(/\/$/, '');
     let path, options = { headers: { 'x-terputer-tool-key': env.TERPUTER_BIGQUERY_TOOL_KEY } };
@@ -31,7 +31,7 @@ export async function handleTool(name, args, env) {
     } else {
       const accession = String(args.accession || '').trim().toUpperCase();
       if (!/^[A-Z0-9_-]{4,30}$/.test(accession)) throw new Error('Invalid accession');
-      path = `/v1/studies/${encodeURIComponent(accession)}/samples`;
+      path = `/v1/studies/${encodeURIComponent(accession)}/${name === 'get_transcriptomic_contrasts' ? 'contrasts' : 'samples'}`;
     }
     const response = await fetch(`${base}${path}`, options);
     if (!response.ok) throw new Error(`BigQuery adapter returned HTTP ${response.status}`);
