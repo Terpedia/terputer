@@ -1,4 +1,6 @@
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+const snapshotRevision = 'bcde64a4e9d001a0f6e4a8ec496afa1083b50aa2';
+const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
 
 export async function authorizeRequest(request, env) {
   const bearer = request.headers.get('authorization') || '';
@@ -22,6 +24,56 @@ async function sourceJson(url) {
   return response.json();
 }
 
+async function snapshotRows(name) {
+  const url = `${snapshotBase}/${name}.jsonl`;
+  const response = await fetch(url, { headers: { 'user-agent': 'Terputer curated transcriptomics fallback' } });
+  if (!response.ok) throw new Error(`Pinned transcriptomics snapshot returned HTTP ${response.status}`);
+  return { rows: (await response.text()).trim().split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line)), url };
+}
+
+async function publicSnapshotResult(name, args, adapterStatus) {
+  const provenance = { source_mode: 'commit-pinned-public-snapshot', snapshot_revision: snapshotRevision, ...(adapterStatus ? { adapter_status: adapterStatus } : {}) };
+  if (name === 'search_transcriptomic_studies') {
+    const { rows, url } = await snapshotRows('studies');
+    const query = String(args.query).toLowerCase();
+    const limit = Math.min(30, Math.max(1, Number(args.limit) || 10));
+    const records = rows.filter((row) => [row.accession, row.title, row.organism, row.assay].some((value) => String(value || '').toLowerCase().includes(query)))
+      .sort((a, b) => a.accession.localeCompare(b.accession)).slice(0, limit);
+    return { records, source: url, ...provenance };
+  }
+  if (name === 'get_transcriptomic_samples') {
+    const { rows, url } = await snapshotRows('samples');
+    const accession = String(args.accession).toUpperCase();
+    return { accession, samples: rows.filter((row) => row.accession === accession).sort((a, b) => a.sample_id.localeCompare(b.sample_id)).slice(0, 100), source: url, ...provenance };
+  }
+  const accession = String(args.accession).toUpperCase();
+  const [contrasts, observations] = await Promise.all([snapshotRows('contrasts'), snapshotRows('observations')]);
+  return {
+    accession,
+    contrasts: contrasts.rows.filter((row) => row.study_id === accession).sort((a, b) => a.contrast_id.localeCompare(b.contrast_id)).slice(0, 50),
+    observations: observations.rows.filter((row) => row.study_id === accession).sort((a, b) => a.observation_id.localeCompare(b.observation_id)).slice(0, 50),
+    sources: [contrasts.url, observations.url],
+    interpretation: 'Source evidence classes, methods, and limitations are required; selected publisher-table rows do not establish independent replication or a direct target.',
+    ...provenance
+  };
+}
+
+function adapterMissesSnapshot(name, live, snapshot) {
+  if (name === 'search_transcriptomic_studies') {
+    const byAccession = new Map((live.records || []).map((row) => [row.accession, row]));
+    return snapshot.records.some((row) => !byAccession.has(row.accession)
+      || (row.source_sha256 && !byAccession.get(row.accession).source_sha256));
+  }
+  if (name === 'get_transcriptomic_samples') {
+    const ids = new Set((live.samples || []).map((row) => row.sample_id));
+    return snapshot.samples.some((row) => !ids.has(row.sample_id));
+  }
+  const contrasts = new Set((live.contrasts || []).map((row) => row.contrast_id));
+  const observations = new Set((live.observations || []).map((row) => row.observation_id));
+  return snapshot.contrasts.some((row) => !contrasts.has(row.contrast_id))
+    || snapshot.observations.some((row) => !observations.has(row.observation_id));
+}
+
 async function searchEntrez(db, query, limit) {
   const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
   const found = await sourceJson(`${base}/esearch.fcgi?${new URLSearchParams({ db, term: query, retmode: 'json', retmax: String(limit) })}`);
@@ -36,8 +88,7 @@ async function searchEntrez(db, query, limit) {
 
 export async function handleTool(name, args, env) {
   if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_evidence') {
-    if (!env.TERPUTER_BIGQUERY_API_URL || !env.TERPUTER_BIGQUERY_TOOL_KEY) throw new Error('BigQuery adapter is not configured');
-    const base = env.TERPUTER_BIGQUERY_API_URL.replace(/\/$/, '');
+    const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     let path, options = { headers: { 'x-terputer-tool-key': env.TERPUTER_BIGQUERY_TOOL_KEY } };
     if (name === 'search_transcriptomic_studies') {
       const query = String(args.query || '').trim().slice(0, 200);
@@ -49,9 +100,20 @@ export async function handleTool(name, args, env) {
       if (!/^[A-Z0-9_-]{4,30}$/.test(accession)) throw new Error('Invalid accession');
       path = `/v1/studies/${encodeURIComponent(accession)}/${name === 'get_transcriptomic_evidence' ? 'evidence' : 'samples'}`;
     }
-    const response = await fetch(`${base}${path}`, options);
-    if (!response.ok) throw new Error(`BigQuery adapter returned HTTP ${response.status}`);
-    return response.json();
+    let response;
+    if (base && env.TERPUTER_BIGQUERY_TOOL_KEY) {
+      try { response = await fetch(`${base}${path}`, options); } catch { /* Use the pinned public snapshot when the adapter is unreachable. */ }
+      if (response?.ok) {
+        const live = await response.json();
+        try {
+          const snapshot = await publicSnapshotResult(name, args, 'stale_or_incomplete');
+          if (adapterMissesSnapshot(name, live, snapshot)) return snapshot;
+        } catch { /* Keep the live BigQuery result when the public snapshot is unreachable. */ }
+        return live;
+      }
+      if (response && response.status !== 404 && response.status < 500) throw new Error(`BigQuery adapter returned HTTP ${response.status}`);
+    }
+    return publicSnapshotResult(name, args, response?.status);
   }
   if (name === 'search_geo_series' || name === 'search_pubmed') {
     const query = String(args.query || '').trim().slice(0, 300);
