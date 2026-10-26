@@ -17,8 +17,8 @@ from nbclient import NotebookClient
 
 
 def main() -> None:
-    if len(sys.argv) not in (4, 5):
-        raise SystemExit("Usage: notebook-runner.py NOTEBOOK WORKSPACE CELL_TIMEOUT_SECONDS [ARTIFACT_PATHS_JSON]")
+    if len(sys.argv) not in (4, 5, 6):
+        raise SystemExit("Usage: notebook-runner.py NOTEBOOK WORKSPACE CELL_TIMEOUT_SECONDS [ARTIFACT_PATHS_JSON] [INPUT_PATHS_JSON]")
     notebook_path = Path(sys.argv[1]).resolve()
     workspace = Path(sys.argv[2]).resolve()
     cell_timeout = int(sys.argv[3])
@@ -27,7 +27,7 @@ def main() -> None:
     if notebook_path.suffix != ".ipynb" or not 1 <= cell_timeout <= 600:
         raise ValueError("Expected an .ipynb notebook and a 1–600 second cell timeout")
 
-    artifact_names = json.loads(sys.argv[4]) if len(sys.argv) == 5 else []
+    artifact_names = json.loads(sys.argv[4]) if len(sys.argv) >= 5 else []
     if not isinstance(artifact_names, list) or len(artifact_names) > 50 or any(not isinstance(name, str) for name in artifact_names) or len(set(artifact_names)) != len(artifact_names):
         raise ValueError("Expected up to 50 distinct artifact paths")
     artifact_paths = {}
@@ -42,6 +42,34 @@ def main() -> None:
             raise ValueError("Artifact paths must use normalized workspace-relative names")
         artifact_paths[name] = path
         artifact_before[name] = path.stat() if path.exists() else None
+
+    input_names = json.loads(sys.argv[5]) if len(sys.argv) == 6 else []
+    if not isinstance(input_names, list) or len(input_names) > 50 or any(not isinstance(name, str) for name in input_names) or len(set(input_names)) != len(input_names):
+        raise ValueError("Expected up to 50 distinct input paths")
+    if set(input_names) & set(artifact_names):
+        raise ValueError("A declared input cannot also be a declared output")
+
+    def file_sha256(path: Path) -> str:
+        digest = hashlib.sha256()
+        with path.open("rb") as stream:
+            while chunk := stream.read(1 << 20):
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    input_paths = {}
+    input_hashes = {}
+    for name in input_names:
+        if not name.startswith("research/"):
+            raise ValueError("Input paths must be relative to research/")
+        path = (workspace / name).resolve(strict=True)
+        if workspace / "research" not in path.parents or not path.is_relative_to(workspace):
+            raise ValueError("Input path leaves the research workspace")
+        if path.relative_to(workspace).as_posix() != name or not path.is_file():
+            raise ValueError("Input paths must name normalized existing files")
+        input_paths[name] = path
+        input_hashes[name] = file_sha256(path)
+    if set(input_paths.values()) & set(artifact_paths.values()):
+        raise ValueError("A declared input and output resolve to the same file")
 
     source_sha256 = hashlib.sha256(notebook_path.read_bytes()).hexdigest()
     notebook = nbformat.read(notebook_path, as_version=4)
@@ -70,6 +98,9 @@ def main() -> None:
     executed = sum(cell.cell_type == "code" and cell.execution_count is not None for cell in notebook.cells)
     if not executed:
         raise ValueError("Notebook contains no executed code cells")
+    for name, path in input_paths.items():
+        if file_sha256(path) != input_hashes[name]:
+            raise ValueError(f"Declared input changed during this run: {name}")
     artifact_hashes = {}
     for name, path in artifact_paths.items():
         if not path.is_file():
@@ -78,11 +109,7 @@ def main() -> None:
         after = path.stat()
         if before is not None and (before.st_mtime_ns, before.st_ctime_ns, before.st_ino, before.st_size) == (after.st_mtime_ns, after.st_ctime_ns, after.st_ino, after.st_size):
             raise ValueError(f"Declared output was not written during this run: {name}")
-        digest = hashlib.sha256()
-        with path.open("rb") as stream:
-            while chunk := stream.read(1 << 20):
-                digest.update(chunk)
-        artifact_hashes[name] = digest.hexdigest()
+        artifact_hashes[name] = file_sha256(path)
     notebook.metadata["terputer_execution"] = {"runner": "terputer-notebook-runner-v1",
                                                "python_version": sys.version.split()[0],
                                                "executed_code_cells": executed}
@@ -129,6 +156,7 @@ def main() -> None:
         "notebook_sha256": notebook_sha256,
         "executed_code_cells": executed,
         "artifacts_written": artifact_hashes,
+        "inputs_pinned": dict(sorted(input_hashes.items())),
         "python_version": sys.version.split()[0],
         "environment": environment,
         "completed_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -143,7 +171,7 @@ def main() -> None:
         receipt_temporary_path.unlink(missing_ok=True)
     print(json.dumps({"path": str(notebook_path.relative_to(workspace)), "executed_code_cells": executed,
                       "sha256": notebook_sha256, "execution_receipt": str(receipt_path.relative_to(workspace)),
-                      "artifacts_written": artifact_hashes, "saved": True,
+                      "artifacts_written": artifact_hashes, "inputs_pinned": dict(sorted(input_hashes.items())), "saved": True,
                       "text_outputs": output_summaries[:10]}))
 
 
