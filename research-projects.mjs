@@ -56,7 +56,6 @@ export async function forkReportWorkspace(session = process.env.TERPUTER_GITHUB_
 }
 
 export async function listResearchProjects() {
-  await reportRepository();
   const output = await command('git', ['submodule', 'status', '--', 'projects']);
   return { projects: output ? output.split('\n').map((line) => {
     const match = line.match(/^([ +\-U])([0-9a-f]{40})\s+projects\/([a-z0-9-]+)(?:\s|$)/);

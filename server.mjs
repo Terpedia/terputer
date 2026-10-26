@@ -4,6 +4,7 @@ import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { runResearchAgent } from './research-agent.mjs';
+import { listResearchProjects } from './research-projects.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const port = Number(process.env.PORT || 4173);
@@ -43,6 +44,11 @@ const server = createServer(async (req, res) => {
   if (url.pathname === '/api/terpedia/github/status' && req.method === 'GET') {
     try { const upstream = await fetch(`${chatBase}/api/github/status`, { headers: { authorization: req.headers.authorization || '' }, signal: AbortSignal.timeout(10_000) }); setJson(upstream.status, await upstream.json()); }
     catch (error) { setJson(502, { error: error instanceof Error ? error.message : 'GitHub status failed.' }); }
+    return;
+  }
+  if (url.pathname === '/api/projects' && req.method === 'GET') {
+    try { setJson(200, await listResearchProjects()); }
+    catch (error) { setJson(500, { error: error instanceof Error ? error.message : 'Could not list projects.' }); }
     return;
   }
   if (url.pathname === '/api/kernel/status' && req.method === 'GET') { try { const upstream = await fetch('http://127.0.0.1:8765/api/kernel/status', { signal: AbortSignal.timeout(1500) }); const data = await upstream.json(); setJson(upstream.status, data); } catch { setJson(503, { connected: false, message: 'Python kernel service is unavailable.' }); } return; }
