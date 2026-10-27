@@ -85,8 +85,9 @@ python cloudrun/load_records.py
 python cloudrun/load_records.py --apply
 ```
 
-The loader reviews all four manifests, checks the destination schemas and
-duplicate keys, stages all rows, then commits the four upserts in one
+The loader reviews all four manifests, checks study/sample accession consistency,
+source SHA-256 syntax, destination schemas, and duplicate keys, stages all rows,
+then commits the four upserts in one
 transaction. Existing rows outside the manifests are retained. If schema
 creation is already complete, the first command is safe to rerun.
 
