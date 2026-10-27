@@ -54,12 +54,17 @@ then inspect the exact Cloud Run identity and proposed grants:
 ```sh
 gcloud auth login
 python cloudrun/grant_reader_access.py
-python cloudrun/grant_reader_access.py --apply
+python cloudrun/grant_reader_access.py \
+  --reader-service-account cannabis-metabolome@terpedia-489015.iam.gserviceaccount.com
+python cloudrun/grant_reader_access.py \
+  --reader-service-account cannabis-metabolome@terpedia-489015.iam.gserviceaccount.com --apply
 ```
 
 The script discovers the deployed service account rather than assuming that
-the locally available `cannabis-metabolome` account runs the adapter. It adds
-dataset `READER` access (equivalent to BigQuery Data Viewer) and project
+the locally available `cannabis-metabolome` account runs the adapter. The
+explicit additional reader flag grants the named local account the same
+read-only query access; it does not grant table write or load permissions.
+It adds dataset `READER` access (equivalent to BigQuery Data Viewer) and project
 `roles/bigquery.jobUser` only when absent. It stops if the dataset does not
 exist, the Cloud Run service has no dedicated service account, or either IAM
 policy cannot be read. The administrator needs `run.services.get`,
