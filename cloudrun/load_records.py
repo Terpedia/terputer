@@ -40,11 +40,22 @@ def read_records(directory: Path) -> dict[str, list[dict]]:
         if any(set(row) != fields for row in rows):
             raise ValueError(f"{path} has inconsistent fields")
         records[filename] = rows
-    study_ids = {row["study_id"] for row in records["studies"]}
+    studies = {row["study_id"]: row for row in records["studies"]}
+    study_ids = set(studies)
+    accessions = [row["accession"] for row in records["studies"]]
+    if any(not isinstance(value, str) or not value for value in accessions) or len(set(accessions)) != len(accessions):
+        raise ValueError("studies have empty or duplicate accessions")
     for filename in ("samples", "contrasts", "observations"):
         unknown = {row["study_id"] for row in records[filename]} - study_ids
         if unknown:
             raise ValueError(f"{filename} references unlisted studies: {sorted(unknown)}")
+    for sample in records["samples"]:
+        if sample["accession"] != studies[sample["study_id"]]["accession"]:
+            raise ValueError(f"Sample {sample['sample_id']} accession differs from its study")
+    for filename in ("studies", "contrasts", "observations"):
+        for row in records[filename]:
+            if not re.fullmatch(r"[a-f0-9]{64}", str(row.get("source_sha256") or "")):
+                raise ValueError(f"{filename} has an invalid source SHA-256")
     return records
 
 
