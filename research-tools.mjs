@@ -6,6 +6,7 @@ import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
 import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule, resolveResearchWorkspace } from './research-projects.mjs';
 import { getTranscriptomicFeatureEffect } from './transcriptomic-feature-effect.mjs';
+import { getHepg2BcpGeneEffect } from './hepg2-bcp-gene-effect.mjs';
 import { startResearchJob, getResearchJob } from './research-jobs.mjs';
 
 export const workspaceRoot = resolve(fileURLToPath(new URL('.', import.meta.url)));
@@ -33,6 +34,7 @@ export const toolDefinitions = [
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_transcriptomic_evidence', description: 'Get curated exposure contrasts and evidence-graded numeric observations for a study accession from Terpedia BigQuery. Returns provenance and limitations, not raw gene-level effects.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_transcriptomic_feature_effect', description: 'Look up one source feature in the checksum-pinned GSE242559 processed-FPKM table. Returns descriptive menthol and Wnt3a effects, not differential-expression or target evidence.', parameters: { type: 'object', properties: { accession: { type: 'string' }, feature: { type: 'string' } }, required: ['accession', 'feature'] } },
+  { name: 'get_hepg2_bcp_gene_effect', description: 'Look up one gene in the checksum-pinned GSE276099 HepG2 raw-count model. Returns its estimate, adjusted p value, exact contrast, provenance, and limitations.', parameters: { type: 'object', properties: { gene: { type: 'string' } }, required: ['gene'] } },
   { name: 'search_transcriptomic_gene_effects', description: 'Look up loaded count-model gene effects in Terpedia BigQuery. Returns contrast, adjusted p-value, source hashes, and limitations; no pathway or target claim.', parameters: { type: 'object', properties: { gene: { type: 'string' }, study_id: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 50 } }, required: ['gene'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from an executed notebook. Set project_slug to work inside an attached project submodule.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['manifest_path'] } },
@@ -53,6 +55,7 @@ export const toolDefinitions = [
 export async function callResearchTool(name, args = {}, context = {}) {
   if (name === 'search_transcriptomic_gene_effects' && process.env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') throw new Error('Curated gene effects are not enabled');
   if (name === 'get_transcriptomic_feature_effect' && !(process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN)) return getTranscriptomicFeatureEffect(args);
+  if (name === 'get_hepg2_bcp_gene_effect' && !(process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN)) return getHepg2BcpGeneEffect(args);
   if (name === 'fork_report_workspace') return forkReportWorkspace(context.githubSession);
   if (name === 'list_research_projects') return listResearchProjects();
   if (name === 'add_research_project_submodule') return addResearchProjectSubmodule(args, context.githubSession);
@@ -61,7 +64,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
   const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
   if (name === 'start_research_job') return startResearchJob(args, activeRoot);
   if (name === 'get_research_job') return getResearchJob(args, activeRoot);
-  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence', 'get_transcriptomic_feature_effect', 'search_transcriptomic_gene_effects'].includes(name)
+  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence', 'get_transcriptomic_feature_effect', 'get_hepg2_bcp_gene_effect', 'search_transcriptomic_gene_effects'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.TERPUTER_WORKER_TOKEN}` },
