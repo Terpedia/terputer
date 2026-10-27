@@ -14,7 +14,8 @@ pathway activity, target binding, or cross-study replication. An empty result
 means only that no matching curated row has been loaded.
 
 After a raw-count notebook completes, use `prepare_gene_effects.py` to create
-reviewable JSONL from its saved result tables. Its manifest must name the GEO
+reviewable JSONL from its saved result tables. The executed HepG2 source
+manifest is in the [study repository](https://github.com/Terpedia/terpedia-hepg2-bcp-rsem/blob/main/research/hepg2-bcp-rsem/gene-effects-source.json); its reviewed local export has 15,078 rows and SHA-256 `33c609ad39811e9bfd9676b3dae821452c0139343ae3af0ecf6b3109320e4349`. Its manifest must name the GEO
 study ID, assay, HTTPS source URL, project-relative processing and execution receipts,
 and each contrast's ID, project-relative result TSV, stable HTTPS artifact URL,
 and limitations. The execution receipt must pin the processing receipt as an
@@ -101,9 +102,15 @@ SELECT study_id, accession, title
  WHERE study_id IN ('GSE263903', 'GSE242559');
 ```
 
-The current manifests contain 10 studies, 82 samples, 16 contrasts, and 52
+The current manifests contain 10 studies, 82 samples, 17 contrasts, and 54
 observations. Warehouse counts may be larger because the upsert retains
 unrelated existing rows. Confirm both new GEO records and their related rows,
 then check the authenticated adapter endpoints before claiming BigQuery is
 current. The Worker snapshot must not be presented as a successful warehouse
 load.
+
+The additional GSE276099 contrast distinguishes the receipt-pinned STAR/PyDESeq2
+raw-count estimate from the earlier processed fractional-matrix contrast.
+Two observation rows summarize its FDR thresholds. Load these curated rows
+before attempting `load_gene_effects.py` for the 15,078 per-gene effects;
+the gene-effect loader requires its study and contrast keys to exist.
