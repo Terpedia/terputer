@@ -14,6 +14,8 @@ import re
 import uuid
 from pathlib import Path
 
+from credential_helper import bigquery_client
+
 
 PROJECT = "terpedia-489015"
 DATASET = "terpedia_research"
@@ -98,12 +100,12 @@ def inspect(path: Path) -> dict:
             "sha256": digest.hexdigest(), "path": str(path)}
 
 
-def apply(path: Path, summary: dict, project: str, dataset: str) -> None:
+def apply(path: Path, summary: dict, project: str, dataset: str, gcloud_account: str | None = None) -> None:
     from google.cloud import bigquery
 
     if not re.fullmatch(r"[A-Za-z0-9_-]+", project) or not re.fullmatch(r"[A-Za-z0-9_]+", dataset):
         raise ValueError("Invalid BigQuery project or dataset")
-    client = bigquery.Client(project=project)
+    client = bigquery_client(project, gcloud_account)
     destination_id = f"{project}.{dataset}.{TABLE}"
     destination = client.get_table(destination_id)
     if {field.name for field in destination.schema} != FIELDS:
@@ -152,12 +154,13 @@ def main() -> None:
     parser.add_argument("--project", default=PROJECT)
     parser.add_argument("--dataset", default=DATASET)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--gcloud-account", help="Use this authenticated gcloud account instead of application default credentials")
     args = parser.parse_args()
     path = args.input.resolve(strict=True)
     summary = inspect(path)
     print(json.dumps({"status": "reviewed", **summary}))
     if args.apply:
-        apply(path, summary, args.project, args.dataset)
+        apply(path, summary, args.project, args.dataset, args.gcloud_account)
 
 
 if __name__ == "__main__":
