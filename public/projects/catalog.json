@@ -180,6 +180,36 @@
     "notebook": "https://github.com/Terpedia/terpedia-olfactory-bcp-ps6ip/blob/main/notebooks/terputer-olfactory-bcp-ps6ip.ipynb"
   },
   {
+    "slug": "hepg2-bcp-raw-counts",
+    "title": "HepG2 β-caryophyllene raw-count reanalysis",
+    "category": "Transcriptomics",
+    "status": "Executed count-model analysis",
+    "summary": "GSE276099 six-library STAR/GENCODE v48 and PyDESeq2 contrast. One cohort with conflicting dose metadata; gene effects do not establish pathway activity or direct target binding.",
+    "repository": "https://github.com/Terpedia/terpedia-hepg2-bcp-rsem",
+    "paper": "https://github.com/Terpedia/terpedia-hepg2-bcp-rsem/blob/main/research/hepg2-bcp-raw-counts/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-hepg2-bcp-rsem/blob/main/notebooks/terputer-hepg2-bcp-raw-counts.ipynb"
+  },
+  {
+    "slug": "ufh001-bcp-fpkm",
+    "title": "Hypoxic UFH-001 β-caryophyllene processed-expression audit",
+    "category": "Transcriptomics",
+    "status": "Executed descriptive analysis; raw-count reanalysis in progress",
+    "summary": "GSE125511 nine-library 20 and 200 µM exposure audit with three shared vehicle controls. Published FPKM ratios are descriptive; the raw-read model is in progress.",
+    "repository": "https://github.com/Terpedia/terpedia-ufh001-bcp-fpkm",
+    "paper": "https://github.com/Terpedia/terpedia-ufh001-bcp-fpkm/blob/main/research/ufh001-bcp-fpkm/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-ufh001-bcp-fpkm/blob/main/notebooks/terputer-ufh001-bcp-fpkm.ipynb"
+  },
+  {
+    "slug": "human-bcp-context",
+    "title": "HepG2 and UFH-001 β-caryophyllene context comparison",
+    "category": "Transcriptomics",
+    "status": "Executed descriptive comparison",
+    "summary": "Joins pinned processed effects in two human cell contexts. Unmatched dose, oxygen, time, vehicle, and assay prevent a controlled context-interaction claim.",
+    "repository": "https://github.com/Terpedia/terpedia-human-bcp-context",
+    "paper": "https://github.com/Terpedia/terpedia-human-bcp-context/blob/main/research/human-bcp-context/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-human-bcp-context/blob/main/notebooks/terputer-human-bcp-context.ipynb"
+  },
+  {
     "slug": "terpene-classifier",
     "title": "Auditable terpene molecular classifier",
     "category": "Research infrastructure",
