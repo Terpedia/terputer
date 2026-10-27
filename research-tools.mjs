@@ -48,9 +48,10 @@ export const toolDefinitions = [
   { name: 'read_workspace_file', description: 'Read a small text file or notebook under research/ or notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path'] } },
   { name: 'write_workspace_file', description: 'Write a text artifact under research/ or a Jupyter notebook under notebooks/ in the report workspace or an attached project.', parameters: { type: 'object', properties: { path: { type: 'string' }, content: { type: 'string' }, project_slug: { type: 'string' } }, required: ['path', 'content'] } },
   { name: 'execute_python_cell', description: 'Execute Python in the current Terputer Codespace Jupyter kernel. Use only code needed for the requested research; inspect returned errors and outputs.', parameters: { type: 'object', properties: { code: { type: 'string' }, timeout_seconds: { type: 'integer', minimum: 1, maximum: 30 } }, required: ['code'] } }
-];
+].filter((entry) => entry.name !== 'search_transcriptomic_gene_effects' || process.env.TERPUTER_GENE_EFFECTS_ENABLED === 'true');
 
 export async function callResearchTool(name, args = {}, context = {}) {
+  if (name === 'search_transcriptomic_gene_effects' && process.env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') throw new Error('Curated gene effects are not enabled');
   if (name === 'get_transcriptomic_feature_effect' && !(process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN)) return getTranscriptomicFeatureEffect(args);
   if (name === 'fork_report_workspace') return forkReportWorkspace(context.githubSession);
   if (name === 'list_research_projects') return listResearchProjects();

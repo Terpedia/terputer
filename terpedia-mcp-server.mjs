@@ -72,6 +72,7 @@ const researchTools = [
   ['execute_python_cell', z.object({ code: z.string().min(1).max(200_000), timeout_seconds: z.number().int().min(1).max(30).default(20) })]
 ];
 for (const [name, schema] of researchTools) {
+  if (name === 'search_transcriptomic_gene_effects' && process.env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') continue;
   server.registerTool(name, {
     title: name.replaceAll('_', ' '),
     description: {

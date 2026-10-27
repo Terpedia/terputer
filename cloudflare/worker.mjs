@@ -127,6 +127,7 @@ async function searchEntrez(db, query, limit) {
 export async function handleTool(name, args, env) {
   if (name === 'get_transcriptomic_feature_effect') return getTranscriptomicFeatureEffect(args);
   if (name === 'search_transcriptomic_gene_effects') {
+    if (env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') throw new Error('Curated gene effects are not enabled');
     const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     if (!base || !env.TERPUTER_BIGQUERY_TOOL_KEY) throw new Error('Curated gene effects are not available yet');
     const gene = String(args.gene || '').trim();

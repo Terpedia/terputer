@@ -24,6 +24,7 @@ const privateTools = [
 ];
 
 export const allTools = [...publicTools, ...privateTools];
+const geneEffectsTool = 'search_transcriptomic_gene_effects';
 const publicNames = new Set(publicTools.map((entry) => entry.name));
 const privateNames = new Set(privateTools.map((entry) => entry.name));
 const headers = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
@@ -56,13 +57,14 @@ export async function handleMcp(request, env) {
   if (method === 'ping') return reply(id, {});
   if (method === 'tools/list') {
     if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
-    return reply(id, { tools: allTools });
+    return reply(id, { tools: env.TERPUTER_GENE_EFFECTS_ENABLED === 'true' ? allTools : allTools.filter((entry) => entry.name !== geneEffectsTool) });
   }
   if (method !== 'tools/call') return rpcError(id, -32601, 'Method not found');
   const name = input.params?.name;
   const args = input.params?.arguments ?? {};
   if (typeof name !== 'string' || !args || typeof args !== 'object' || Array.isArray(args)) return rpcError(id, -32602, 'Invalid tool arguments');
   if (!publicNames.has(name) && !privateNames.has(name)) return rpcError(id, -32602, 'Unknown tool');
+  if (name === geneEffectsTool && env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') return rpcError(id, -32602, 'Unknown tool');
   if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
   try {
     const result = await handleTool(name, args, env);

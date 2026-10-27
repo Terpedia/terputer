@@ -34,6 +34,8 @@ the reviewed JSONL, then atomically replaces the complete affected contrasts.
 It does not leave stale gene rows from an earlier version of those contrasts.
 Check the destination row counts and authenticated lookup after loading before
 claiming Terpedia chat can retrieve the new effects.
+The tool is hidden on both local and Worker MCP surfaces until
+`TERPUTER_GENE_EFFECTS_ENABLED=true` is set after that verification.
 
 ## Current deployment gate
 
