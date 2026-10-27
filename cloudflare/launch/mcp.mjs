@@ -20,9 +20,11 @@ const privateTools = [
   tool('get_transcriptomic_samples', 'List curated sample metadata for a study accession, combining BigQuery and missing commit-pinned public records.', { accession: { type: 'string', minLength: 4, maxLength: 30 } }, ['accession']),
   tool('get_transcriptomic_evidence', 'Get curated contrasts and evidence-graded observations with provenance and limitations, combining BigQuery and missing commit-pinned public records.', { accession: { type: 'string', minLength: 4, maxLength: 30 } }, ['accession']),
   tool('get_transcriptomic_feature_effect', 'Look up one source feature in the checksum-pinned GSE242559 processed-FPKM table. Returns descriptive menthol and Wnt3a effects with explicit limitations; no DEG or target claim.', { accession: { type: 'string', minLength: 4, maxLength: 30 }, feature: { type: 'string', minLength: 1, maxLength: 60 } }, ['accession', 'feature']),
+  tool('search_transcriptomic_gene_effects', 'Look up curated count-model gene effects with exact contrast, adjusted p-value, source hashes, and limitations. Returns only loaded analyses.', { gene: { type: 'string', minLength: 1, maxLength: 60 }, study_id: { type: 'string', minLength: 4, maxLength: 30 }, limit: count(50, 20) }, ['gene']),
 ];
 
 export const allTools = [...publicTools, ...privateTools];
+const geneEffectsTool = 'search_transcriptomic_gene_effects';
 const publicNames = new Set(publicTools.map((entry) => entry.name));
 const privateNames = new Set(privateTools.map((entry) => entry.name));
 const headers = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
@@ -55,13 +57,14 @@ export async function handleMcp(request, env) {
   if (method === 'ping') return reply(id, {});
   if (method === 'tools/list') {
     if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
-    return reply(id, { tools: allTools });
+    return reply(id, { tools: env.TERPUTER_GENE_EFFECTS_ENABLED === 'true' ? allTools : allTools.filter((entry) => entry.name !== geneEffectsTool) });
   }
   if (method !== 'tools/call') return rpcError(id, -32601, 'Method not found');
   const name = input.params?.name;
   const args = input.params?.arguments ?? {};
   if (typeof name !== 'string' || !args || typeof args !== 'object' || Array.isArray(args)) return rpcError(id, -32602, 'Invalid tool arguments');
   if (!publicNames.has(name) && !privateNames.has(name)) return rpcError(id, -32602, 'Unknown tool');
+  if (name === geneEffectsTool && env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') return rpcError(id, -32602, 'Unknown tool');
   if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
   try {
     const result = await handleTool(name, args, env);

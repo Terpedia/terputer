@@ -36,6 +36,12 @@ class Search(BaseModel):
     limit: int = Field(default=10, ge=1, le=30)
 
 
+class GeneEffectSearch(BaseModel):
+    gene: str = Field(min_length=1, max_length=60, pattern=r"^[A-Za-z0-9_.:-]+$")
+    study_id: str | None = Field(default=None, min_length=4, max_length=30, pattern=r"^[A-Za-z0-9_-]+$")
+    limit: int = Field(default=20, ge=1, le=50)
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "terputer-transcriptomics", "dataset": DATASET}
@@ -57,6 +63,32 @@ def study_samples(accession: str, x_terputer_tool_key: str | None = Header(defau
     table = f"`{PROJECT}.{DATASET}.transcriptomic_samples`"
     rows = query(f"SELECT study_id, accession, sample_id, archive_accession, organism, condition, time_label, dose, source_url, source_revision FROM {table} WHERE accession = @accession ORDER BY sample_id LIMIT 100", [bigquery.ScalarQueryParameter("accession", "STRING", accession)])
     return {"accession": accession, "samples": rows, "source": f"bigquery://{PROJECT}.{DATASET}.transcriptomic_samples"}
+
+
+@app.post("/v1/gene-effects/search")
+def search_gene_effects(request: GeneEffectSearch, x_terputer_tool_key: str | None = Header(default=None)):
+    """Return tested gene effects with the exact analysis and source identity."""
+    authorized(x_terputer_tool_key)
+    table = f"`{PROJECT}.{DATASET}.transcriptomic_gene_effects`"
+    study_id = request.study_id.upper() if request.study_id else None
+    study_filter = " AND study_id = @study_id" if study_id else ""
+    params = [bigquery.ScalarQueryParameter("gene", "STRING", request.gene),
+              bigquery.ScalarQueryParameter("limit", "INT64", request.limit)]
+    if study_id:
+        params.append(bigquery.ScalarQueryParameter("study_id", "STRING", study_id))
+    rows = query(
+        f"SELECT study_id, contrast_id, gene_id, gene_name, base_mean, log2_fold_change, "
+        f"standard_error, test_statistic, p_value, adjusted_p_value, assay, evidence_class, "
+        f"analysis_version, result_sha256, processing_receipt_sha256, execution_receipt_sha256, "
+        f"source_url, artifact_url, limitations FROM {table} "
+        "WHERE (UPPER(gene_name) = UPPER(@gene) OR gene_id = @gene) "
+        f"{study_filter} "
+        "ORDER BY study_id, contrast_id, IF(adjusted_p_value IS NULL, 1, 0), adjusted_p_value LIMIT @limit",
+        params,
+    )
+    return {"gene": request.gene, "study_id": study_id, "records": rows,
+            "source": f"bigquery://{PROJECT}.{DATASET}.transcriptomic_gene_effects",
+            "interpretation": "Rows are model estimates for the stated contrast, not proof of pathway activity or direct target binding."}
 
 
 @app.get("/v1/studies/{accession}/evidence")
