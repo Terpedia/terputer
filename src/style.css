@@ -88,3 +88,16 @@
 .notebook-picker-btn{display:inline-flex;align-items:center;gap:5px}
 .ide-title p a{color:#548364;text-decoration:none;font-weight:600;white-space:nowrap}
 @media(max-width:700px){.project-list{max-height:32vh}.projects-label{margin-top:14px}.ide-title p a{display:inline-block;margin-top:4px}}
+
+/* Keep the notebook and chat together, with chat directly below the notebook. */
+.ide-content:has(.ide-grid.view-split){height:auto;min-height:calc(100vh - 58px);overflow:visible}
+.ide-grid.view-split{display:flex;flex-direction:column;flex:0 0 auto;min-height:0;overflow:visible}
+.ide-grid.view-split .notebook-pane{width:100%;height:65vh;min-height:460px;flex:none}
+.ide-grid.view-split .chat-pane{width:100%;height:52vh;min-height:390px;flex:none}
+@media(max-width:700px){
+  .ide-content:has(.ide-grid.view-split){height:auto;min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain}
+  .ide-grid.view-split{gap:10px;overflow:visible}
+  .ide-grid.view-split .notebook-pane{height:68dvh;min-height:420px}
+  .ide-grid.view-split .chat-pane{height:60dvh;min-height:400px}
+  .view-switch .split-option{display:block}
+}
