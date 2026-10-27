@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)));
 
-function manifestPath(value) {
-  const path = resolve(root, String(value || ''));
-  const name = relative(root, path);
+function manifestPath(value, workspaceRoot) {
+  const path = resolve(workspaceRoot, String(value || ''));
+  const name = relative(workspaceRoot, path);
   if (!name.startsWith(`research${sep}`) || !name.endsWith('.json')) {
     throw new Error('Expected a JSON report specification under research/');
   }
@@ -29,9 +29,9 @@ async function statusFor(url) {
   }
 }
 
-export async function checkReportLinks(specification) {
-  const selected = manifestPath(specification);
-  const actual = relative(await realpath(root), await realpath(selected));
+export async function checkReportLinks(specification, workspaceRoot = root) {
+  const selected = manifestPath(specification, workspaceRoot);
+  const actual = relative(await realpath(workspaceRoot), await realpath(selected));
   if (!actual.startsWith(`research${sep}`)) throw new Error('Report specification leaves the research workspace');
   const spec = JSON.parse(await readFile(selected, 'utf8'));
   const records = [
