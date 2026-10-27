@@ -1,4 +1,5 @@
 import { getTranscriptomicFeatureEffect } from '../transcriptomic-feature-effect.mjs';
+import { getHepg2BcpGeneEffect } from '../hepg2-bcp-gene-effect.mjs';
 
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const snapshotRevision = '2406f7b69ccfcb22cfa17bcdcffe676978dde15e';
@@ -126,6 +127,7 @@ async function searchEntrez(db, query, limit) {
 
 export async function handleTool(name, args, env) {
   if (name === 'get_transcriptomic_feature_effect') return getTranscriptomicFeatureEffect(args);
+  if (name === 'get_hepg2_bcp_gene_effect') return getHepg2BcpGeneEffect(args);
   if (name === 'search_transcriptomic_gene_effects') {
     if (env.TERPUTER_GENE_EFFECTS_ENABLED !== 'true') throw new Error('Curated gene effects are not enabled');
     const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
