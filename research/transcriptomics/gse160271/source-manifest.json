@@ -1,0 +1,10 @@
+{
+  "study": "GSE160271",
+  "table_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE160nnn/GSE160271/suppl/GSE160271_pS6_de_1p_bCaryophyllene_or_noPS_subset.csv.gz",
+  "table_sha256": "b114e0d0c7da49fcc416be53cf412046ab3da85c826df1a173bc2e520bf900d0",
+  "family_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE160nnn/GSE160271/soft/GSE160271_family.soft.gz",
+  "family_sha256": "2755a6339d081a3445f1b84fe9458a90fe9972271bc7185c387f629ff50b308d",
+  "retrieved_date": "2026-10-26",
+  "article_url": "https://elifesciences.org/articles/54501",
+  "note": "Publisher OR-only pS6-IP differential-expression subset; not a raw-count matrix or single-cell RNA-seq"
+}

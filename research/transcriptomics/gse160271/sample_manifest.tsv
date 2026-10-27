@@ -1,0 +1,7 @@
+geo_accession	sample_title	arm	replicate	assay
+GSM4870436	4258_S1	control	1	RIP-Seq
+GSM4870441	4258_S11	experimental	3	RIP-Seq
+GSM4870437	4258_S3	experimental	1	RIP-Seq
+GSM4870438	4258_S5	control	2	RIP-Seq
+GSM4870439	4258_S7	experimental	2	RIP-Seq
+GSM4870440	4258_S9	control	3	RIP-Seq
