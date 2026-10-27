@@ -7,10 +7,13 @@ outside these manifests are retained.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 import re
 import uuid
 from pathlib import Path
+
+from credential_helper import bigquery_client
 
 PROJECT = "terpedia-489015"
 DATASET = "terpedia_research"
@@ -45,6 +48,12 @@ def read_records(directory: Path) -> dict[str, list[dict]]:
     accessions = [row["accession"] for row in records["studies"]]
     if any(not isinstance(value, str) or not value for value in accessions) or len(set(accessions)) != len(accessions):
         raise ValueError("studies have empty or duplicate accessions")
+    for study in records["studies"]:
+        value = study.get("retrieved_at")
+        if value is not None:
+            if not isinstance(value, str) or "T" not in value:
+                raise ValueError(f"{study['study_id']} retrieved_at must be an ISO timestamp")
+            datetime.fromisoformat(value.replace("Z", "+00:00"))
     for filename in ("samples", "contrasts", "observations"):
         unknown = {row["study_id"] for row in records[filename]} - study_ids
         if unknown:
@@ -59,14 +68,14 @@ def read_records(directory: Path) -> dict[str, list[dict]]:
     return records
 
 
-def apply_records(records: dict[str, list[dict]], project: str, dataset: str) -> None:
+def apply_records(records: dict[str, list[dict]], project: str, dataset: str, gcloud_account: str | None = None) -> None:
     from google.cloud import bigquery
 
     if not re.fullmatch(r"[A-Za-z0-9_-]+", project):
         raise ValueError("Invalid project")
     if not re.fullmatch(r"[A-Za-z0-9_]+", dataset):
         raise ValueError("Invalid dataset")
-    client = bigquery.Client(project=project)
+    client = bigquery_client(project, gcloud_account)
     staged = []
     try:
         # Validate every destination schema before writing any staging table.
@@ -131,11 +140,12 @@ def main() -> None:
     parser.add_argument("--project", default=PROJECT)
     parser.add_argument("--dataset", default=DATASET)
     parser.add_argument("--apply", action="store_true", help="Stage and upsert into BigQuery")
+    parser.add_argument("--gcloud-account", help="Use this authenticated gcloud account instead of application default credentials")
     args = parser.parse_args()
     records = read_records(args.input)
     print(json.dumps({"status": "reviewed", "counts": {name: len(rows) for name, rows in records.items()}, "input": str(args.input)}))
     if args.apply:
-        apply_records(records, args.project, args.dataset)
+        apply_records(records, args.project, args.dataset, args.gcloud_account)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ import csv
 import hashlib
 import json
 import runpy
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,11 @@ def digest(path: Path) -> str:
 def write(name: str, rows: list[dict]):
     with (OUT / name).open('w') as stream:
         for row in rows:
+            if name == 'studies.jsonl' and isinstance(row.get('retrieved_at'), str) and len(row['retrieved_at']) == 10:
+                # The source manifests record a retrieval date, not a clock time.
+                # BigQuery's existing TIMESTAMP column requires an explicit time.
+                date.fromisoformat(row['retrieved_at'])
+                row = {**row, 'retrieved_at': f"{row['retrieved_at']}T00:00:00Z"}
             stream.write(json.dumps(row, ensure_ascii=False) + '\n')
 
 bulk = json.loads((DATA / 'run_manifest.json').read_text())
@@ -196,3 +202,5 @@ write('observations.jsonl', observations)
 print(json.dumps({'studies': len(studies), 'samples': len(samples), 'contrasts': len(contrasts), 'observations': len(observations), 'directory': str(OUT)}))
 runpy.run_path(str(ROOT / 'research/transcriptomics/gse263903/stage_curated_rows.py'))
 runpy.run_path(str(ROOT / 'research/transcriptomics/gse242559/stage_curated_rows.py'))
+study_path = OUT / 'studies.jsonl'
+write('studies.jsonl', [json.loads(line) for line in study_path.read_text().splitlines() if line.strip()])

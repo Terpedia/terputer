@@ -29,7 +29,7 @@ study and contrast records first, then review and load the exported JSONL with:
 
 ```sh
 python cloudrun/load_gene_effects.py --input /path/to/gene-effects.jsonl
-python cloudrun/load_gene_effects.py --input /path/to/gene-effects.jsonl --apply
+python cloudrun/load_gene_effects.py --input /path/to/gene-effects.jsonl --apply --gcloud-account dan@terpedia.com
 ```
 
 The first command is local and read only. The second requires BigQuery write
@@ -85,14 +85,17 @@ update, and delete tables in `terpedia_research`. From the repository root:
 ```sh
 bq --project_id=terpedia-489015 query --use_legacy_sql=false < cloudrun/schema.sql
 python cloudrun/load_records.py
-python cloudrun/load_records.py --apply
+python cloudrun/load_records.py --apply --gcloud-account dan@terpedia.com
 ```
 
 The loader reviews all four manifests, checks study/sample accession consistency,
-source SHA-256 syntax, destination schemas, and duplicate keys, stages all rows,
+source SHA-256 syntax, timestamp format, destination schemas, and duplicate keys, stages all rows,
 then commits the four upserts in one
 transaction. Existing rows outside the manifests are retained. If schema
 creation is already complete, the first command is safe to rerun.
+Source manifests with retrieval-date precision are represented as midnight UTC
+in BigQuery's existing `retrieved_at` timestamp column; that clock time is not
+an observed retrieval time.
 
 After deployment, call `GET /ready` with the same `X-Terputer-Tool-Key` used
 for research queries. A 200 response proves that the deployed runtime can
