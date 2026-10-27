@@ -1,4 +1,4 @@
-import researchWorker from '../worker.mjs';
+import researchWorker, { snapshotRevision } from '../worker.mjs';
 import { availableTools, handleMcp } from './mcp.mjs';
 import { projectsPage } from './projects.mjs';
 
@@ -25,7 +25,7 @@ export default {
       return request.method === 'HEAD' ? new Response(null, { status: page.status, headers: page.headers }) : page;
     }
     if (url.pathname === '/api' && (request.method === 'GET' || request.method === 'HEAD')) {
-      const response = Response.json({ service: 'Terputer Research MCP', mcp: 'https://terputer.terpedia.com/mcp', protocol: 'Streamable HTTP', tools: availableTools(env).map(({ name, description }) => ({ name, description })), authentication: 'Supply your personal Terpedia API key in X-API-Key to list or call MCP and direct research tools.' }, { headers: { 'Cache-Control': 'no-store' } });
+      const response = Response.json({ service: 'Terputer Research MCP', mcp: 'https://terputer.terpedia.com/mcp', protocol: 'Streamable HTTP', snapshot_revision: snapshotRevision, tools: availableTools(env).map(({ name, description }) => ({ name, description })), authentication: 'Supply your personal Terpedia API key in X-API-Key to list or call MCP and direct research tools.' }, { headers: { 'Cache-Control': 'no-store' } });
       return request.method === 'HEAD' ? new Response(null, { status: response.status, headers: response.headers }) : response;
     }
     if (url.pathname === '/health') {
