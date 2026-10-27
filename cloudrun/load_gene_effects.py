@@ -40,6 +40,7 @@ def inspect(path: Path) -> dict:
     keys = set()
     contrasts = set()
     contrast_counts = {}
+    adjusted_counts = {}
     contrast_metadata = {}
     study_ids = set()
     count = 0
@@ -63,10 +64,16 @@ def inspect(path: Path) -> dict:
                 raise ValueError(f"Missing assay, evidence class, or limitations on row {count + 1}")
             if not row["source_url"].startswith("https://") or not row["artifact_url"].startswith("https://"):
                 raise ValueError(f"Missing HTTPS provenance URL on row {count + 1}")
-            for field in ("p_value", "adjusted_p_value"):
+            for field in ("base_mean", "log2_fold_change", "standard_error", "test_statistic", "p_value", "adjusted_p_value"):
                 value = row[field]
-                if value is not None and (not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= 1):
+                if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)):
                     raise ValueError(f"Invalid {field} on row {count + 1}")
+                if value is not None and field in ("base_mean", "standard_error") and value < 0:
+                    raise ValueError(f"Negative {field} on row {count + 1}")
+                if value is not None and field in ("p_value", "adjusted_p_value") and not 0 <= value <= 1:
+                    raise ValueError(f"Invalid {field} on row {count + 1}")
+            if row["gene_name"] is not None and not isinstance(row["gene_name"], str):
+                raise ValueError(f"Invalid gene_name on row {count + 1}")
             metadata = tuple(row[field] for field in (
                 "result_sha256", "processing_receipt_sha256", "execution_receipt_sha256",
                 "assay", "evidence_class", "analysis_version", "source_url",
@@ -78,10 +85,14 @@ def inspect(path: Path) -> dict:
             keys.add(key)
             contrasts.add((row["study_id"], row["contrast_id"]))
             contrast_counts[key[:2]] = contrast_counts.get(key[:2], 0) + 1
+            if row["adjusted_p_value"] is not None:
+                adjusted_counts[key[:2]] = adjusted_counts.get(key[:2], 0) + 1
             study_ids.add(row["study_id"])
             count += 1
     if not count or any(value < 1000 for value in contrast_counts.values()):
         raise ValueError("Each contrast must include at least 1000 tested genes")
+    if any(adjusted_counts.get(contrast, 0) == 0 for contrast in contrasts):
+        raise ValueError("Each contrast must include at least one adjusted p-value")
     return {"rows": count, "studies": sorted(study_ids),
             "contrasts": sorted(contrast for _, contrast in contrasts),
             "sha256": digest.hexdigest(), "path": str(path)}
