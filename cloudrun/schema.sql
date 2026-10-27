@@ -60,3 +60,28 @@ CREATE TABLE IF NOT EXISTS `terpedia-489015.terpedia_research.transcriptomic_obs
   limitations STRING
 )
 CLUSTER BY study_id, metric;
+
+-- Only count-model results with a saved analysis and provenance receipt belong
+-- here. Processed FPKM ratios remain in transcriptomic_observations.
+CREATE TABLE IF NOT EXISTS `terpedia-489015.terpedia_research.transcriptomic_gene_effects` (
+  study_id STRING NOT NULL,
+  contrast_id STRING NOT NULL,
+  gene_id STRING NOT NULL,
+  gene_name STRING,
+  base_mean FLOAT64,
+  log2_fold_change FLOAT64,
+  standard_error FLOAT64,
+  test_statistic FLOAT64,
+  p_value FLOAT64,
+  adjusted_p_value FLOAT64,
+  assay STRING,
+  evidence_class STRING,
+  analysis_version STRING,
+  result_sha256 STRING,
+  processing_receipt_sha256 STRING,
+  execution_receipt_sha256 STRING,
+  source_url STRING,
+  artifact_url STRING,
+  limitations STRING
+)
+CLUSTER BY study_id, gene_name, contrast_id;

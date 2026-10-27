@@ -33,6 +33,7 @@ export const toolDefinitions = [
   { name: 'get_transcriptomic_samples', description: 'List curated sample metadata for a study accession from Terpedia BigQuery.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_transcriptomic_evidence', description: 'Get curated exposure contrasts and evidence-graded numeric observations for a study accession from Terpedia BigQuery. Returns provenance and limitations, not raw gene-level effects.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'get_transcriptomic_feature_effect', description: 'Look up one source feature in the checksum-pinned GSE242559 processed-FPKM table. Returns descriptive menthol and Wnt3a effects, not differential-expression or target evidence.', parameters: { type: 'object', properties: { accession: { type: 'string' }, feature: { type: 'string' } }, required: ['accession', 'feature'] } },
+  { name: 'search_transcriptomic_gene_effects', description: 'Look up loaded count-model gene effects in Terpedia BigQuery. Returns contrast, adjusted p-value, source hashes, and limitations; no pathway or target claim.', parameters: { type: 'object', properties: { gene: { type: 'string' }, study_id: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 50 } }, required: ['gene'] } },
   { name: 'get_ena_runs', description: 'Get public ENA run and sample metadata for a study accession (PRJNA, ERP, SRP). Does not download reads.', parameters: { type: 'object', properties: { accession: { type: 'string' } }, required: ['accession'] } },
   { name: 'generate_research_report', description: 'Generate a source-linked Markdown white paper, claim ledger, and hash receipt from an executed notebook. Set project_slug to work inside an attached project submodule.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' } }, required: ['manifest_path'] } },
   { name: 'publish_research_report', description: 'Publish a validated version 2 report bundle to a private terpedia-* GitHub repository owned by the connected user. Set project_slug for a submodule; include extra_paths for scripts or pinned inputs. In a terpedia-report fork, stage the project submodule and report its status.', parameters: { type: 'object', properties: { manifest_path: { type: 'string' }, project_slug: { type: 'string' }, extra_paths: { type: 'array', items: { type: 'string' }, maxItems: 20 } }, required: ['manifest_path'] } },
@@ -59,7 +60,7 @@ export async function callResearchTool(name, args = {}, context = {}) {
   const activeRoot = localTools.includes(name) ? await resolveResearchWorkspace(args.project_slug) : workspaceRoot;
   if (name === 'start_research_job') return startResearchJob(args, activeRoot);
   if (name === 'get_research_job') return getResearchJob(args, activeRoot);
-  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence', 'get_transcriptomic_feature_effect'].includes(name)
+  if (['search_geo_series', 'search_pubmed', 'get_ena_runs', 'search_terpedia_bigquery', 'search_transcriptomic_studies', 'get_transcriptomic_samples', 'get_transcriptomic_evidence', 'get_transcriptomic_feature_effect', 'search_transcriptomic_gene_effects'].includes(name)
       && process.env.TERPUTER_WORKER_URL && process.env.TERPUTER_WORKER_TOKEN) {
     const response = await fetch(`${process.env.TERPUTER_WORKER_URL.replace(/\/$/, '')}/v1/tools/call`, {
       method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${process.env.TERPUTER_WORKER_TOKEN}` },
@@ -68,6 +69,22 @@ export async function callResearchTool(name, args = {}, context = {}) {
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.error || `Research Worker returned HTTP ${response.status}`);
     return payload.result;
+  }
+  if (name === 'search_transcriptomic_gene_effects') {
+    const base = (process.env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
+    const key = process.env.TERPUTER_BIGQUERY_TOOL_KEY;
+    if (!base || !key) throw new Error('Curated gene effects are not available yet');
+    const gene = String(args.gene || '').trim();
+    const study_id = args.study_id == null ? null : String(args.study_id).trim().toUpperCase();
+    if (!/^[A-Za-z0-9_.:-]{1,60}$/.test(gene)) throw new Error('Invalid gene symbol or stable gene ID');
+    if (study_id && !/^[A-Z0-9_-]{4,30}$/.test(study_id)) throw new Error('Invalid study accession');
+    const response = await fetch(`${base}/v1/gene-effects/search`, {
+      method: 'POST', headers: { 'content-type': 'application/json', 'x-terputer-tool-key': key },
+      body: JSON.stringify({ gene, study_id, limit: Math.min(50, Math.max(1, Number(args.limit) || 20)) }),
+      signal: AbortSignal.timeout(30000),
+    });
+    if (!response.ok) throw new Error(`Gene effects adapter returned HTTP ${response.status}`);
+    return response.json();
   }
   if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_evidence') {
     const base = (process.env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');

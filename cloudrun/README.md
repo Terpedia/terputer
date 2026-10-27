@@ -1,10 +1,28 @@
 # Terputer transcriptomics BigQuery adapter
 
 The Cloud Run adapter in `main.py` reads curated evidence from
-`terpedia-489015.terpedia_research`. The four JSONL manifests in
+`terpedia-489015.terpedia_research`. The four existing JSONL manifests in
 `research/transcriptomics/bigquery-ready/` are the reviewed source for the
 warehouse tables; a successful `/health` response does **not** establish that
 the tables contain the latest records.
+
+`schema.sql` also defines `transcriptomic_gene_effects` for future raw-count
+analyses. `POST /v1/gene-effects/search` returns a named gene's loaded model
+estimates with the exact contrast, result hash, processing and notebook
+execution receipt hashes, source link, and limitations. It does not infer
+pathway activity, target binding, or cross-study replication. An empty result
+means only that no matching curated row has been loaded.
+
+After a raw-count notebook completes, use `prepare_gene_effects.py` to create
+reviewable JSONL from its saved result tables. Its manifest must name the GEO
+study ID, HTTPS source URL, project-relative processing and execution receipts,
+and each contrast's ID, project-relative result TSV, stable HTTPS artifact URL,
+and limitations. The execution receipt must pin the processing receipt as an
+input, every count-processing output as an input, and each result TSV as an output. The exporter verifies those hashes and
+rejects invalid or duplicate gene rows. This exporter does not load BigQuery;
+the existing four-manifest loader also does not load gene effects. Curate the
+study and contrast records and add a separate reviewed load procedure before
+enabling the gene-effect lookup against live data.
 
 ## Current deployment gate
 

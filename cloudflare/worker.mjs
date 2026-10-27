@@ -126,6 +126,22 @@ async function searchEntrez(db, query, limit) {
 
 export async function handleTool(name, args, env) {
   if (name === 'get_transcriptomic_feature_effect') return getTranscriptomicFeatureEffect(args);
+  if (name === 'search_transcriptomic_gene_effects') {
+    const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
+    if (!base || !env.TERPUTER_BIGQUERY_TOOL_KEY) throw new Error('Curated gene effects are not available yet');
+    const gene = String(args.gene || '').trim();
+    const study_id = args.study_id == null ? null : String(args.study_id).trim().toUpperCase();
+    if (!/^[A-Za-z0-9_.:-]{1,60}$/.test(gene)) throw new Error('Invalid gene symbol or stable gene ID');
+    if (study_id && !/^[A-Z0-9_-]{4,30}$/.test(study_id)) throw new Error('Invalid study accession');
+    const response = await fetch(`${base}/v1/gene-effects/search`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-terputer-tool-key': env.TERPUTER_BIGQUERY_TOOL_KEY },
+      body: JSON.stringify({ gene, study_id, limit: Math.min(50, Math.max(1, Number(args.limit) || 20)) }),
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!response.ok) throw new Error(`Gene effects adapter returned HTTP ${response.status}`);
+    return response.json();
+  }
   if (name === 'search_transcriptomic_studies' || name === 'get_transcriptomic_samples' || name === 'get_transcriptomic_evidence') {
     const base = (env.TERPUTER_BIGQUERY_API_URL || '').replace(/\/$/, '');
     let path, options = { headers: { 'x-terputer-tool-key': env.TERPUTER_BIGQUERY_TOOL_KEY } };
