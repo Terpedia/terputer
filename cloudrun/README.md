@@ -47,6 +47,27 @@ As of 26 October 2026, the expanded manifests have **not** been applied to
 BigQuery. The Cloudflare Worker serves the commit-pinned public snapshot when
 the adapter is unavailable or incomplete; that fallback is labeled as such.
 
+To repair the adapter's runtime access, sign in with a project administrator,
+then inspect the exact Cloud Run identity and proposed grants:
+
+```sh
+gcloud auth login
+python cloudrun/grant_reader_access.py
+python cloudrun/grant_reader_access.py --apply
+```
+
+The script discovers the deployed service account rather than assuming that
+the locally available `cannabis-metabolome` account runs the adapter. It adds
+dataset `READER` access (equivalent to BigQuery Data Viewer) and project
+`roles/bigquery.jobUser` only when absent. It stops if the dataset does not
+exist, the Cloud Run service has no dedicated service account, or either IAM
+policy cannot be read. The administrator needs `run.services.get`,
+`bigquery.datasets.get`, `bigquery.datasets.update`,
+`resourcemanager.projects.getIamPolicy`, and
+`resourcemanager.projects.setIamPolicy`. After IAM propagation, make an
+authenticated `/v1/studies/search` call through the Worker to verify the
+runtime can query; `/health` alone does not exercise BigQuery.
+
 ## Load after access is restored
 
 Use a credential with permission to create query jobs and to read, create,
