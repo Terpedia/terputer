@@ -25,6 +25,9 @@ const privateTools = [
 
 export const allTools = [...publicTools, ...privateTools];
 const geneEffectsTool = 'search_transcriptomic_gene_effects';
+export const availableTools = (env) => env.TERPUTER_GENE_EFFECTS_ENABLED === 'true'
+  ? allTools
+  : allTools.filter((entry) => entry.name !== geneEffectsTool);
 const publicNames = new Set(publicTools.map((entry) => entry.name));
 const privateNames = new Set(privateTools.map((entry) => entry.name));
 const headers = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
@@ -57,7 +60,7 @@ export async function handleMcp(request, env) {
   if (method === 'ping') return reply(id, {});
   if (method === 'tools/list') {
     if (!(await authorizeRequest(request, env))) return rpcError(id, -32001, 'A valid Terpedia API key is required', 401);
-    return reply(id, { tools: env.TERPUTER_GENE_EFFECTS_ENABLED === 'true' ? allTools : allTools.filter((entry) => entry.name !== geneEffectsTool) });
+    return reply(id, { tools: availableTools(env) });
   }
   if (method !== 'tools/call') return rpcError(id, -32601, 'Method not found');
   const name = input.params?.name;
