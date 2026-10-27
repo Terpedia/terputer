@@ -1,7 +1,7 @@
 import { getTranscriptomicFeatureEffect } from '../transcriptomic-feature-effect.mjs';
 
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
-const snapshotRevision = 'caf957370b90a86ef9b9c520bd799ce9007ea086';
+const snapshotRevision = '2406f7b69ccfcb22cfa17bcdcffe676978dde15e';
 const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
 
 export async function authorizeRequest(request, env) {
