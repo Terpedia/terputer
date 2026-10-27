@@ -5,6 +5,9 @@ The Cloud Run adapter in `main.py` reads curated evidence from
 `research/transcriptomics/bigquery-ready/` are the reviewed source for the
 warehouse tables; a successful `/health` response does **not** establish that
 the tables contain the latest records.
+Study sample and evidence responses report whether their bounded result lists
+were truncated. The Cloudflare snapshot fallback preserves those flags so a
+client does not treat a partial record list as the complete study.
 
 `schema.sql` also defines `transcriptomic_gene_effects` for future raw-count
 analyses. `POST /v1/gene-effects/search` returns a named gene's loaded model
