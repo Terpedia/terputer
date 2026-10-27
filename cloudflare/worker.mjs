@@ -2,7 +2,7 @@ import { getTranscriptomicFeatureEffect } from '../transcriptomic-feature-effect
 import { getHepg2BcpGeneEffect } from '../hepg2-bcp-gene-effect.mjs';
 
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
-const snapshotRevision = '2406f7b69ccfcb22cfa17bcdcffe676978dde15e';
+const snapshotRevision = '2c6771a197609aa956c7701ddd463cd6c5258901';
 const snapshotBase = `https://raw.githubusercontent.com/Terpedia/terputer/${snapshotRevision}/research/transcriptomics/bigquery-ready`;
 
 export async function authorizeRequest(request, env) {
