@@ -1,0 +1,27 @@
+{
+  "study": "GSE276099",
+  "contrast": "beta-caryophyllene versus ethanol vehicle in HepG2",
+  "model": "PyDESeq2 0.5.4 negative binomial ~condition, Wald test, BH FDR",
+  "filter": "at least 10 raw unstranded counts in at least 3 of 6 libraries",
+  "libraries_per_arm": {
+    "vehicle": 3,
+    "bcp": 3
+  },
+  "genes_in_count_matrix": 78894,
+  "tested_genes": 15078,
+  "fdr_below_0_05": 1616,
+  "fdr_below_0_05_abs_log2fc_at_least_1": 240,
+  "prespecified_gene_symbols": [
+    "PGF",
+    "NR4A1",
+    "CSF1R",
+    "ARTN",
+    "CACNA1E"
+  ],
+  "limitations": [
+    "Three labeled libraries per arm",
+    "Dose fields disagree with shared protocol",
+    "Batch and biological independence not independently verified",
+    "No target engagement or cross-study replication"
+  ]
+}
