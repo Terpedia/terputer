@@ -1,0 +1,22 @@
+{
+  "study": "GSE160271",
+  "assay": "mouse whole-olfactory-mucosa pS6-IP-seq, published OR subset",
+  "chemical": "1% (v/v) beta-caryophyllene in water, odor exposure",
+  "libraries": 6,
+  "control_libraries": 3,
+  "exposed_libraries": 3,
+  "receptor_rows": 1117,
+  "unique_gene_ids": 1117,
+  "fdr_below_0_05": 0,
+  "fdr_below_0_10": 0,
+  "minimum_fdr": 0.316735858,
+  "minimum_nominal_p": 0.000283559,
+  "source_table_sha256": "b114e0d0c7da49fcc416be53cf412046ab3da85c826df1a173bc2e520bf900d0",
+  "source_family_sha256": "2755a6339d081a3445f1b84fe9458a90fe9972271bc7185c387f629ff50b308d",
+  "limitations": [
+    "Publisher-processed OR-only subset; no independent raw-read model",
+    "pS6-IP enrichment is an activated-neuron assay, not ordinary bulk or single-cell expression",
+    "Only one exposure context and three labeled mice per arm",
+    "No direct receptor binding or cross-study replication claim"
+  ]
+}

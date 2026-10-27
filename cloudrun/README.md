@@ -107,7 +107,7 @@ SELECT study_id, accession, title
  WHERE study_id IN ('GSE263903', 'GSE242559');
 ```
 
-The current manifests contain 10 studies, 82 samples, 17 contrasts, and 54
+The current manifests contain 11 studies, 88 samples, 18 contrasts, and 57
 observations. Warehouse counts may be larger because the upsert retains
 unrelated existing rows. Confirm both new GEO records and their related rows,
 then check the authenticated adapter endpoints before claiming BigQuery is
