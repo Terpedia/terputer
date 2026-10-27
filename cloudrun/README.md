@@ -94,6 +94,12 @@ then commits the four upserts in one
 transaction. Existing rows outside the manifests are retained. If schema
 creation is already complete, the first command is safe to rerun.
 
+After deployment, call `GET /ready` with the same `X-Terputer-Tool-Key` used
+for research queries. A 200 response proves that the deployed runtime can
+start a BigQuery job and read the curated studies table. A 503 response means
+the adapter is running but its dataset, table, or IAM access is unavailable.
+`/health` checks only that the HTTP process is running.
+
 After the load, query all four table counts and the newest study directly:
 
 ```sql

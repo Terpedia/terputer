@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import re
+import logging
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
 from google.cloud import bigquery
@@ -14,6 +15,7 @@ if not re.fullmatch(r"[A-Za-z0-9_-]+", PROJECT) or not re.fullmatch(r"[A-Za-z0-9
 
 app = FastAPI(title="Terputer transcriptomics BigQuery adapter")
 client = None
+logger = logging.getLogger(__name__)
 
 
 def authorized(token: str | None):
@@ -45,6 +47,19 @@ class GeneEffectSearch(BaseModel):
 @app.get("/health")
 def health():
     return {"status": "ok", "service": "terputer-transcriptomics", "dataset": DATASET}
+
+
+@app.get("/ready")
+def ready(x_terputer_tool_key: str | None = Header(default=None)):
+    """Exercise both query-job and table-read permissions of the runtime identity."""
+    authorized(x_terputer_tool_key)
+    table = f"`{PROJECT}.{DATASET}.transcriptomic_studies`"
+    try:
+        query(f"SELECT study_id FROM {table} LIMIT 1", [])
+    except Exception:
+        logger.exception("BigQuery readiness query failed")
+        raise HTTPException(status_code=503, detail="Curated BigQuery data are unavailable") from None
+    return {"status": "ready", "service": "terputer-transcriptomics", "dataset": DATASET}
 
 
 @app.post("/v1/studies/search")
