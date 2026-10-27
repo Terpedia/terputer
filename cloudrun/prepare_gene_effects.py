@@ -81,10 +81,14 @@ def main() -> None:
             raise ValueError(f"Notebook execution did not pin the count-processing output: {relative}")
     if not processing.get("output_sha256"):
         raise ValueError("Processing receipt has no hashed outputs")
-    if processing.get("aligner") != "STAR" or processing.get("aligner_version") != "2.7.11b":
-        raise ValueError("Expected the pinned STAR raw-count workflow")
-    if not re.fullmatch(r"[a-f0-9]{64}", processing.get("aligner_binary_sha256", "")):
-        raise ValueError("Processing receipt lacks the patched STAR binary identity")
+    if not re.fullmatch(r"[a-f0-9]{64}", processing.get("pipeline_sha256", "")):
+        raise ValueError("Processing receipt lacks the pipeline source identity")
+    if not (processing.get("gene_count_column") or processing.get("count_basis")):
+        raise ValueError("Processing receipt does not identify the count basis")
+    if processing.get("aligner_binary_sha256") and not re.fullmatch(r"[a-f0-9]{64}", processing["aligner_binary_sha256"]):
+        raise ValueError("Processing receipt has an invalid aligner binary identity")
+    if not isinstance(source.get("assay"), str) or not source["assay"].strip():
+        raise ValueError("Source manifest must identify the count assay")
     if execution.get("executed_code_cells", 0) < 1 or not re.fullmatch(r"[a-f0-9]{64}", execution.get("notebook_sha256", "")):
         raise ValueError("Notebook execution receipt is incomplete")
     contrasts = source["contrasts"]
@@ -127,8 +131,8 @@ def main() -> None:
                         "test_statistic": numeric(row["stat"], "stat"),
                         "p_value": numeric(row["pvalue"], "pvalue", probability=True),
                         "adjusted_p_value": numeric(row["padj"], "padj", probability=True),
-                        "assay": "bulk RNA-seq; raw integer STAR gene counts",
-                        "evidence_class": "replicate-aware count-model estimate",
+                        "assay": source["assay"],
+                        "evidence_class": "count-model estimate; replicate identity source-reported",
                         "analysis_version": execution["notebook_sha256"],
                         "result_sha256": result_sha,
                         "processing_receipt_sha256": processing_sha,

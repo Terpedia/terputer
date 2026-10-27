@@ -15,7 +15,7 @@ means only that no matching curated row has been loaded.
 
 After a raw-count notebook completes, use `prepare_gene_effects.py` to create
 reviewable JSONL from its saved result tables. Its manifest must name the GEO
-study ID, HTTPS source URL, project-relative processing and execution receipts,
+study ID, assay, HTTPS source URL, project-relative processing and execution receipts,
 and each contrast's ID, project-relative result TSV, stable HTTPS artifact URL,
 and limitations. The execution receipt must pin the processing receipt as an
 input, every count-processing output as an input, and each result TSV as an output. The exporter verifies those hashes and
