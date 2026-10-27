@@ -170,6 +170,16 @@
     "notebook": "https://github.com/Terpedia/terputer-terpene-literature-intake/blob/main/notebooks/analysis.ipynb"
   },
   {
+    "slug": "olfactory-bcp-ps6ip",
+    "title": "β-caryophyllene olfactory pS6-IP audit",
+    "category": "Transcriptomics",
+    "status": "Executed source-table audit",
+    "summary": "GSE160271 six-sample olfactory mucosa pS6-IP audit. The publisher's olfactory receptor table has no gene with FDR < 0.05; this is neither single-cell RNA-seq nor evidence of biological inactivity.",
+    "repository": "https://github.com/Terpedia/terpedia-olfactory-bcp-ps6ip",
+    "paper": "https://github.com/Terpedia/terpedia-olfactory-bcp-ps6ip/blob/main/research/olfactory-bcp-ps6ip/generated/white-paper.md",
+    "notebook": "https://github.com/Terpedia/terpedia-olfactory-bcp-ps6ip/blob/main/notebooks/terputer-olfactory-bcp-ps6ip.ipynb"
+  },
+  {
     "slug": "terpene-classifier",
     "title": "Auditable terpene molecular classifier",
     "category": "Research infrastructure",
