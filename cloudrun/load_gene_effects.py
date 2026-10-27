@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import uuid
 from pathlib import Path
@@ -39,6 +40,7 @@ def inspect(path: Path) -> dict:
     keys = set()
     contrasts = set()
     contrast_counts = {}
+    contrast_metadata = {}
     study_ids = set()
     count = 0
     with path.open("rb") as stream:
@@ -54,11 +56,25 @@ def inspect(path: Path) -> dict:
                 raise ValueError(f"Missing or duplicated gene-effect key: {key}")
             if not row["contrast_id"].startswith(row["study_id"] + ":"):
                 raise ValueError(f"Contrast does not belong to its study: {key}")
-            for field in ("result_sha256", "processing_receipt_sha256", "execution_receipt_sha256"):
+            for field in ("result_sha256", "processing_receipt_sha256", "execution_receipt_sha256", "analysis_version"):
                 if not re.fullmatch(r"[a-f0-9]{64}", row[field]):
                     raise ValueError(f"Invalid {field} on row {count + 1}")
+            if not row["assay"] or not row["evidence_class"] or not row["limitations"]:
+                raise ValueError(f"Missing assay, evidence class, or limitations on row {count + 1}")
             if not row["source_url"].startswith("https://") or not row["artifact_url"].startswith("https://"):
                 raise ValueError(f"Missing HTTPS provenance URL on row {count + 1}")
+            for field in ("p_value", "adjusted_p_value"):
+                value = row[field]
+                if value is not None and (not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= 1):
+                    raise ValueError(f"Invalid {field} on row {count + 1}")
+            metadata = tuple(row[field] for field in (
+                "result_sha256", "processing_receipt_sha256", "execution_receipt_sha256",
+                "assay", "evidence_class", "analysis_version", "source_url",
+                "artifact_url", "limitations",
+            ))
+            if key[:2] in contrast_metadata and contrast_metadata[key[:2]] != metadata:
+                raise ValueError(f"Contradictory provenance within contrast: {key[:2]}")
+            contrast_metadata[key[:2]] = metadata
             keys.add(key)
             contrasts.add((row["study_id"], row["contrast_id"]))
             contrast_counts[key[:2]] = contrast_counts.get(key[:2], 0) + 1
