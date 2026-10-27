@@ -21,8 +21,19 @@ and limitations. The execution receipt must pin the processing receipt as an
 input, every count-processing output as an input, and each result TSV as an output. The exporter verifies those hashes and
 rejects invalid or duplicate gene rows. This exporter does not load BigQuery;
 the existing four-manifest loader also does not load gene effects. Curate the
-study and contrast records and add a separate reviewed load procedure before
-enabling the gene-effect lookup against live data.
+study and contrast records first, then review and load the exported JSONL with:
+
+```sh
+python cloudrun/load_gene_effects.py --input /path/to/gene-effects.jsonl
+python cloudrun/load_gene_effects.py --input /path/to/gene-effects.jsonl --apply
+```
+
+The first command is local and read only. The second requires BigQuery write
+access, checks the destination schema and curated study/contrast rows, stages
+the reviewed JSONL, then atomically replaces the complete affected contrasts.
+It does not leave stale gene rows from an earlier version of those contrasts.
+Check the destination row counts and authenticated lookup after loading before
+claiming Terpedia chat can retrieve the new effects.
 
 ## Current deployment gate
 
