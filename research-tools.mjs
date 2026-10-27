@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, writeFile, realpath, stat } from 'node:fs/pro
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { promisify } from 'node:util';
 import { generateResearchReport } from './report-generator.mjs';
 import { forkReportWorkspace, listResearchProjects, addResearchProjectSubmodule, updateResearchProjectSubmodule, resolveResearchWorkspace } from './research-projects.mjs';
@@ -195,6 +196,10 @@ export async function callResearchTool(name, args = {}, context = {}) {
         throw new Error(`Report publication requires a regular file inside the selected workspace: ${path}`);
       }
       const bytes = await readFile(absolute);
+      if (path === 'report-generator.mjs'
+          && createHash('sha256').update(bytes).digest('hex') !== generated.generator_sha256) {
+        throw new Error('Report generator changed after the generation receipt was written');
+      }
       if (bytes.length > 2_000_000) throw new Error(`Report file exceeds 2 MB: ${path}`);
       bytesTotal += bytes.length;
       files.push({ path, content_base64: bytes.toString('base64') });
