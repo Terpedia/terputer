@@ -33,6 +33,7 @@ function publicUrl(value) {
   return url.toString();
 }
 export async function generateResearchReport(manifestPath, workspaceRoot = root) {
+  const generatorHash = sha256(await readFile(fileURLToPath(import.meta.url)));
   const workspacePath = (value, allowed) => workspacePathFor(workspaceRoot, value, allowed);
   const realRoot = await realpath(workspaceRoot);
   const checkedFile = async (entry, allowed) => {
@@ -216,6 +217,7 @@ export async function generateResearchReport(manifestPath, workspaceRoot = root)
   const ledgerText = `${ledger.join('\n')}\n`;
   const receipt = {
     schema_version: 1, generator: 'terputer-report-generator-v2', specification_schema_version: spec.schema_version,
+    generator_sha256: generatorHash,
     manifest: manifestFile.name, manifest_sha256: sha256(manifestBytes),
     notebook: notebookFile.name, notebook_sha256: sha256(notebookBytes), executed_code_cells: executedCells,
     ...(executionReceiptFile ? { notebook_execution_receipt: executionReceiptFile.name, notebook_execution_receipt_sha256: sha256(executionReceiptBytes) } : {}),
