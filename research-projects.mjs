@@ -1,4 +1,4 @@
-import { access, readFile, realpath } from 'node:fs/promises';
+import { access, realpath } from 'node:fs/promises';
 import { join, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
@@ -151,12 +151,21 @@ export async function addResearchProjectSubmodule({ slug, repository, commit: re
 
 export async function updateResearchProjectSubmodule({ slug }, session = process.env.TERPUTER_GITHUB_SESSION) {
   if (session) return attachWithLinkedGithub(slug, null, null, session);
-  await reportRepository();
+  const user = await reportRepository();
   if (!slugPattern.test(slug || '')) throw new Error('Invalid project slug.');
   const path = `projects/${slug}`;
-  const modules = await readFile(join(root, '.gitmodules'), 'utf8').catch(() => '');
-  if (!modules.includes(`path = ${path}`)) throw new Error(`${path} is not a registered research submodule.`);
-  await command('git', ['submodule', 'update', '--init', '--remote', '--', path]);
+  const checkout = await resolveResearchWorkspace(slug);
+  if (await command('git', ['-C', checkout, 'status', '--porcelain'])) {
+    throw new Error(`${path} has local changes; commit or stash them before changing its pinned revision.`);
+  }
+  const repo = JSON.parse(await command('gh', ['api', `repos/${user}/terpedia-${slug}`]));
+  const branch = repo.default_branch;
+  if (!branch || typeof branch !== 'string') throw new Error('Project repository has no default branch.');
+  const currentCommit = await command('git', ['-C', checkout, 'rev-parse', 'HEAD']);
+  await command('git', ['-C', checkout, 'fetch', 'origin', branch]);
+  const nextCommit = await command('git', ['-C', checkout, 'rev-parse', 'FETCH_HEAD']);
+  if (nextCommit === currentCommit) return { path, commit: currentCommit, staged: false, alreadyCurrent: true };
+  await command('git', ['-C', checkout, 'checkout', '--detach', nextCommit]);
   await command('git', ['add', '--', path]);
-  return { path, commit: await command('git', ['-C', path, 'rev-parse', 'HEAD']), staged: true, next: 'Review the new project revision, then commit and push the report repository.' };
+  return { path, commit: nextCommit, staged: true, next: 'Review the new project revision, then commit and push the report repository.' };
 }
