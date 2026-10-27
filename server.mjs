@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { access, readFile, readdir, realpath, stat } from 'node:fs/promises';
+import { extname, isAbsolute, join, normalize, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { runResearchAgent } from './research-agent.mjs';
@@ -10,10 +10,134 @@ const port = Number(process.env.PORT || 4173);
 const kbBase = (process.env.TERPEDIA_KB_API_URL || 'https://terpedia-knowledge-nanrsdlaoa-uc.a.run.app').replace(/\/$/, '');
 const chatBase = (process.env.TERPEDIA_CHAT_API_URL || 'https://api.terpedia.com').replace(/\/$/, '');
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8' };
+const githubResearchSearch = 'https://api.github.com/search/repositories?q=org%3ATerpedia+terputer-+in%3Aname&per_page=100&sort=updated';
+let githubResearchCache = { expiresAt: 0, repositories: [] };
+
+async function discoverGithubResearchRepositories() {
+  if (githubResearchCache.expiresAt > Date.now()) return githubResearchCache.repositories;
+  const response = await fetch(githubResearchSearch, {
+    headers: { accept: 'application/vnd.github+json', 'user-agent': 'Terputer-Research-Library' },
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!response.ok) throw new Error(`GitHub repository search returned ${response.status}.`);
+  const result = await response.json();
+  const repositories = (result.items || []).filter((repo) =>
+    repo.owner?.login?.toLowerCase() === 'terpedia' && /^terputer-[a-z0-9][a-z0-9-]*$/i.test(repo.name || '')
+  );
+  githubResearchCache = { expiresAt: Date.now() + 10 * 60_000, repositories };
+  return repositories;
+}
+
+async function researchProjectListing() {
+  const catalog = JSON.parse(await readFile(join(root, 'public/projects/catalog.json'), 'utf8'));
+  let repositories = [];
+  let warning = null;
+  try { repositories = await discoverGithubResearchRepositories(); }
+  catch (error) { warning = error instanceof Error ? error.message : 'GitHub discovery is unavailable.'; }
+  const repositoryByName = new Map(repositories.map((repo) => [repo.full_name.toLowerCase(), repo]));
+  const catalogNames = new Set();
+  const projects = catalog.map((project) => {
+    const match = String(project.repository || '').match(/github\.com\/([^/]+\/[^/]+)/i);
+    const fullName = match?.[1]?.replace(/\.git$/, '').toLowerCase();
+    if (fullName) catalogNames.add(fullName);
+    const github = fullName ? repositoryByName.get(fullName) : null;
+    return { ...project, discovery: github ? 'catalog+github' : 'catalog', updated_at: github?.updated_at || null, archived: github?.archived || false };
+  });
+  for (const repo of repositories) {
+    if (catalogNames.has(repo.full_name.toLowerCase())) continue;
+    const slug = repo.name.slice('terputer-'.length).toLowerCase();
+    projects.push({
+      slug,
+      title: slug.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' '),
+      category: 'Unclassified',
+      status: repo.archived ? 'Archived' : 'GitHub project',
+      summary: repo.description || 'Public Terpedia repository discovered on GitHub.',
+      repository: repo.html_url,
+      paper: null,
+      notebook: null,
+      local_path: null,
+      discovery: 'github',
+      updated_at: repo.updated_at,
+      archived: !!repo.archived,
+    });
+  }
+  return { projects, source: warning ? 'catalog' : 'github', warning, discovered_at: new Date().toISOString() };
+}
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const setJson = (status, data) => { res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }); res.end(JSON.stringify(data)); };
+  if (url.pathname === '/api/research/projects' && req.method === 'GET') {
+    try {
+      const listing = await researchProjectListing();
+      const projects = await Promise.all(listing.projects.map(async (project) => {
+        const initialized = !!project.local_path && /^projects\/[a-z0-9][a-z0-9-]*$/.test(project.local_path)
+          ? await access(join(root, project.local_path, '.git')).then(() => true).catch(() => false)
+          : false;
+        return { ...project, initialized };
+      }));
+      setJson(200, { ...listing, projects });
+    } catch (error) { setJson(500, { error: error instanceof Error ? error.message : 'Could not load the research catalog.' }); }
+    return;
+  }
+  if (url.pathname === '/api/research/project/notebooks' && req.method === 'GET') {
+    const slug = url.searchParams.get('slug') || '';
+    if (!/^[a-z0-9][a-z0-9-]{0,62}$/.test(slug)) { setJson(400, { error: 'Invalid research project slug.' }); return; }
+    try {
+      const listing = await researchProjectListing();
+      const project = listing.projects.find((candidate) => candidate.slug === slug);
+      if (!project) { setJson(404, { error: 'Research project was not found.' }); return; }
+      if (!project.local_path || !/^projects\/[a-z0-9][a-z0-9-]*$/.test(project.local_path)) {
+        setJson(200, { slug, title: project.title, notebooks: [], initialized: false, repository: project.repository }); return;
+      }
+      const projectRoot = await realpath(join(root, project.local_path)).catch(() => null);
+      if (!projectRoot) { setJson(200, { slug, title: project.title, notebooks: [], initialized: false, repository: project.repository }); return; }
+      const projectsRoot = await realpath(join(root, 'projects'));
+      const projectRelative = relative(projectsRoot, projectRoot);
+      if (isAbsolute(projectRelative) || projectRelative === '..' || projectRelative.startsWith('../')) { setJson(403, { error: 'Research project path is outside the submodule directory.' }); return; }
+      const initialized = await access(join(projectRoot, '.git')).then(() => true).catch(() => false);
+      if (!initialized) { setJson(200, { slug, title: project.title, notebooks: [], initialized: false, repository: project.repository }); return; }
+      const notebookDirectory = await realpath(join(projectRoot, 'notebooks')).catch(() => null);
+      if (!notebookDirectory) {
+        setJson(200, { slug, title: project.title, notebooks: [], initialized: true, repository: project.repository }); return;
+      }
+      if (isAbsolute(relative(projectRoot, notebookDirectory)) || relative(projectRoot, notebookDirectory).startsWith('..')) {
+        setJson(403, { error: 'Notebook directory is outside the research project.' }); return;
+      }
+      const entries = await readdir(notebookDirectory, { withFileTypes: true }).catch(() => []);
+      const notebooks = entries.filter((entry) => entry.isFile() && /^[A-Za-z0-9][A-Za-z0-9._-]{0,119}\.ipynb$/.test(entry.name)).map((entry) => entry.name).sort();
+      setJson(200, { slug, title: project.title, notebooks, initialized: true, repository: project.repository });
+    } catch (error) { setJson(500, { error: error instanceof Error ? error.message : 'Could not list project notebooks.' }); }
+    return;
+  }
+  if (url.pathname === '/api/research/project/notebook' && req.method === 'GET') {
+    const slug = url.searchParams.get('slug') || '';
+    const filename = url.searchParams.get('file') || '';
+    if (!/^[a-z0-9][a-z0-9-]{0,62}$/.test(slug) || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,119}\.ipynb$/.test(filename)) {
+      setJson(400, { error: 'Provide a valid research project and notebook filename.' }); return;
+    }
+    try {
+      const listing = await researchProjectListing();
+      const project = listing.projects.find((candidate) => candidate.slug === slug);
+      if (!project?.local_path || !/^projects\/[a-z0-9][a-z0-9-]*$/.test(project.local_path)) { setJson(404, { error: 'This project is not checked out as a local submodule.' }); return; }
+      const projectRoot = await realpath(join(root, project.local_path));
+      const projectsRoot = await realpath(join(root, 'projects'));
+      const projectRelative = relative(projectsRoot, projectRoot);
+      if (isAbsolute(projectRelative) || projectRelative === '..' || projectRelative.startsWith('../')) { setJson(403, { error: 'Research project path is outside the submodule directory.' }); return; }
+      const initialized = await access(join(projectRoot, '.git')).then(() => true).catch(() => false);
+      if (!initialized) { setJson(404, { error: 'This project submodule is not initialized in the Codespace.' }); return; }
+      const notebookDirectory = await realpath(join(projectRoot, 'notebooks'));
+      const notebookPath = await realpath(join(notebookDirectory, filename));
+      const pathFromNotebookDirectory = relative(notebookDirectory, notebookPath);
+      if (isAbsolute(pathFromNotebookDirectory) || pathFromNotebookDirectory.startsWith('..')) { setJson(403, { error: 'Notebook path is outside the project.' }); return; }
+      const details = await stat(notebookPath);
+      if (!details.isFile() || details.size > 20_000_000) { setJson(413, { error: 'Notebook is missing or exceeds the 20 MB limit.' }); return; }
+      const notebook = JSON.parse(await readFile(notebookPath, 'utf8'));
+      if (notebook.nbformat !== 4 || !Array.isArray(notebook.cells)) { setJson(400, { error: 'File is not a supported Jupyter notebook.' }); return; }
+      setJson(200, { notebook, project: { slug, title: project.title, repository: project.repository } });
+    } catch (error) { setJson(404, { error: error instanceof Error ? error.message : 'Project notebook was not found.' }); }
+    return;
+  }
   if (url.pathname === '/api/agent/chat' && req.method === 'POST') {
     try {
       let body = '';

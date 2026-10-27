@@ -2,11 +2,11 @@
 
 Terputer is a repo-backed, Codespaces-native bioinformatics workspace. It combines Terpedia research chat with editable Jupyter notebook cells and a Python kernel inside the user's own GitHub Codespace.
 
-The public [Terputer Codespace example](https://terputer.terpedia.com) opens a ready-to-run transcriptomics workspace. Its [example repository](https://github.com/Terpedia/terpedia-transcriptomics-demo) includes the executed notebook, white paper, critical review, and pinned data. The [example overview](https://terputer.terpedia.com/about) links to each artifact.
+The public [Terputer home page](https://terputer.terpedia.com) describes the platform and links to its [research library](https://terputer.terpedia.com/projects/) and [Codespace example](https://codespaces.new/Terpedia/terpedia-transcriptomics-demo?quickstart=1). The example repository includes an executed notebook, white paper, critical review, and pinned data. `/about` remains an alias for the platform overview.
 
 ## Remote research MCP
 
-Connect an MCP client over Streamable HTTP at `https://terputer.terpedia.com/mcp`. The [API index](https://terputer.terpedia.com/api) lists the tools. Public access includes read-only GEO, PubMed, and ENA metadata discovery. Curated Terpedia BigQuery study and sample search, plus Terpedia Knowledge search, require a Terputer bearer token supplied as the `Authorization` header. The direct `POST /v1/tools/call` adapter uses the same token. The root URL continues to open the Codespace example.
+Connect an MCP client over Streamable HTTP at `https://terputer.terpedia.com/mcp`. The [API index](https://terputer.terpedia.com/api) lists the tools. Public access includes read-only GEO, PubMed, and ENA metadata discovery. Curated Terpedia BigQuery study and sample search, plus Terpedia Knowledge search, require a Terputer bearer token supplied as the `Authorization` header. The direct `POST /v1/tools/call` adapter uses the same token. The home page links to the Codespace example.
 
 The remote MCP has no access to a user's Codespace files or Python kernel. Those tools remain available through the workspace's local stdio MCP server. The BigQuery adapter runs on Cloud Run with a dedicated service account that can read the `terpedia_research` dataset; its shared key is stored in Secret Manager and Cloudflare Worker secrets.
 
@@ -22,9 +22,9 @@ The `list_research_projects` tool shows each pinned project commit. `update_rese
 
 ## Curated study submodules and browser
 
-The `projects/` directory contains the public Terpedia research portfolio as 16 Git submodules. Each study is versioned in its own `Terpedia/terputer-*` repository and includes its notebook and white paper. Browse and search the catalog at [`/projects/`](https://terputer.terpedia.com/projects/), or use the Research library link in the workspace. The catalog maps studies to genomics, transcriptomics, proteomics, metabolomics, translational and clinical research, and research infrastructure.
+The `projects/` directory contains the curated Terpedia research portfolio as Git submodules. Each study is versioned in its own `Terpedia/terputer-*` repository and includes its notebook and white paper. Browse and search at [`/projects/`](https://terputer.terpedia.com/projects/) or in the Codespace sidebar. Both project browsers combine the curated `public/projects/catalog.json` metadata with public GitHub discovery for repositories named `Terpedia/terputer-*`; new repositories appear as Unclassified until their category and artifact links are added to the catalog.
 
-The Codespaces setup initializes these public submodules automatically. For a local clone, run `git submodule update --init --recursive`. The parent repository pins each study to a commit; to advance one study, run `git submodule update --remote projects/<slug>`, inspect the study checkout, then commit the changed submodule pointer in `terputer`. The browser reads `public/projects/catalog.json`, while the full repositories remain available under `projects/<slug>`.
+The Codespaces setup initializes the curated submodules automatically. For a local clone, run `git submodule update --init --recursive`. The parent repository pins each study to a commit; to advance one study, run `git submodule update --remote projects/<slug>`, inspect the study checkout, then commit the changed submodule pointer in `terputer`. The Codespace can open and run notebooks from initialized project submodules using each project directory as the notebook working directory. GitHub-discovered repositories that are not local submodules remain browsable through their public repository links until added to the checkout.
 
 Notebooks are stored under `notebooks/` in the current Codespace checkout. The notebook itself is standard Jupyter `nbformat` 4 and can also be opened in Jupyter or VS Code. The app does not create, start, commit, or push Codespaces on behalf of the user; GitHub remains the owner of repository and Codespace lifecycle.
 

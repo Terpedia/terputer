@@ -7,3 +7,6 @@ node_modules/
 
 notebooks/.ipynb_checkpoints/
 dist/
+
+# Standalone Terpedia research study repositories
+/terputer-transcriptomics/
