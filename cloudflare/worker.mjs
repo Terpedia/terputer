@@ -47,14 +47,19 @@ async function publicSnapshotResult(name, args, adapterStatus) {
   if (name === 'get_transcriptomic_samples') {
     const { rows, url } = await snapshotRows('samples');
     const accession = String(args.accession).toUpperCase();
-    return { accession, samples: rows.filter((row) => row.accession === accession).sort((a, b) => a.sample_id.localeCompare(b.sample_id)).slice(0, 100), source: url, ...provenance };
+    const samples = rows.filter((row) => row.accession === accession).sort((a, b) => a.sample_id.localeCompare(b.sample_id));
+    return { accession, samples: samples.slice(0, 100), truncated: samples.length > 100, source: url, ...provenance };
   }
   const accession = String(args.accession).toUpperCase();
   const [contrasts, observations] = await Promise.all([snapshotRows('contrasts'), snapshotRows('observations')]);
+  const selectedContrasts = contrasts.rows.filter((row) => row.study_id === accession).sort((a, b) => a.contrast_id.localeCompare(b.contrast_id));
+  const selectedObservations = observations.rows.filter((row) => row.study_id === accession).sort((a, b) => a.observation_id.localeCompare(b.observation_id));
   return {
     accession,
-    contrasts: contrasts.rows.filter((row) => row.study_id === accession).sort((a, b) => a.contrast_id.localeCompare(b.contrast_id)).slice(0, 50),
-    observations: observations.rows.filter((row) => row.study_id === accession).sort((a, b) => a.observation_id.localeCompare(b.observation_id)).slice(0, 50),
+    contrasts: selectedContrasts.slice(0, 50),
+    observations: selectedObservations.slice(0, 50),
+    contrasts_truncated: selectedContrasts.length > 50,
+    observations_truncated: selectedObservations.length > 50,
     sources: [contrasts.url, observations.url],
     interpretation: 'Source evidence classes, methods, and limitations are required; processed cross-study directions do not establish replication, a context interaction, or a direct target.',
     ...provenance
@@ -100,17 +105,23 @@ function mergeWithSnapshot(name, args, live, snapshot) {
     return { ...live, records, snapshot_source: snapshot.source, ...provenance };
   }
   if (name === 'get_transcriptomic_samples') {
-    const samples = mergeRows(live.samples, snapshot.samples, 'sample_id').slice(0, 100);
+    const allSamples = mergeRows(live.samples, snapshot.samples, 'sample_id');
+    const samples = allSamples.slice(0, 100);
     provenance.snapshot_record_ids = samples.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.sample_id);
-    return { ...live, samples, snapshot_source: snapshot.source, ...provenance };
+    return { ...live, samples, truncated: Boolean(live.truncated || snapshot.truncated || allSamples.length > 100), snapshot_source: snapshot.source, ...provenance };
   }
-  const contrasts = mergeRows(live.contrasts, snapshot.contrasts, 'contrast_id').slice(0, 50);
-  const observations = mergeRows(live.observations, snapshot.observations, 'observation_id').slice(0, 50);
+  const allContrasts = mergeRows(live.contrasts, snapshot.contrasts, 'contrast_id');
+  const allObservations = mergeRows(live.observations, snapshot.observations, 'observation_id');
+  const contrasts = allContrasts.slice(0, 50);
+  const observations = allObservations.slice(0, 50);
   provenance.snapshot_record_ids = [
     ...contrasts.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.contrast_id),
     ...observations.filter((row) => row.record_source_mode === 'commit-pinned-public-snapshot').map((row) => row.observation_id),
   ];
-  return { ...live, contrasts, observations, sources: [...new Set([...(live.sources || []), ...(snapshot.sources || [])])], ...provenance };
+  return { ...live, contrasts, observations,
+    contrasts_truncated: Boolean(live.contrasts_truncated || snapshot.contrasts_truncated || allContrasts.length > 50),
+    observations_truncated: Boolean(live.observations_truncated || snapshot.observations_truncated || allObservations.length > 50),
+    sources: [...new Set([...(live.sources || []), ...(snapshot.sources || [])])], ...provenance };
 }
 
 async function searchEntrez(db, query, limit) {
