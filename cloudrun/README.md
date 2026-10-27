@@ -9,7 +9,7 @@ Study sample and evidence responses report whether their bounded result lists
 were truncated. The Cloudflare snapshot fallback preserves those flags so a
 client does not treat a partial record list as the complete study.
 
-`schema.sql` also defines `transcriptomic_gene_effects` for future raw-count
+`schema.sql` also defines `transcriptomic_gene_effects` for raw-count
 analyses. `POST /v1/gene-effects/search` returns a named gene's loaded model
 estimates with the exact contrast, result hash, processing and notebook
 execution receipt hashes, source link, and limitations. It does not infer
@@ -38,21 +38,20 @@ the reviewed JSONL, then atomically replaces the complete affected contrasts.
 It does not leave stale gene rows from an earlier version of those contrasts.
 Check the destination row counts and authenticated lookup after loading before
 claiming Terpedia chat can retrieve the new effects.
-The tool is hidden on both local and Worker MCP surfaces until
-`TERPUTER_GENE_EFFECTS_ENABLED=true` is set after that verification.
+The Worker MCP tool is enabled after the deployed adapter returned a named
+HMGCR row from the loaded table with its shared-key authentication.
 
-## Current deployment gate
+## Reader access and deployed state
 
-The available `cannabis-metabolome@terpedia-489015.iam.gserviceaccount.com`
-credential can list `terpedia_core`, but BigQuery denies it
-`bigquery.datasets.get` and `bigquery.tables.list` on `terpedia_research`.
-The interactive `dan@terpedia.com` gcloud credential requires reauthentication.
-As of 26 October 2026, the expanded manifests have **not** been applied to
-BigQuery. The Cloudflare Worker serves the commit-pinned public snapshot when
-the adapter is unavailable or incomplete; that fallback is labeled as such.
+On 27 October 2026, the curated manifests were applied to BigQuery and the
+Cloud Run adapter was deployed. Its authenticated `/ready` route returned 200;
+the studies search returned GSE125511; and the gene-effect route returned an
+HMGCR row from GSE276099. The named `cannabis-metabolome` account also queried
+the curated tables after receiving dataset reader access. The Cloudflare Worker
+keeps a commit-pinned public snapshot fallback, labeled when used.
 
-To repair the adapter's runtime access, sign in with a project administrator,
-then inspect the exact Cloud Run identity and proposed grants:
+To inspect or repair reader access in a different deployment, sign in with a
+project administrator and run:
 
 ```sh
 gcloud auth login
