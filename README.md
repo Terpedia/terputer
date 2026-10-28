@@ -6,7 +6,7 @@ The public [Terputer home page](https://terputer.terpedia.com) offers a no-key [
 
 ## Guest quick start
 
-Anyone can use the public search demo for GEO and PubMed metadata and browse the research library without a Terpedia account or key. To edit and run notebooks, launch a Codespace from the public `Terpedia/terputer` repository and sign in to GitHub; the Codespace runs under the visitor's account and GitHub usage limits. The guest workspace can browse and execute public project submodules without connecting GitHub. GitHub connection is optional unless the user wants to publish a report. The AI research chat requires the user's own `TERPUTER_OPENROUTER_API_KEY`; Terpedia Knowledge and curated study data require a separately issued Terpedia access key.
+Anyone can use the public search demo for GEO and PubMed metadata and browse the research library without a Terpedia account or key. To edit and run notebooks, launch a Codespace from the public `Terpedia/terputer` repository and sign in to GitHub; the Codespace runs under the visitor's account and GitHub usage limits. The guest workspace can browse and execute public project submodules without connecting GitHub. Fork `Terpedia/terputer` first if you want to push and share notebook changes. GitHub connection in the workspace is otherwise optional and is used for publishing reports. The AI research chat requires the user's own `TERPUTER_OPENROUTER_API_KEY`; Terpedia Knowledge and curated study data require a separately issued Terpedia access key.
 
 ## Remote research MCP
 
