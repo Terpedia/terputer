@@ -2,6 +2,9 @@ const form = document.querySelector('#search-form');
 const source = document.querySelector('#source');
 const query = document.querySelector('#query');
 const button = document.querySelector('#search-button');
+const enaForm = document.querySelector('#ena-form');
+const accession = document.querySelector('#accession');
+const enaButton = document.querySelector('#ena-button');
 const results = document.querySelector('#results');
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -42,6 +45,21 @@ async function searchPublicSource(toolName, searchText) {
   throw lastError || new Error('The public source search failed.');
 }
 
+async function lookupEnaRuns(studyAccession) {
+  const response = await fetch('/mcp', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: crypto.randomUUID(),
+      method: 'tools/call',
+      params: { name: 'get_ena_runs', arguments: { accession: studyAccession } },
+    }),
+  });
+  if (!response.ok) throw new Error(`Research service returned HTTP ${response.status}.`);
+  return unwrap(await response.json());
+}
+
 function renderRecords(data, toolName) {
   const records = Array.isArray(data.records) ? data.records : [];
   if (!records.length) {
@@ -77,3 +95,46 @@ form.addEventListener('submit', async event => {
     results.setAttribute('aria-busy', 'false');
   }
 });
+
+enaForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const studyAccession = accession.value.trim().toUpperCase();
+  if (!/^(PRJ[EDN][A-Z]?\d+|[ESD]RP\d+)$/.test(studyAccession)) {
+    showStatus('Enter a valid ENA study accession, such as PRJEB12345.', true);
+    accession.focus();
+    return;
+  }
+  enaButton.disabled = true;
+  results.setAttribute('aria-busy', 'true');
+  showStatus(`Looking up public ENA run metadata for ${studyAccession}…`);
+  try {
+    const data = await lookupEnaRuns(studyAccession);
+    renderEnaRuns(data);
+  } catch (error) {
+    showStatus(`${error instanceof Error ? error.message : 'ENA lookup failed.'} Wait a moment and try again.`, true);
+  } finally {
+    enaButton.disabled = false;
+    results.setAttribute('aria-busy', 'false');
+  }
+});
+
+function renderEnaRuns(data) {
+  const runs = Array.isArray(data.runs) ? data.runs : [];
+  if (!runs.length) {
+    showStatus(`No public run records were returned for ${data.accession}. Check the accession or try another study.`);
+    return;
+  }
+  const rows = runs.map(run => `<tr><td><a href="https://www.ebi.ac.uk/ena/browser/view/${encodeURIComponent(run.run_accession || '')}" target="_blank" rel="noopener noreferrer">${escapeHtml(run.run_accession || '—')} ↗</a></td><td>${escapeHtml(run.library_strategy || '—')}</td><td>${escapeHtml(run.library_layout || '—')}</td><td>${formatBytes(run.fastq_bytes)}</td><td><code>${escapeHtml(run.fastq_md5 || '—')}</code></td></tr>`).join('');
+  results.innerHTML = `<p class="status">Showing ${runs.length}${data.truncated ? ' of more than 100' : ''} public ENA sequencing runs for ${escapeHtml(data.accession)}. This is run metadata only; Terputer does not download sequence files in this demo.</p><div class="table-wrap"><table><thead><tr><th>Run</th><th>Library strategy</th><th>Layout</th><th>FASTQ bytes</th><th>MD5</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function formatBytes(value) {
+  const bytes = Number(value);
+  if (!Number.isFinite(bytes) || bytes < 0) return '—';
+  if (bytes < 1024) return `${bytes} B`;
+  const units = ['KB', 'MB', 'GB', 'TB'];
+  let size = bytes / 1024;
+  let unit = 0;
+  while (size >= 1024 && unit < units.length - 1) { size /= 1024; unit += 1; }
+  return `${size.toFixed(1)} ${units[unit]}`;
+}

@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Try Terputer's public GEO and PubMed research search without a Terpedia key.">
-  <title>Public Research Search · Terputer</title>
+  <meta name="description" content="Explore public GEO, PubMed, and ENA metadata and inspect a reproducible Terputer notebook without a Terpedia key.">
+  <title>Public Research Demo · Terputer</title>
   <link rel="stylesheet" href="/demo/style.css">
 </head>
 <body>
   <header class="topbar"><a class="brand" href="/">TERPUTER <span>/ GUEST DEMO</span></a><nav><a href="/projects/">Research library</a><a href="/">Home</a></nav></header>
   <main>
     <section class="intro">
-      <p class="eyebrow">OPEN PUBLIC METADATA · NO TERPEDIA KEY</p>
-      <h1>Try a research search.</h1>
-      <p class="lede">Search public PubMed articles and GEO study records directly from Terputer. Results link to their original sources; they are discovery leads, not evidence that a study answers your research question.</p>
+      <p class="eyebrow">LIMITED GUEST ACCESS · NO TERPEDIA KEY</p>
+      <h1>Explore. Inspect. Then run your own analysis.</h1>
+      <p class="lede">Discover public PubMed, GEO, and ENA records, then inspect an executed notebook and its white paper. Guests can explore source metadata and read the analysis without a key; running notebooks uses your own GitHub Codespace.</p>
     </section>
     <section class="search-card" aria-labelledby="search-heading">
       <h2 id="search-heading">Find public research records</h2>
       <form id="search-form">
-        <label for="source">Source</label>
+        <label for="source">Search a source</label>
         <select id="source" name="source">
           <option value="search_pubmed">PubMed articles</option>
           <option value="search_geo_series">NCBI GEO studies</option>
@@ -26,17 +26,26 @@
         <label for="query">Search terms</label>
         <div class="query-row"><input id="query" name="query" type="search" value="myrcene" minlength="2" maxlength="300" required><button id="search-button" type="submit">Search public records</button></div>
       </form>
-      <p class="access-note">This guest demo only searches public metadata. Running notebooks requires a GitHub account and your own Codespace. Fork Terpedia/terputer first if you want to push your changes.</p>
+      <form id="ena-form" class="ena-form">
+        <label for="accession">Or look up sequencing runs by ENA study accession</label>
+        <div class="query-row"><input id="accession" name="accession" type="text" value="PRJEB12345" minlength="5" maxlength="30" pattern="(PRJ[EDN][A-Za-z]?\d+|[ESD]RP\d+)" aria-describedby="ena-help"><button id="ena-button" type="submit">Look up ENA runs</button></div>
+        <p class="access-note" id="ena-help">Try a study accession such as PRJEB12345. This returns public run metadata and checksums, not sequence files.</p>
+      </form>
+      <p class="access-note">No Terpedia key is needed for public metadata. Private Terpedia knowledge and AI chat need their respective credentials. Running notebooks requires a GitHub account and your own Codespace; fork Terpedia/terputer first if you want to push changes.</p>
     </section>
     <section id="results" class="results" aria-live="polite" aria-busy="false">
       <p class="empty">Search PubMed or GEO to view records here.</p>
     </section>
+    <section class="example-card" aria-labelledby="example-heading">
+      <div><p class="eyebrow">READ-ONLY RESEARCH EXAMPLE</p><h2 id="example-heading">Follow a transcriptomics study from notebook to paper.</h2><p>Inspect the saved outputs, pinned inputs, methods, and limitations before opening a Codespace. The notebook can be read on GitHub without signing in; executing it requires your own Codespace.</p></div>
+      <nav aria-label="Transcriptomics example artifacts"><a href="https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/main/notebooks/terputer-transcriptomics.ipynb">Executed Jupyter notebook ↗</a><a href="https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/main/research/transcriptomics/white-paper.md">White paper ↗</a><a href="https://github.com/Terpedia/terpedia-transcriptomics-demo/blob/main/research/transcriptomics/critical-review.md">Critical review ↗</a></nav>
+    </section>
     <section class="next-step">
-      <div><p class="eyebrow">READY TO ANALYZE?</p><h2>Open the full Terputer workspace.</h2><p>Start a Codespace from the public Terputer repository. GitHub sign-in is required; notebook compute runs in your Codespace. Fork first to publish your own work.</p></div>
+      <div><p class="eyebrow">READY TO ANALYZE?</p><h2>Open the full Terputer workspace.</h2><p>Start a Codespace from the public Terputer repository. GitHub sign-in is required; notebook compute runs in your Codespace. AI chat needs your own OpenRouter key. Fork first to publish your own work.</p></div>
       <a class="button" href="https://codespaces.new/Terpedia/terputer/tree/feature/terputer-report-publish">Start a Terputer Codespace <span aria-hidden="true">↗</span></a>
     </section>
   </main>
-  <footer><span>Terputer · Terpedia</span><span>Public metadata search. Terpedia knowledge services require a Terputer access key.</span></footer>
+  <footer><span>Terputer · Terpedia</span><span>Public metadata is read-only. Curated Terpedia knowledge services require a Terputer access key.</span></footer>
   <script src="/demo/app.js" defer></script>
 </body>
 </html>
