@@ -4,7 +4,7 @@ const SYSTEM = `You are Terputer's transcriptomics research assistant in a priva
 
 export async function runResearchAgent(input) {
   const apiKey = process.env.TERPUTER_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY;
-  if (!apiKey) throw Object.assign(new Error('Set TERPUTER_OPENROUTER_API_KEY in the Codespace to enable the Terputer research agent.'), { status: 503 });
+  if (!apiKey) throw Object.assign(new Error('AI chat needs your own TERPUTER_OPENROUTER_API_KEY. Public GEO and PubMed search is available without a key at https://terputer.terpedia.com/demo/; notebooks and public project repositories still work in this Codespace.'), { status: 503 });
   const model = process.env.TERPUTER_AGENT_MODEL || 'openai/gpt-4.1-mini';
   const history = (Array.isArray(input.messages) ? input.messages : []).slice(-16).filter((item) => ['user', 'assistant'].includes(item?.role) && typeof item.content === 'string').map((item) => ({ role: item.role, content: item.content.slice(0, 10000) }));
   if (!history.length || history.at(-1).role !== 'user') throw Object.assign(new Error('The last message must be a user request.'), { status: 400 });

@@ -7,6 +7,7 @@ node_modules/
 
 notebooks/.ipynb_checkpoints/
 dist/
+cloudflare/launch/.wrangler/
 
 # Standalone Terpedia research study repositories
 /terputer-transcriptomics/

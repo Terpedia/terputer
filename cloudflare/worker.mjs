@@ -1,9 +1,15 @@
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 
 async function sourceJson(url) {
-  const response = await fetch(url, { headers: { 'user-agent': 'Terputer research tools (https://github.com/Terpedia/terputer)' } });
-  if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
-  return response.json();
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const response = await fetch(url, { headers: { 'user-agent': 'Terputer research tools (https://github.com/Terpedia/terputer)' } });
+    if (response.ok) return response.json();
+    if (response.status !== 429 && response.status < 500) throw new Error(`Source returned HTTP ${response.status}`);
+    if (attempt === 2) throw new Error(`Source returned HTTP ${response.status}`);
+    const retryAfter = Number(response.headers.get('retry-after'));
+    await new Promise(resolve => setTimeout(resolve, retryAfter > 0 ? Math.min(retryAfter * 1000, 3000) : 500 * (attempt + 1)));
+  }
+  throw new Error('Public source is temporarily unavailable.');
 }
 
 async function searchEntrez(db, query, limit) {

@@ -60,7 +60,29 @@ export async function handleMcp(request, env) {
   if (!publicNames.has(name) && !privateNames.has(name)) return rpcError(id, -32602, 'Unknown tool');
   if (privateNames.has(name) && !authorized(request, env)) return rpcError(id, -32001, 'Authentication required', 401);
   try {
+    const cache = publicNames.has(name) ? globalThis.caches?.default : null;
+    let cacheKey = null;
+    if (cache) {
+      const normalized = name === 'get_ena_runs'
+        ? { accession: String(args.accession || '').trim().toUpperCase() }
+        : { query: String(args.query || '').trim().slice(0, 300), limit: Math.min(10, Math.max(1, Number(args.limit) || 5)) };
+      const bytes = new TextEncoder().encode(`${name}:${JSON.stringify(normalized)}`);
+      const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+      const key = Array.from(digest, byte => byte.toString(16).padStart(2, '0')).join('');
+      cacheKey = new Request(new URL(`/__public-research-cache/${key}`, request.url), { method: 'GET' });
+      try {
+        const cached = await cache.match(cacheKey);
+        if (cached) {
+          const result = await cached.json();
+          return reply(id, { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result, isError: false });
+        }
+      } catch {}
+    }
     const result = await handleTool(name, args, env);
+    if (cache && cacheKey) {
+      try { await cache.put(cacheKey, new Response(JSON.stringify(result), { headers: { 'content-type': 'application/json', 'cache-control': 'public, max-age=900' } })); }
+      catch {}
+    }
     return reply(id, { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result, isError: false });
   } catch (error) {
     return reply(id, { content: [{ type: 'text', text: error instanceof Error ? error.message : 'Tool failed' }], isError: true });

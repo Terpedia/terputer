@@ -2,11 +2,15 @@
 
 Terputer is a repo-backed, Codespaces-native bioinformatics workspace. It combines Terpedia research chat with editable Jupyter notebook cells and a Python kernel inside the user's own GitHub Codespace.
 
-The public [Terputer home page](https://terputer.terpedia.com) describes the platform and links to its [research library](https://terputer.terpedia.com/projects/) and [Codespace example](https://codespaces.new/Terpedia/terpedia-transcriptomics-demo?quickstart=1). The example repository includes an executed notebook, white paper, critical review, and pinned data. `/about` remains an alias for the platform overview.
+The public [Terputer home page](https://terputer.terpedia.com) offers a no-key [public research search](https://terputer.terpedia.com/demo/), a [research library](https://terputer.terpedia.com/projects/), and a link to launch the multi-omics Codespace. The separate transcriptomics example repository includes an executed notebook, white paper, critical review, and pinned data. `/about` remains an alias for the platform overview.
+
+## Guest quick start
+
+Anyone can use the public search demo for GEO and PubMed metadata and browse the research library without a Terpedia account or key. To edit and run notebooks, launch a Codespace from the public `Terpedia/terputer` repository and sign in to GitHub; the Codespace runs under the visitor's account and GitHub usage limits. The guest workspace can browse and execute public project submodules without connecting GitHub. GitHub connection is optional unless the user wants to publish a report. The AI research chat requires the user's own `TERPUTER_OPENROUTER_API_KEY`; Terpedia Knowledge and curated study data require a separately issued Terpedia access key.
 
 ## Remote research MCP
 
-Connect an MCP client over Streamable HTTP at `https://terputer.terpedia.com/mcp`. The [API index](https://terputer.terpedia.com/api) lists the tools. Public access includes read-only GEO, PubMed, and ENA metadata discovery. Curated Terpedia BigQuery study and sample search, plus Terpedia Knowledge search, require a Terputer bearer token supplied as the `Authorization` header. The direct `POST /v1/tools/call` adapter uses the same token. The home page links to the Codespace example.
+Connect an MCP client over Streamable HTTP at `https://terputer.terpedia.com/mcp`. The [API index](https://terputer.terpedia.com/api) lists the tools. Public access includes read-only GEO, PubMed, and ENA metadata discovery. Curated Terpedia BigQuery study and sample search, plus Terpedia Knowledge search, require a Terputer bearer token supplied as the `Authorization` header. The direct `POST /v1/tools/call` adapter uses the same token. Public GEO and PubMed results are briefly cached and upstream rate limits are retried.
 
 The remote MCP has no access to a user's Codespace files or Python kernel. Those tools remain available through the workspace's local stdio MCP server. The BigQuery adapter runs on Cloud Run with a dedicated service account that can read the `terpedia_research` dataset; its shared key is stored in Secret Manager and Cloudflare Worker secrets.
 
